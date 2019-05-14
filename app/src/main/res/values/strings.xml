@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">mCURA Queue Management</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="submit">Submit</string>
+    <string name="loading_message">Loading...</string>
+    <string name="searchby">Search by:</string>
+    <string name="nature">Nature : </string>
+    <string name="appointment_name">Appointment Name :</string>
+    <string name="appointment_time">Appointment Time :</string>
+    <string-array name="select_hospital">
+        <item>Select Hospital</item>
+    </string-array>
+    <string name="error_detected">TAG NOT DETECTED. WHERE DO YOU WANT WRITE!?!?</string>
+    <string name="ok_writing">WRITTEN YOUR TAG SUCCESSFULLY!!</string>
+    <string name="error_writing">ERROR DURING WRITING. ARE YOU SURE THAT YOUR TAG IS CLOSE TO YOUR MOBILE PHONE?</string>
+    <string name="ok_detection">TAG DETECTED: </string>
+    <string name="title_activity_read_nfctag">ReadNFCTag</string>
+    <string name="payment_mode">PAYMENT MODE:</string>
+    <string name="cash">Cash</string>
+    <string name="card">Card</string>
+    <string name="cheque">cheque</string>
+
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="save_data_msg">Are you sure you want store Data and generate bill?</string>
+    <string name="logout_msg">Are you sure you want logout?</string>
+    <string name="exit_msg">Are you sure you want to quit this app?</string>
+
+    <string-array name="pharmacy_status">
+        <item>All</item>
+        <item>Pending</item>
+        <item>Requested</item>
+        <item>Billing Done</item>
+        <item>Completed</item>
+    </string-array>
+
+</resources>

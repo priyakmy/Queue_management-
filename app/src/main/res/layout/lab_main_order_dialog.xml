@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lab_pharmacy_bg">
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bg"
+        android:hint="search here"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/margin_05"/>
+
+    <ExpandableListView
+        android:id="@+id/lab_order_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/et_search"
+        android:layout_above="@+id/view"
+        android:groupIndicator="@null" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/rlbottom"
+        android:background="#000" />
+
+    <RelativeLayout
+        android:id="@+id/rlbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cancel_btn_bg"
+            android:text="Cancel"
+            android:textColor="#f9573d"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/save_btn_bg"
+            android:text="Save"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </RelativeLayout>
+</RelativeLayout>

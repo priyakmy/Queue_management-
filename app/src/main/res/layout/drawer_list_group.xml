@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:elevation="5dp"
+    android:background="@mipmap/listbg">
+
+
+    <ImageButton
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/plus"
+        android:layout_centerVertical="true"/>
+
+
+    <TextView
+        android:id="@+id/lblListHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/indicator"
+        android:layout_marginLeft="@dimen/margin_05"
+        android:layout_marginRight="@dimen/margin_05"
+        android:maxLines="1"
+        android:text="Test" />
+
+    <LinearLayout
+        android:id="@+id/ll_right_most"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_05"
+        android:gravity="right">
+
+        <CheckBox
+            android:id="@+id/cb_select_row_level_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox_selector"
+            android:checked="false"
+            android:enabled="false"
+            android:clickable="false"/>
+
+        <TextView
+            android:id="@+id/tv_test_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0" />
+    </LinearLayout>
+
+</RelativeLayout>
+
+

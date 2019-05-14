@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ededed"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_layout_backgroung"
+        android:elevation="2dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/mcura_logo" />
+
+        <!--<ImageButton
+            android:id="@+id/iv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/ic_logout" />-->
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ccc" />
+
+    <TextView
+        android:id="@+id/tv_subtenant_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_05"
+        android:layout_marginTop="@dimen/margin_05"
+        android:gravity="center"
+        android:text="name"
+        android:textSize="@dimen/text_20sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_10">
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_05"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_fromTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calendar_bg"
+                android:drawableLeft="@drawable/ic_cal"
+                android:drawablePadding="@dimen/padding_05"
+                android:gravity="center"
+                android:text="28 July 2016"
+                android:textColor="@color/black">
+
+            </TextView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_05"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_toTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/calendar_bg"
+                android:drawableLeft="@drawable/ic_cal"
+                android:drawablePadding="@dimen/padding_05"
+                android:gravity="center"
+                android:text="28 July 2016"
+                android:textColor="@color/black">
+
+            </TextView>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_10"
+        android:paddingRight="@dimen/padding_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/doc_directory_edit_bg">
+
+            <EditText
+                android:id="@+id/et_search_by_patient"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_weight="@integer/medium_size"
+                android:background="@null"
+                android:drawableRight="@drawable/ic_search"
+                android:hint="Search by patient"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:textColor="#454545"
+                android:textColorHint="#8a8a8a" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_by_patient"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter by: "
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/pharmacy_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spiner"></Spinner>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d3d3d3"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_05"
+        android:paddingLeft="@dimen/padding_10"
+        android:paddingRight="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_05">
+        <!--        <TextView
+                    android:id="@+id/tv_order_id"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Order id"
+                    android:textColor="@color/black"/>-->
+        <TextView
+            android:id="@+id/tv_doc_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dr. Name"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Patient Name"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Status"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/patient_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="#d3d3d3"
+        android:dividerHeight="1dp"
+        android:scrollbars="vertical" />
+</LinearLayout>

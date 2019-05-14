@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pharmacy_lab_dialog_bg">
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter OTP"
+        android:id="@+id/tv_otp"/>
+
+    <EditText
+        android:background="@drawable/bg_border_white"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/tv_otp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_otp"
+        android:maxLines="1"/>
+
+    <View
+        android:layout_marginTop="20dp"
+        android:id="@+id/view"
+        android:layout_below="@+id/et_otp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/block_gray"/>
+
+
+    <Button
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_submit"
+        android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_05"
+        android:layout_marginBottom="@dimen/margin_05" />
+
+</RelativeLayout>

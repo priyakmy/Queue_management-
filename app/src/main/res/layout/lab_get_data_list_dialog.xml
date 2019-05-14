@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pharmacy_lab_dialog_bg"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/bill_payment_activity_hIs_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_05"
+        android:layout_marginRight="@dimen/margin_05"
+        android:layout_marginBottom="@dimen/margin_05"
+        android:background="@drawable/bill_edittext_bg"
+        android:ems="@integer/large_size"
+        android:enabled="true"
+        android:hint="HIS No"
+        android:maxLines="1"
+        android:textColor="@color/text_hint"
+        android:textSize="@dimen/text_14sp"
+        android:layout_marginTop="@dimen/margin_10"/>
+    <TableLayout
+        android:id="@+id/ll_lab_pat_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#cacaca"
+            android:padding="@dimen/padding_10">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Est Id"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order Id"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_16sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+    <ListView
+        android:id="@+id/lab_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_lab_pat_data"
+        android:divider="#ccc"
+        android:dividerHeight="1dp"></ListView>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/lab_list"
+        android:layout_marginTop="20dp"
+        android:background="@color/block_gray" />
+
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_05"
+        android:layout_marginTop="@dimen/margin_05"
+        android:text="Submit" />
+
+</LinearLayout>

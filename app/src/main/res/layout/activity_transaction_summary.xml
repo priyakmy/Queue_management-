@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.TransactionSummary">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_layout_backgroung">
+
+        <ImageView
+            android:id="@+id/hospital_logo"
+            android:layout_width="236dp"
+            android:layout_height="33dp"
+            android:layout_gravity="left|center_vertical"
+            android:scaleType="fitStart" />
+
+        <ImageView
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/margin_20"
+            android:background="@drawable/logout" />
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:layout_below="@+id/toolbar"/>
+    <Spinner
+        android:id="@+id/spSearchBillingType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_05"
+        android:background="@drawable/spiner2"
+        android:layout_below="@+id/view1"></Spinner>
+    <EditText
+        android:id="@+id/etSearchByPatName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spSearchBillingType"
+        android:background="@drawable/edittext_bg"
+        android:hint="Search by patient name"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_margin="@dimen/margin_05"/>
+    <LinearLayout
+        android:id="@+id/llTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSearchByPatName"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_10">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_fromTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/calendar_bg"
+                    android:drawableLeft="@drawable/ic_cal"
+                    android:drawablePadding="@dimen/padding_05"
+                    android:gravity="center"
+                    android:text="28 July 2016"
+                    android:textColor="@color/black">
+
+                </TextView>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To"
+                android:layout_gravity="center"
+                android:textColor="#333333"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_toTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/calendar_bg"
+                    android:drawableLeft="@drawable/ic_cal"
+                    android:drawablePadding="@dimen/padding_05"
+                    android:gravity="center"
+                    android:text="28 July 2016"
+                    android:textColor="@color/black">
+
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="@dimen/padding_10"
+            android:paddingLeft="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_10">
+
+            <RelativeLayout
+                android:id="@+id/rl_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Amount: Rs. "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_16sp" />
+
+                <TextView
+                    android:id="@+id/total_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_amount"
+                    android:text="0000.00"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_16sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_amount"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Bills : "
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_total_bills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/bill_printer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/ic_printer"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:layout_below="@+id/llTop"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_explv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_view"
+        android:layout_below="@+id/view2">
+
+        <ListView
+            android:id="@+id/transaction_ListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_05"
+            android:paddingTop="@dimen/padding_05">
+
+            <TextView
+                android:id="@+id/appointment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="APPOINTMENT"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/queue_mgmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="QUEUE"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/billing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="BILLING"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_fillcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="FILL CASHCARD"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/mcura_logo" />
+
+    </LinearLayout>
+</RelativeLayout>

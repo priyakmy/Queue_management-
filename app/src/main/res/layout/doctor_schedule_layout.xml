@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/apoint_slot_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:padding="@dimen/margin_05">
+
+        <ImageView
+            android:id="@+id/doctor_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/doctor_img" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_05"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_doctor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:textSize="@dimen/text_18sp"
+                android:text="Dr. Dummy xyz" />
+
+            <TextView
+                android:id="@+id/tv_department_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:textSize="@dimen/text_18sp"
+                android:text="Dummy Department" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/appointment_slot1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/textview_slot_bg"
+        android:gravity="center"
+        android:textColor="@color/sky_blue" />
+
+    <TextView
+        android:id="@+id/appointment_slot2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_05"
+        android:background="@drawable/textview_slot_bg"
+        android:gravity="center"
+        android:textColor="@color/sky_blue" />
+
+    <TextView
+        android:id="@+id/appointment_slot3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_05"
+        android:background="@drawable/textview_slot_bg"
+        android:gravity="center"
+        android:textColor="@color/sky_blue"
+        />
+    <TextView
+        android:id="@+id/tv_txt_no_slot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/padding_10"
+        android:text="No Slot Found"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18sp"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:padding="@dimen/padding_10"
+        android:text="Cancel"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_18sp" />
+
+</LinearLayout>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PDF</title>
+<style type="text/css">
+body{ font-family:Arial, sans-serif; /*"Trebuchet MS", Arial, Helvetica, sans-serif;*/ padding-top:0px;}
+table {
+	border-spacing:0;
+	border-collapse:collapse;
+}
+
+.table {
+	width:100%;
+	max-width:100%;
+	margin-bottom:20px;
+	font-size:13px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+	padding:5px 6px;
+	line-height:1.42857143;
+	vertical-align:middle;
+	border-top:1px solid #ccc
+}
+.table>thead>tr>th {
+	vertical-align:bottom;
+	border-bottom:2px solid #ccc
+}
+.table>caption+thead>tr:first-child>td, .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>td, .table>thead:first-child>tr:first-child>th {
+	border-top:0
+}
+.table>tbody+tbody {
+	border-top:2px solid #ccc
+}
+.table .table {
+	background-color:#fff
+}
+.table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+	padding:5px
+}
+.table-bordered {
+	border:1px solid #ccc
+}
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+	border:1px solid #ccc
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+	border-bottom-width:2px
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color:#f9f9f9
+}
+.table-hover>tbody>tr:hover {
+	background-color:#f5f5f5
+}
+table col[class*=col-] {
+	position:static;
+	display:table-column;
+	float:none
+}
+table td[class*=col-], table th[class*=col-] {
+	position:static;
+	display:table-cell;
+	float:none
+}
+.table-bordered {
+	border:1px solid #ccc
+}
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+	border:1px solid #ccc
+}
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+	border-bottom-width:2px
+}
+.outer{ width:650px; margin:0 auto;}
+.patientImg{ float:left; width:45px; height:45px; border-radius:50px; overflow:hidden;}
+.patientImg img{ max-width:100%; }
+.patientDetails{ float:left; width:100%; font-size:13px; line-height:15px; padding-left:0px;}
+.fee{ font-size:13px; text-align:center;}
+.status{ background-color:#6d6d6d; color:#fff; border-radius:10px; width:60px; margin:2px auto; font-size:13px; text-align:center; line-height:22px;}
+.doctorName{ width:60%; float:left; font-weight:bold; text-align:left; font-weight:bold; line-height:22px; font-size: 17px;}
+.doctorName span{
+	font-size: 14px;
+	color: #848484; font-weight: normal;
+}
+
+.toDate{ width:50%; margin-left:-1px; float:left; text-align:right; font-size:12px; padding-right:10px; box-sizing:border-box;}
+.fromDate{ width:50%; float:left; text-align:left; font-size:12px; border-right:1px #333 solid;}
+.text-left{ text-align:left;}
+.text-center{ text-align:center;}
+.developedby{ text-align: center;}
+.developedby img{ max-width:90px; vertical-align: bottom;}
+.totalAmount{ line-height:16px; font-size: 13px; text-align:right; font-weight:400;}
+.totalAmount span{
+	color: #666666;
+}
+.submitedby{ width:33.333333%; float:left; text-align:left;}
+.received{ width:33.333333%; float:left; text-align:left;}
+.developedby{ width:33.333333%; float:left; text-align:center;}
+.developedby img{ text-align:center; }
+.smalldate{ font-size:10px; line-height:16px;}
+.poweredby{
+	text-align: right;
+	}
+.poweredby img{
+	vertical-align: middle;
+}
+</style>
+</head>
+
+
+<body>
+<div class="outer">
+<table class="table table-bordered">
+	<tr>
+    	<th colspan="5">
+        	<img src=HOSPITAL_IMAGE alt="logo"/>
+        </th>
+     </tr>
+
+    <tr>
+    <td colspan="5"><div class="doctorName">DOCTOR_NAME<br>
+		<span>	DOCTOR_DEPT</span>
+		</div>
+
+	 <div class="totalAmount">Date:<span> DATE</span></div>
+	</td>
+
+    </tr>
+
+<tr class="text-left">
+	<th class="text-center">S.No.</th>
+	<th>Patient Details</th>
+		<th class="text-center">Age | Gender</th>
+		<th class="text-center">Mobile No.</th>
+		<th class="text-center">Time Slot</th>
+  </tr>
+
+BOOKED_PATIENT_LIST
+
+<tr>
+	<td colspan="5"><div class="poweredby"> Powered by:<img src="file:///android_asset/logo.png"></div></td>
+</tr>
+</table>
+</div>
+</body>
+</html>

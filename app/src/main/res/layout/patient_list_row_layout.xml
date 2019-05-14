@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_patient_name"
+        style="?android:attr/spinnerItemStyle"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:textColor="#000000"
+        android:layout_marginBottom="@dimen/margin_05"
+        android:text="Patient Name"/>
+    <TextView
+        android:id="@+id/txt_patient_registration_no"
+        style="?android:attr/spinnerItemStyle"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:textColor="#000000"
+        android:text="Hospital Id : xx123"/>
+</LinearLayout>

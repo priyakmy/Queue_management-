@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:elevation="5dp"
+    android:background="@mipmap/listbg">
+
+
+    <TextView
+        android:id="@+id/tv_testname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/indicator"
+        android:layout_marginLeft="@dimen/margin_05"
+        android:layout_marginRight="@dimen/margin_05"
+        android:maxLines="1"
+        android:text="Test"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:id="@+id/ll_right_most"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/margin_05"
+        android:gravity="right">
+        <TextView
+            android:id="@+id/tv_test_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.0"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
+

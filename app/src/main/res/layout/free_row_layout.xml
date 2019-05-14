@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlFree"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:paddingBottom="15dp"
+    android:paddingTop="15dp">
+<TextView
+    android:id="@+id/time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="6:00 pm To 9:00 pm"
+    android:textColor="@color/black"
+    android:layout_centerVertical="true"
+    android:layout_alignParentLeft="true"/>
+    <LinearLayout
+        android:id="@+id/ll_fix_block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:visibility="visible">
+        <ImageButton
+            android:id="@+id/fix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fix"
+            android:layout_marginRight="3dp"/>
+        <ImageButton
+            android:id="@+id/block"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/block"
+            android:layout_marginLeft="3dp"
+            />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/unblock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/unblock"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="3dp"
+        android:visibility="gone"/>
+</RelativeLayout>

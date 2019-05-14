@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_layout_backgroung"
+        >
+
+        <ImageView
+            android:id="@+id/hospital_logo"
+            android:layout_width="236dp"
+            android:layout_height="33dp"
+            android:layout_gravity="center"
+            />
+
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#f8f8f8"
+        android:padding="10dp">
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/search_by_doctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/search_box"
+                android:drawableLeft="@drawable/search_orange"
+                android:paddingLeft="5dp"
+                android:hint="Doctors"
+                android:textSize="@dimen/text_14sp"
+                android:drawablePadding="5dp"
+                android:textColor="#454545"></EditText>
+
+            <EditText
+                android:id="@+id/search_by_department"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edittex_department"
+                android:drawableLeft="@drawable/search_orange"
+                android:paddingLeft="5dp"
+                android:hint="Department"
+                android:textSize="@dimen/text_14sp"
+                android:textColor="#454545"
+                android:visibility="gone"></EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginLeft="5dp">
+            <ImageView
+                android:id="@+id/iv_calandar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cal"
+                />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26/07/2016"
+                android:textSize="@dimen/text_12sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:background="@drawable/doc_info_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctors"
+            android:textColor="@color/orange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textColor="@color/orange"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/doc_info_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8.5"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:dividerHeight="10dp"
+        android:divider="@color/white"></ListView>
+    <LinearLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_05"
+            android:paddingBottom="@dimen/padding_05">
+
+            <TextView
+                android:id="@+id/appointment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="APPOINTMENT"
+                android:textStyle="bold"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/queue_mgmt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="QUEUE"
+                android:textStyle="bold"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/billing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:text="BILLING"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="  |  "
+                android:textColor="@color/tv_colorTextBrightGrey1"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_fillcard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="FILL CASHCARD"
+                android:textStyle="bold"
+                android:textColor="@color/txt_dark"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/mcura_logo" />
+
+    </LinearLayout>
+</LinearLayout>

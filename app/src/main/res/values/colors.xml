@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="red">#ff0000</color>
+    <color name="orange">#ff5533</color>
+    <color name="gray">#5d5d5d</color>
+    <color name="main_layout_backgroung">#eeeeee</color>
+    <color name="colorPrimary">#AFAFAF</color>
+    <color name="colorPrimaryButton">#eee9e9</color>
+    <color name="colorPrimaryDark">#AFAFAF</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#c8e8ff</color>
+    <color name="tv_colorTextBrightGrey">#999999</color>
+    <color name="bg_color">#ff0000</color>
+    <color name="bg_norm">#ededed</color>
+    <color name="block_gray">#666</color>
+    <color name="radio_color">#dcdcdc</color>
+    <color name="text_hint">#a2a2a2</color>
+    <color name="token_patient_bg">#f6f6f6</color>
+    <color name="date_color">#666666</color>
+    <color name="blue">#004895</color>
+    <color name="brown">#208918</color>
+    <color name="green">#ee8823</color>
+    <color name="tv_colorTextBrightGrey1">#999999</color>
+    <color name="txt_dark">#454545</color>
+    <color name="sky_blue">#337ab7</color>
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+    <color name="radio_button_tint_color">#e75748</color>
+    <color name="light_grey">#cccccc</color>
+</resources>

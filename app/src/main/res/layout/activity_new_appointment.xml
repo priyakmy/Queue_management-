@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ededed"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@drawable/popup_close" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/heading_bg"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:text="New Appointment"
+        android:textColor="#000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/searchby"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:layout_marginLeft="@dimen/margin_10"/>
+
+        <CheckBox
+            android:id="@+id/cb_mrno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mrno"
+            android:buttonTint="@color/black"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mobile"
+            android:buttonTint="@color/black"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_patname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Name"
+            android:buttonTint="@color/black"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp"/>
+
+        <CheckBox
+            android:id="@+id/cb_hospitalid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hospital Id"
+            android:buttonTint="@color/black"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp"/>
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/search_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/input_box"
+        android:elevation="3dp"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+
+        <ImageButton
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/search" />
+
+        <ImageButton
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/add" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appointment_name"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/appointment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Evening"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/appointment_time"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/appointment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From 4:00 pm to 4:10 pm"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nature"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <Spinner
+            android:id="@+id/appointment_nature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@drawable/spiner" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/submit" />
+
+        <ImageButton
+            android:id="@+id/new_appointment_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/cancel" />
+    </RelativeLayout>
+</LinearLayout>
