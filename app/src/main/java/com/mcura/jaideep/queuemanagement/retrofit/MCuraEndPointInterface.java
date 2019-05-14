@@ -98,6 +98,9 @@ public interface MCuraEndPointInterface {
     @GET("/Patient_Visit_Entry")
     void patient_Visit_Entry(@Query("MRNo") int mrno, @Query("UserRoleId") int userRoleId, @Query("SubTenantId") int subtanentId, @Query("ScheduleId") int scheduleId, @Query("Date") String date, Callback<GenerateTokenResultModel> restCallback);
 
+    @POST("/patientCheckOut")
+    void patientCheckOut(@Body JsonObject mObj, Callback<GenerateTokenResultModel> restCallback);
+
     @GET("/SearchPatient")
     void getSearchPatient(@Query("UserRoleID") int userRoleID, @Query("Searchkey") String searchKey, @Query("sub_tenant_id") int tenant_id,
                           Callback<PatientSearchModel[]> restCallback);

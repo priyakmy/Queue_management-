@@ -389,7 +389,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                 } else if (tokenStatus.equals("CHECK_IN")) {
                     getVisitingStatus();
                 } else if (tokenStatus.equals("CURRENTLY_VISITING")) {
-                    Toast.makeText(VisitingActivity.this, "You are already Visited", Toast.LENGTH_LONG).show();
+                    showCheckOutDialog("Your token is "+visiting_token_number.getText().toString()+". You have Already Visited. Do you want to CheckOut?");
                 }
                 break;
             case R.id.chk_in:
@@ -431,6 +431,52 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(intentLogout);
                 break;
         }
+    }
+
+    private void showCheckOutDialog(String msg) {
+        android.app.AlertDialog.Builder alerBuilder = new android.app.AlertDialog.Builder(VisitingActivity.this);
+        alerBuilder.setCancelable(false);
+        alerBuilder.setMessage(msg);
+        alerBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callPatientCheckOutApi();
+                dialog.dismiss();
+            }
+        });
+        alerBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.app.AlertDialog dialog = alerBuilder.show();
+    }
+
+    private void callPatientCheckOutApi() {
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("MRNo", mr_no);
+        obj.addProperty("UserRoleId", user_role_id);
+        obj.addProperty("ScheduleId", scheduleId);
+        obj.addProperty("SubTenantId", subTanentId);
+        obj.addProperty("Date", completeDate);
+        mCuraApplication.getInstance().mCuraEndPoint.patientCheckOut(obj, new Callback<GenerateTokenResultModel>() {
+            @Override
+            public void success(GenerateTokenResultModel generateTokenResultModel, Response response) {
+                if(generateTokenResultModel!=null){
+                    Toast.makeText(VisitingActivity.this,generateTokenResultModel.getMsg(),Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
+                    finish();
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
     }
 
     /*private void getPatientSearchDetail(String searchKey){
@@ -740,7 +786,6 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(VisitingActivity.this, msg, Toast.LENGTH_LONG).show();
                 }
                 dismissLoadingDialog();
-
             }
 
             @Override
@@ -899,7 +944,12 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                         ll_visiting.setClickable(true);
                     } else if (tokenStatus.equals("CURRENTLY_VISITING")) {
                         //visiting_token_number.setText(tokenStatusModelArray[0].getTokenNo().toString());
-                        Toast.makeText(VisitingActivity.this, "You are already Visited", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(VisitingActivity.this, "You are already Visited", Toast.LENGTH_LONG).show();
+                        visiting_token_number.setText(tokenStatusModelArray[0].getTokenNo().toString());
+                        ll_visiting.setClickable(true);
+                    }else if (tokenStatus.equals("CHECK_OUT")) {
+                        //visiting_token_number.setText(tokenStatusModelArray[0].getTokenNo().toString());
+                        Toast.makeText(VisitingActivity.this, "You have already Check Out", Toast.LENGTH_LONG).show();
                         ll_visiting.setClickable(false);
                     }
                 } else {
