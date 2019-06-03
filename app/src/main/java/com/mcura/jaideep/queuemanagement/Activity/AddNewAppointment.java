@@ -560,9 +560,8 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             public void success(CheckHospitalPatModel checkHospitalPatModel, Response response) {
                 if (checkHospitalPatModel.getStatus() == CheckHospitalPatient.kCheckHospitalPatientSuccess.getID()) {
                 } else if (checkHospitalPatModel.getStatus() == CheckHospitalPatient.kCheckHospitalPatientAreadyExist.getID()) {
-                    //getPatientByHospitalNoApi(hospital_id.getText().toString());
+                    getPatientByHospitalNoApi(hospital_id.getText().toString());
                     Toast.makeText(AddNewAppointment.this, checkHospitalPatModel.getMsg().toString(), Toast.LENGTH_LONG).show();
-
                 }
                 dismissLoadingDialog();
             }
@@ -618,7 +617,6 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 } else {
                     h_id.setClickable(false);
                 }
-
                 //checkHospitalPatientAPI(hospital_id.getText().toString());
                 //getPatientByHospitalNoApi(hospital_id.getText().toString());
                 //showHospitalPopup();

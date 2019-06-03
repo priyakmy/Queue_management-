@@ -361,4 +361,7 @@ public interface MCuraEndPointInterface {
 
     @POST("/postActivityTracker_v2")
     void postActivityTracker(@Body JsonObject jsonObject, Callback<PostActivityTrackerModel> restCallback);
+
+    @POST("/postCheckInSms")
+    void postCheckInSms(@Body JsonObject jsonObject, Callback<PostActivityTrackerModel> restCallback);
 }
