@@ -215,6 +215,19 @@ public class Helper {
         }
         return convertedTime;
     }
+    public static String changeDobDatesgrhFormat(String s){
+        String convertedTime ="";
+        try {
+            SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat displayFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            Date date = parseFormat.parse(s);
+            convertedTime=displayFormat.format(date);
+            System.out.println("registrationDate"+convertedTime);
+        } catch (final ParseException e) {
+            e.printStackTrace();
+        }
+        return convertedTime;
+    }
     public static String changeDateFormat(String s){
         String convertedTime ="";
         try {
