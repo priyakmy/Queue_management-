@@ -234,6 +234,9 @@ public interface MCuraEndPointInterface {
     @GET("/GetPatientByHospitalNo")
     void getPatientByHospitalNo(@Query("HospitalNo") String hospitalNo, Callback<GetPatientByHospitalNoModel> resCallback);
 
+    @GET("/GetSgrhPatientInfo")
+    void getSgrhPatientInfo(@Query("regNo") String hospitalNo, Callback<GetPatientByHospitalNoModel> resCallback);
+
     @GET("/CheckHospitalPat")
     void checkHospitalPat(@Query("UserRoleId") int userRoleId, @Query("SubTenantId") int subTenantId, @Query("HospitalNo") String hospitalNo, Callback<CheckHospitalPatModel> resCallback);
 
