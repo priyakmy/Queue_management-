@@ -8,7 +8,7 @@ public class Data {
 
     @SerializedName("PatientNo")
     @Expose
-    private Integer patientNo;
+    private String patientNo;
     @SerializedName("PatientName")
     @Expose
     private String patientName;
@@ -34,11 +34,11 @@ public class Data {
     @Expose
     private String email;
 
-    public Integer getPatientNo() {
+    public String getPatientNo() {
         return patientNo;
     }
 
-    public void setPatientNo(Integer patientNo) {
+    public void setPatientNo(String patientNo) {
         this.patientNo = patientNo;
     }
 

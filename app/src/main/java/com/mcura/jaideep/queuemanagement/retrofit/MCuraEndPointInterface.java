@@ -47,6 +47,7 @@ import com.mcura.jaideep.queuemanagement.Model.ScheduleModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchCashCardModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchHospital;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
+import com.mcura.jaideep.queuemanagement.Model.SgrhPatientInfoModel.GetSgrhPatientInfoModel;
 import com.mcura.jaideep.queuemanagement.Model.State;
 import com.mcura.jaideep.queuemanagement.Model.TokenStatusModel;
 import com.google.gson.JsonObject;
@@ -235,7 +236,7 @@ public interface MCuraEndPointInterface {
     void getPatientByHospitalNo(@Query("HospitalNo") String hospitalNo, Callback<GetPatientByHospitalNoModel> resCallback);
 
     @GET("/GetSgrhPatientInfo")
-    void getSgrhPatientInfo(@Query("regNo") String hospitalNo, Callback<GetPatientByHospitalNoModel> resCallback);
+    void getSgrhPatientInfo(@Query("regNo") String hospitalNo, Callback<GetSgrhPatientInfoModel> resCallback);
 
     @GET("/CheckHospitalPat")
     void checkHospitalPat(@Query("UserRoleId") int userRoleId, @Query("SubTenantId") int subTenantId, @Query("HospitalNo") String hospitalNo, Callback<CheckHospitalPatModel> resCallback);

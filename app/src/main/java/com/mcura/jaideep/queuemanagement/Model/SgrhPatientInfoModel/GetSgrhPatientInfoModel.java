@@ -11,7 +11,7 @@ public class GetSgrhPatientInfoModel {
     private Data data;
     @SerializedName("status")
     @Expose
-    private Integer status;
+    private int status;
     @SerializedName("msg")
     @Expose
     private String msg;
@@ -27,11 +27,11 @@ public class GetSgrhPatientInfoModel {
         this.data = data;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

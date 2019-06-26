@@ -61,6 +61,7 @@ import com.mcura.jaideep.queuemanagement.Model.PatientInfoModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchHospital;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
+import com.mcura.jaideep.queuemanagement.Model.SgrhPatientInfoModel.GetSgrhPatientInfoModel;
 import com.mcura.jaideep.queuemanagement.Model.State;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
@@ -484,6 +485,47 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             }
         });
     }
+    public void getSgrhPatientInfoApi(String hId) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getSgrhPatientInfo(hId, new Callback<GetSgrhPatientInfoModel>() {
+            @Override
+            public void success(GetSgrhPatientInfoModel getSgrhPatientInfoModel, Response response) {
+                Log.d("status",getSgrhPatientInfoModel.getStatus()+"");
+                if (getSgrhPatientInfoModel!= null) {
+                    if(getSgrhPatientInfoModel.getStatus()==1){
+                        setSGRHPatientDetail(getSgrhPatientInfoModel);
+                    }else{
+                        Toast.makeText(AddNewAppointment.this,getSgrhPatientInfoModel.getMsg().toString(),Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    setErrorAlert();
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void setSGRHPatientDetail(GetSgrhPatientInfoModel getSgrhPatientInfoModel) {
+        hospital_id.setText(getSgrhPatientInfoModel.getData().getPatientNo().trim().toString());
+        patientName.setText(getSgrhPatientInfoModel.getData().getPatientName().trim().toString());
+        if (getSgrhPatientInfoModel.getData().getGender().trim().equalsIgnoreCase("Male")) {
+            genderGroup.check(R.id.radio_male);
+        } else if (getSgrhPatientInfoModel.getData().getGender().trim().equalsIgnoreCase("Female")) {
+            genderGroup.check(R.id.radio_female);
+        }
+
+        etDob.setText(Helper.changeDobDatesgrhFormat(getSgrhPatientInfoModel.getData().getDOB().trim()));
+
+        mobile.setText(getSgrhPatientInfoModel.getData().getMobileNumber().trim().toString());
+        if (!getSgrhPatientInfoModel.getData().getEmail().trim().equals("")) {
+            email.setText(getSgrhPatientInfoModel.getData().getEmail().trim().toString());
+        }
+    }
 
     public void getPatientByHospitalNoApi(String hId) {
         showLoadingDialog();
@@ -614,7 +656,15 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                     } else {
                         hospital_id.setError("Enter Hospital Id");
                     }
-                } else {
+                }else if(subTanentId == 243){
+                    h_id.setClickable(true);
+                    if (!TextUtils.isEmpty(hospital_id.getText().toString())) {
+                        new SGRHPatientInfoAPI(hospital_id.getText().toString()).execute();
+                        //getSgrhPatientInfoApi(hospital_id.getText().toString());
+                    } else {
+                        hospital_id.setError("Enter Hospital Id");
+                    }
+                }else {
                     h_id.setClickable(false);
                 }
                 //checkHospitalPatientAPI(hospital_id.getText().toString());
@@ -670,7 +720,64 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 break;*/
         }
     }
+    class SGRHPatientInfoAPI extends AsyncTask<String,Void,String>{
+        private String hId;
+        HttpURLConnection urlConnection;
+        SGRHPatientInfoAPI(String hId){
+            this.hId = hId;
+        }
+        @Override
+        protected String doInBackground(String... strings) {
+            StringBuilder result = new StringBuilder();
+//TransactionDetail_v1
+            //TransactionDetail
+            try {
+                String urlPath = "http://test.tn.mcura.com/health_dev.svc/Json/GetSgrhPatientInfo?regNo="+hId;
+                Log.d("url", urlPath);
+                URL url = new URL(urlPath);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+
+            }catch (FileNotFoundException ex){
+                ex.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                urlConnection.disconnect();
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoadingDialog();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dismissLoadingDialog();
+            Gson gson = new Gson();
+            GetSgrhPatientInfoModel getSgrhPatientInfoModel = gson.fromJson(result,GetSgrhPatientInfoModel.class);
+            if (getSgrhPatientInfoModel!= null) {
+                if(getSgrhPatientInfoModel.getStatus()==1){
+                    setSGRHPatientDetail(getSgrhPatientInfoModel);
+                }else{
+                    Toast.makeText(AddNewAppointment.this,getSgrhPatientInfoModel.getMsg().toString(),Toast.LENGTH_LONG).show();
+                }
+            } else {
+                setErrorAlert();
+            }
+        }
+    }
     class MedHISAPI extends AsyncTask<String,Void,String>{
         private String hId;
         HttpURLConnection urlConnection;
