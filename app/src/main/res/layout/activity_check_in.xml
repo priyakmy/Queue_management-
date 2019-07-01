@@ -153,6 +153,60 @@
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin_05"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:text="@string/searchby"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_mrno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="1"
+            android:text="Mrno"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp" />
+
+        <CheckBox
+            android:id="@+id/cb_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="2"
+            android:text="Mobile"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp" />
+
+        <CheckBox
+            android:id="@+id/cb_patname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:tag="3"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp" />
+
+        <CheckBox
+            android:id="@+id/cb_hospitalid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="4"
+            android:checked="true"
+            android:text="H Id"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_12sp" />
+    </LinearLayout>
+    <LinearLayout
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -181,8 +235,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="10dp">
-
-
             <TextView
                 android:id="@+id/checkin_pat_age"
                 android:layout_width="wrap_content"

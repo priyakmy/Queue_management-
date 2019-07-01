@@ -108,7 +108,8 @@ public interface MCuraEndPointInterface {
 
     //SearchPatient_v1
     //searchpatient_v2
-    @GET("/searchpatient_v2")
+    //searchpatient_v4
+    @GET("/searchpatient_v4")
     void searchPatient_v1(@Query("index") int index, @Query("RowSize") int RowSize, @Query("UserRoleID") int userRoleID, @Query("SearchType") String searchType, @Query("Searchkey") String searchKey, @Query("Subtenantid") int tenant_id,
                           Callback<SearchPatientModel> restCallback);
 

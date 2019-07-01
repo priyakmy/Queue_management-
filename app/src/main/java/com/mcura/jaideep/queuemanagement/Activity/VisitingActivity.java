@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -137,6 +139,9 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
     private int appId;
     private int serviceRoleId;
     private TextView billing,tv_fillcard;
+    private CheckBox cb_mrno, cb_mobile, cb_patname, cb_hospitalid;
+    private ArrayList<Integer> searchByList;
+    private String strSearchBy="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +200,11 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+        searchByList = new ArrayList<>();
+        cb_mrno = (CheckBox) findViewById(R.id.cb_mrno);
+        cb_mobile = (CheckBox) findViewById(R.id.cb_mobile);
+        cb_patname = (CheckBox) findViewById(R.id.cb_patname);
+        cb_hospitalid = (CheckBox) findViewById(R.id.cb_hospitalid);
         visiting_pat_gender = (TextView) findViewById(R.id.visiting_pat_gender);
         visiting_pat_age = (TextView) findViewById(R.id.visiting_pat_age);
         visiting_pat_name = (TextView) findViewById(R.id.visiting_pat_name);
@@ -267,7 +277,25 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
         billing.setOnClickListener(this);
         tv_fillcard.setOnClickListener(this);
     }
-
+    private String getSearchType(){
+        searchByList.clear();
+        if (cb_mrno.isChecked()) {
+            searchByList.add(1);
+        }
+        if (cb_mobile.isChecked()) {
+            searchByList.add(2);
+        }
+        if (cb_patname.isChecked()) {
+            searchByList.add(3);
+        }
+        if (cb_hospitalid.isChecked()) {
+            searchByList.add(4);
+        }
+        strSearchBy = searchByList.toString();
+        strSearchBy = strSearchBy.replace("[","");
+        strSearchBy = strSearchBy.replace("]","");
+        return strSearchBy;
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -502,64 +530,78 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
         });
     }*/
     private void getPatientSearchDetail(String searchKey) {
-        patientSearchModelsArray = new PatientSearchModel[]{};
-        showLoadingDialog();
-        mCuraApplication.getInstance().mCuraEndPoint.searchPatient_v1(1, 20, user_role_id, "1,3,4", searchKey, subTanentId, new Callback<SearchPatientModel>() {
-            @Override
-            public void success(SearchPatientModel patientSearchModels, Response response) {
-                //patientSearchModel = patientSearchModels;
-                Log.d("list_size", patientSearchModels.getData().size() + "");
-                if (patientSearchModels.getData().size() > 0) {
-                    for (int i = 0; i < patientSearchModels.getData().size(); i++) {
-                        dataList.add(patientSearchModels.getData().get(i));
-                    }
-                    patientSearchModel.setData(dataList);
-                    patientSearchModel.setStatus(patientSearchModels.getStatus());
-                    patientSearchModel.setTotalResultCount(patientSearchModels.getTotalResultCount());
-                    showPatientPopup();
+        String searchType = getSearchType();
+        Log.d("strSearchBy",searchType);
+        if(!TextUtils.isEmpty(searchType)){
+            patientSearchModelsArray = new PatientSearchModel[]{};
+            showLoadingDialog();
+            mCuraApplication.getInstance().mCuraEndPoint.searchPatient_v1(1, 20, user_role_id, searchType, searchKey, subTanentId, new Callback<SearchPatientModel>() {
+                @Override
+                public void success(SearchPatientModel patientSearchModels, Response response) {
+                    //patientSearchModel = patientSearchModels;
+                    Log.d("list_size", patientSearchModels.getData().size() + "");
+                    if (patientSearchModels.getData().size() > 0) {
+                        for (int i = 0; i < patientSearchModels.getData().size(); i++) {
+                            dataList.add(patientSearchModels.getData().get(i));
+                        }
+                        patientSearchModel.setData(dataList);
+                        patientSearchModel.setStatus(patientSearchModels.getStatus());
+                        patientSearchModel.setTotalResultCount(patientSearchModels.getTotalResultCount());
+                        showPatientPopup();
                     /*mAdapter = new SearchPatientAdapter_v1(SearchPatientActivity.this, patientSearchModel, userRoleId, hospitalSubtanentId);
                     mRecyclerView.setAdapter(mAdapter);*/
-                } else {
-                    //Toast.makeText(VisitingActivity.this, "No Record Found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //Toast.makeText(VisitingActivity.this, "No Record Found", Toast.LENGTH_SHORT).show();
+                    }
+                    dismissLoadingDialog();
                 }
-                dismissLoadingDialog();
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                dismissLoadingDialog();
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissLoadingDialog();
+                }
+            });
+        }else{
+            Toast.makeText(VisitingActivity.this,"Please choose search filter",Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void getPatientSearchDetail_v2(int fIndex, String searchKey) {
-        patientSearchModelsArray = new PatientSearchModel[]{};
-        showLoadingDialog();
-        mCuraApplication.getInstance().mCuraEndPoint.searchPatient_v1(fIndex, 20, user_role_id, "1,3,4", searchKey, subTanentId, new Callback<SearchPatientModel>() {
-            @Override
-            public void success(SearchPatientModel patientSearchModels, Response response) {
+        String searchType = getSearchType();
+        Log.d("strSearchBy",searchType);
+        if(!TextUtils.isEmpty(searchType)){
+            patientSearchModelsArray = new PatientSearchModel[]{};
+            showLoadingDialog();
+            mCuraApplication.getInstance().mCuraEndPoint.searchPatient_v1(fIndex, 20, user_role_id, searchType, searchKey, subTanentId, new Callback<SearchPatientModel>() {
+                @Override
+                public void success(SearchPatientModel patientSearchModels, Response response) {
 
-                if (patientSearchModels.getData().size() > 0) {
-                    flag_loading = false;
-                    for (int i = 0; i < patientSearchModels.getData().size(); i++) {
-                        dataList.add(patientSearchModels.getData().get(i));
+                    if (patientSearchModels.getData().size() > 0) {
+                        flag_loading = false;
+                        for (int i = 0; i < patientSearchModels.getData().size(); i++) {
+                            dataList.add(patientSearchModels.getData().get(i));
+                        }
+                        patientSearchModel.setData(dataList);
+                        Log.d("size", patientSearchModel.getData().size() + "");
+                        searchPatientAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(VisitingActivity.this, "No More Record Found", Toast.LENGTH_SHORT).show();
                     }
-                    patientSearchModel.setData(dataList);
-                    Log.d("size", patientSearchModel.getData().size() + "");
-                    searchPatientAdapter.notifyDataSetChanged();
 
-                } else {
-                    Toast.makeText(VisitingActivity.this, "No More Record Found", Toast.LENGTH_SHORT).show();
+                    dismissLoadingDialog();
                 }
 
-                dismissLoadingDialog();
-            }
+                @Override
+                public void failure(RetrofitError error) {
+                    dismissLoadingDialog();
+                }
+            });
+        }else{
+            Toast.makeText(VisitingActivity.this,"Please choose search filter",Toast.LENGTH_LONG).show();
+        }
 
-            @Override
-            public void failure(RetrofitError error) {
-                dismissLoadingDialog();
-            }
-        });
     }
 
     private void showPatientPopup() {
