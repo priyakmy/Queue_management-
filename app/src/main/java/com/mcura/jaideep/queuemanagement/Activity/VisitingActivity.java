@@ -373,7 +373,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //setCheckInStatus();
-                if(subTanentId == 515 || subTanentId== 528 || subTanentId == 547 || subTanentId == 557){
+                if(subTanentId == 515 || subTanentId == 547 || subTanentId == 557){
                     setCheckInStatusWithFee();
                     /*if(user_role_id==2331 || user_role_id==2332 || user_role_id==2333){
                         setCheckInStatusWithoutFee();
@@ -1281,7 +1281,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                 if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentSuccessfull.getStatusId() ||
                         postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentDone.getStatusId()) {
                     Toast.makeText(VisitingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
-                    if(subTanentId == 515 || subTanentId== 528 || subTanentId == 547 || subTanentId == 557){
+                    if(subTanentId == 515 || subTanentId == 547 || subTanentId == 557){
                         setCheckInStatusWithFee();
                     }else{
                         setCheckInStatusWithoutFee();

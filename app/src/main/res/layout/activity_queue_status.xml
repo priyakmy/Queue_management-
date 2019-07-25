@@ -110,13 +110,17 @@
         android:background="#ffffff">
 
 
-        <ImageButton
+        <TextView
             android:id="@+id/start_opd_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/startopd" />
+            android:text="Start OPD"
+            android:foreground="@drawable/ripple"
+            android:background="@drawable/red_border_btn_bg"
+            android:padding="@dimen/padding_05"
+            android:textColor="@color/orange"/>
 
 
         <ToggleButton
@@ -138,9 +142,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/end_opd"
-            android:visibility="gone"
-            />
+            android:text="End OPD"
+            android:foreground="@drawable/ripple"
+            android:background="@drawable/red_border_btn_bg"
+            android:padding="@dimen/padding_05"
+            android:visibility="visible"
+            android:textColor="@color/orange"/>
 
         <RelativeLayout
             android:layout_width="0dp"

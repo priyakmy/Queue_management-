@@ -510,7 +510,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ll_checkin:
                 if (tokenStatus.equals("PRE_BOOKED")) {
                     //setCheckInStatus();
-                    if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                    if (subTanentId == 515 || subTanentId == 547) {
                         setCheckInStatusWithFee();
                         /*if(user_role_id==2331 || user_role_id==2332 || user_role_id==2333){
                             setCheckInStatusWithoutFee();
@@ -526,7 +526,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                     appointmentBookedOrNot();
                 } else if (tokenStatus.equals("BLOCK_USER")) {
                     //setCheckInStatusforBlock();
-                    if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                    if (subTanentId == 515 || subTanentId == 547) {
                         setCheckInStatusForBlockWithFee();
                         /*if(user_role_id==2331 || user_role_id==2332 || user_role_id==2333){
                             setCheckInStatusForBlockWithoutFee();
@@ -1234,13 +1234,13 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                         postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentDone.getStatusId()) {
                     Toast.makeText(CheckInActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
                     if (tokenStatus.equals("BLOCK_USER")) {
-                        if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                        if (subTanentId == 515 || subTanentId == 547) {
                             setCheckInStatusForBlockWithFee();
                         } else {
                             setCheckInStatusForBlockWithoutFee();
                         }
                     } else {
-                        if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                        if (subTanentId == 515 || subTanentId == 547) {
                             setCheckInStatusWithFee();
                         } else {
                             setCheckInStatusWithoutFee();
@@ -1640,7 +1640,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             public void success(PostPaymentModel postPaymentModel, Response response) {
                 if (postPaymentModel.getStatusId() == EnumType.AppointmentOrNot.mAppointmentAlreadyFixed.getID()) {
                     if (tokenStatus.equals("NEW_USER")) {
-                        if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                        if (subTanentId == 515 || subTanentId == 547) {
                             setCheckInStatusWithFee();
                         } else {
                             setCheckInStatusWithoutFee();
@@ -1737,7 +1737,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                 if(userType.equals("BLOCK_USER")){
                     startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
                 }else if(userType.equals("NEW_USER")){
-                    if (subTanentId == 515 || subTanentId == 528 || subTanentId == 547) {
+                    if (subTanentId == 515 || subTanentId == 547) {
                         setCheckInStatusWithFee();
                     } else {
                         setCheckInStatusWithoutFee();

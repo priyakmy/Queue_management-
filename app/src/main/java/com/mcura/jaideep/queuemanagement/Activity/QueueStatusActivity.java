@@ -74,9 +74,9 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     List<QueueStatus> list = new ArrayList<>();
     int year, month, date;
     String completeDate;
-    ImageButton start_opd_btn, load_nfc;
+    ImageButton load_nfc;
     ImageView queue_current_status, queue_queue_status, queue_checkIn, queue_visting_entry, logout;
-    TextView appointment, queue_mgmt, doctorName;
+    TextView appointment, queue_mgmt, doctorName,start_opd_btn;
     AvailableTokenList[] availableTokenListsArray;
     int chartGenerateStatus;
     private SharedPreferences mSharedPreference;
@@ -130,7 +130,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         queue_queue_status=(ImageView)findViewById(R.id.queue_queue_status);
         queue_checkIn=(ImageView)findViewById(R.id.queue_checkIn);
         queue_visting_entry=(ImageView)findViewById(R.id.queue_visit_entry);*/
-        start_opd_btn = (ImageButton) findViewById(R.id.start_opd_btn);
+        start_opd_btn = findViewById(R.id.start_opd_btn);
         logout = (ImageView) mToolbar.findViewById(R.id.logout);
         checkin = (ImageButton) findViewById(R.id.chk_in);
         appointment = (TextView) findViewById(R.id.appointment);
@@ -461,7 +461,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 postStartOPD();
                 break;
             case R.id.tv_end_opd:
-                //postEndOpd();
+                postEndOpd();
                 break;
             case R.id.logout:
                 SharedPreferences.Editor editor = mSharedPreference.edit();
