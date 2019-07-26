@@ -611,6 +611,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         bill_summary = (ImageView) mToolbar.findViewById(R.id.bill_summary);
         iv_local_bill = (ImageView) findViewById(R.id.iv_local_bill);
         add_patient = (ImageView) mToolbar.findViewById(R.id.add_patient);
+        if(subTanentId==576 || subTanentId==587){
+            add_patient.setVisibility(View.GONE);
+        }
         serviceListSpinner = (Spinner) findViewById(R.id.service_type_spinner);
         appointment = (TextView) findViewById(R.id.appointment);
         queue_mgmt = (TextView) findViewById(R.id.queue_mgmt);

@@ -213,6 +213,9 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         submit = (ImageButton) findViewById(R.id.submit);
         search = (ImageButton) findViewById(R.id.search);
         add = (ImageButton) findViewById(R.id.add);
+        if(subTanentId==576 || subTanentId==587){
+            add.setVisibility(View.GONE);
+        }
         cancel = (ImageButton) findViewById(R.id.new_appointment_cancel);
         appointmentName = (TextView) findViewById(R.id.appointment_name);
         appointmentName.setText(scheduleName);

@@ -80,6 +80,9 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         ImageView hospital_logo = (ImageView) mToolbar.findViewById(R.id.hospital_logo);
         ImageView add_patient = (ImageView) mToolbar.findViewById(R.id.add_patient);
+        if(sub_tanent_id==576 || sub_tanent_id==587){
+            add_patient.setVisibility(View.GONE);
+        }
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

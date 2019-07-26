@@ -461,7 +461,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 postStartOPD();
                 break;
             case R.id.tv_end_opd:
-                postEndOpd();
+                //postEndOpd();
                 break;
             case R.id.logout:
                 SharedPreferences.Editor editor = mSharedPreference.edit();
