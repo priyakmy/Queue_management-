@@ -1365,6 +1365,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     }
 
     public void setCityAreaList() {
+
         hmArea.clear();
         for (int i = 0; i < areaArray.length; i++) {
             hmArea.put(areaArray[i].getAreaId(), areaArray[i].getArea());
