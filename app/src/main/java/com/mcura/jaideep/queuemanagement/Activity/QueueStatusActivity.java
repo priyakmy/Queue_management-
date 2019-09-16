@@ -461,6 +461,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 postStartOPD();
                 break;
             case R.id.tv_end_opd:
+                showEndOpdConfirmationDialog();
                 //postEndOpd();
                 break;
             case R.id.logout:
@@ -544,6 +545,41 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void showEndOpdConfirmationDialog() {
+        AlertDialog.Builder builder
+                = new AlertDialog
+                .Builder(QueueStatusActivity.this);
+
+        // Set the message show for the Alert time
+        String alert1 = "OPD cannot be re-started, if it has ended.";
+        String alert2 = "Do you want to proceed further with ending the OPD?";
+        builder.setMessage(alert1+"\n"+alert2);
+
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                               postEndOpd();
+                            }
+                        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // Show the Alert Dialog box
+        alertDialog.show();
+    }
+
     private void postEndOpd() {
         JsonObject obj = new JsonObject();
         obj.addProperty("UserRoleId", user_role_id);
@@ -561,7 +597,13 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 if (endChartGenerateStatus == 1) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
                     getQueueData();
-                } else if (endChartGenerateStatus == 5) {
+                }else if (endChartGenerateStatus == 2) {
+                    Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
+                    getQueueData();
+                } else if (endChartGenerateStatus == 3) {
+                    Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
+                    dismissLoadingDialog();
+                } else if (endChartGenerateStatus == 4) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
                     dismissLoadingDialog();
                 } else {

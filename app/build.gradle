@@ -31,8 +31,8 @@ android {
         applicationId "com.mcura.jaideep.queuemanagement"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 19
-        versionName "1.24"
+        versionCode 20
+        versionName "1.25"
         multiDexEnabled true
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "2c7fc1e68aa842489cade334ee335300"]
     }

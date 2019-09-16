@@ -90,7 +90,7 @@ public interface MCuraEndPointInterface {
 
     //Generate_Token_Chart
     //Generate_Token_Chart_v1
-    @POST("/Generate_Token_Chart")
+    @POST("/Generate_Token_Chart_v1")
     void generate_Token_Chart(@Body JsonObject mObj, Callback<GenerateTokenResultModel> restCallback);
 
     @POST("/endOPD")

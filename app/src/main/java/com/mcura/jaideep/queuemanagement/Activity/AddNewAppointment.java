@@ -1385,7 +1385,6 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-
             imageBitmap = (Bitmap) extras.get("data");
             GraphicsUtil graphicUtil = new GraphicsUtil();
             profilePic.setImageBitmap(graphicUtil.getRoundedShape(imageBitmap));
@@ -1402,6 +1401,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     }
 
     public void postContactDetailApi() {
+
         JsonObject contactDetail = new JsonObject();
         contactDetail.addProperty("Mobile", mobileNumber);
         contactDetail.addProperty("Optmobile", "");
