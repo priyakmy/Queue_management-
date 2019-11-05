@@ -30,16 +30,25 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.gson.Gson;
 import com.mcura.jaideep.queuemanagement.Adapter.Queue_Adapter;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
 import com.mcura.jaideep.queuemanagement.Model.AvailableTokenAdapter;
 import com.mcura.jaideep.queuemanagement.Model.AvailableTokenList;
+import com.mcura.jaideep.queuemanagement.Model.Datum;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
+import com.mcura.jaideep.queuemanagement.Model.PatDemoGraphics;
+import com.mcura.jaideep.queuemanagement.Model.PatientNoShowModelResponse.PostPatientNoShowModelResponse;
+import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.QueueStatus;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.google.gson.JsonObject;
+import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +59,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class QueueStatusActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     String isDelete_Unblock = null;
@@ -76,7 +86,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     String completeDate;
     ImageButton load_nfc;
     ImageView queue_current_status, queue_queue_status, queue_checkIn, queue_visting_entry, logout;
-    TextView appointment, queue_mgmt, doctorName,start_opd_btn;
+    TextView appointment, queue_mgmt, doctorName, start_opd_btn;
     AvailableTokenList[] availableTokenListsArray;
     int chartGenerateStatus;
     private SharedPreferences mSharedPreference;
@@ -90,6 +100,8 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     private TextView tv_end_opd;
     private TextView tv_opd_msg;
     private TextView billing, tv_fillcard;
+    private String buildVersionName;
+    private int frontOfficeUserRoleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +120,8 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         docName = mSharedPreference.getString(Constant.LOGIN_NAME_KEY, "Undefine");
         user_role_id = mSharedPreference.getInt(Constant.USER_ROLE_ID, 0);
         subTanentId = mSharedPreference.getInt(Constant.SUB_TANENT_ID_KEY, 0);
+        buildVersionName = mSharedPreference.getString(Constant.BUILD_VERSION_NAME,"");
+        frontOfficeUserRoleId = mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0);
         String subtanentImagePath = mSharedPreference.getString(Constant.SUB_TANENT_IMAGE_PATH, "default");
         Calendar now = Calendar.getInstance();
         year = now.get(Calendar.YEAR);
@@ -238,8 +252,6 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 //set width of an option (px)
                 item1.setWidth(100);
                 item1.setIcon(R.drawable.move);
-
-
                 item1.setTitleSize(18);
                 item1.setTitleColor(Color.WHITE);
                 menu.addMenuItem(item1);
@@ -253,6 +265,16 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 item2.setIcon(R.drawable.delete);
                 item2.setTitleColor(Color.WHITE);
                 menu.addMenuItem(item2);
+
+                SwipeMenuItem item3 = new SwipeMenuItem(
+                        getApplicationContext());
+                //set item background
+                item3.setBackground(new ColorDrawable(Color.RED));
+                item3.setWidth(100);
+                item3.setTitleSize(18);
+                item3.setIcon(R.drawable.ic_no_show);
+                item3.setTitleColor(Color.WHITE);
+                menu.addMenuItem(item3);
             }
         };
 
@@ -307,12 +329,34 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
                             }
                             break;
+                        case 2:
+                            if (mrno > 0) {
+                                if (tokenStatus.equals("PRE_BOOKED")) {
+                                    //Toast.makeText(QueueStatusActivity.this,qStatus.getAppId()+"",Toast.LENGTH_LONG).show();
+                                    postPatientNoShowApi();
+                                } else {
+                                    Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
+                            }
+                            break;
                     }
 
                 } else {
                     Toast.makeText(QueueStatusActivity.this, "Some Issue Occur", Toast.LENGTH_LONG).show();
                 }
                 return false;
+            }
+        });
+        queueList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (adapter.getItem(position).getMRNo() != null)
+                    getPatientDetailFromApi(adapter.getItem(position).getMRNo());
+                else {
+                    startActivity(new Intent(QueueStatusActivity.this, AddNewAppointment.class).putExtra("appNatureId", 1).putExtra("updateStatus", "add_new_patient").putExtra("registerStatus", "queue").putExtra("actTransactionId", EnumType.ActTransactMasterEnum.Register_Patient_From_Queue.getActTransactMasterTypeId()));
+                }
             }
         });
         /*queueList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -356,6 +400,172 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
             }
         });
 */
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getQueueData();
+    }
+
+    private void getPatientDetailFromApi(final int patMrno) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getPatDemographics(patMrno, user_role_id, new Callback<PatDemoGraphics>() {
+            @Override
+            public void success(PatDemoGraphics patDemoGraphics, Response response) {
+                Datum patDemoGraphicsData = new Datum();
+                patDemoGraphicsData.setPatName(patDemoGraphics.getPatname());
+                patDemoGraphicsData.setAddressId(patDemoGraphics.getAddressId());
+                patDemoGraphicsData.setContactId(patDemoGraphics.getContactId());
+                patDemoGraphicsData.setDob(patDemoGraphics.getDob());
+                patDemoGraphicsData.setHospitalNo(patDemoGraphics.getHospitalId());
+                patDemoGraphicsData.setGenderId(patDemoGraphics.getGenderId());
+                patDemoGraphicsData.setEmailId(patDemoGraphics.getEmail());
+                patDemoGraphicsData.setMrNo(patMrno);
+                patDemoGraphicsData.setMobileNo(patDemoGraphics.getMobile().trim());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("PatientSearchModel",  patDemoGraphicsData);
+                startActivity(new Intent(QueueStatusActivity.this, AddNewAppointment.class).putExtra("updateStatus", "update_patient").putExtras(bundle).putExtra("actTransactionId", EnumType.ActTransactMasterEnum.Edit_Patient_From_Queue.getActTransactMasterTypeId()));
+
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void postPatientNoShowApi() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("appId", qStatus.getAppId());
+        mCuraApplication.getInstance().mCuraEndPoint.postPatientNoShow(obj, new Callback<PostPatientNoShowModelResponse>() {
+            @Override
+            public void success(PostPatientNoShowModelResponse postPatientNoShowModelResponse, Response response) {
+                JSONObject jsonObject = null;
+                if (response.getStatus() == 200) {
+                    try {
+                        jsonObject = new JSONObject(new String(((TypedByteArray) response.getBody()).getBytes()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Gson gson = new Gson();
+                    postPatientNoShowModelResponse = gson.fromJson(jsonObject.toString(), PostPatientNoShowModelResponse.class);
+                    if(postPatientNoShowModelResponse!=null){
+                        int noShowStatus = postPatientNoShowModelResponse.getStatus();
+                        String noShowStatusMsg = postPatientNoShowModelResponse.getMsg();
+                        switch (noShowStatus){
+                            case 1:
+                                showSuccessDialog(noShowStatusMsg);
+                                break;
+                            case 2:
+                                showErrorDialog(noShowStatusMsg);
+                                break;
+                            case 3:
+                                showErrorDialog(noShowStatusMsg);
+                                break;
+                            case 4:
+                                showErrorDialog(noShowStatusMsg);
+                                break;
+                            case 5:
+                                showErrorDialog(noShowStatusMsg);
+                                break;
+                            default:
+                                showErrorDialog("Something went wrong");
+
+                        }
+                    }
+                } else {
+                    showErrorDialog("Something went wrong");
+                }
+
+
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+    private void showErrorDialog(String msg) {
+        alertDialog = new AlertDialog.Builder(QueueStatusActivity.this);
+        alertDialog.setMessage(msg);
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("Failure");
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ad.dismiss();
+            }
+        });
+        ad = alertDialog.show();
+    }
+    private void showSuccessDialog(String msg) {
+        alertDialog = new AlertDialog.Builder(QueueStatusActivity.this);
+        alertDialog.setMessage(msg);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ad.dismiss();
+                postActivityTrackerFromAPI("no_show");
+
+            }
+        });
+        ad = alertDialog.show();
+    }
+
+    private void postActivityTrackerFromAPI(String source) {
+        int slotAppId=0;
+        int actTransMasterId = 0;
+        int patMrNo=0;
+        if(source.equals("start_opd")){
+            slotAppId = 0;
+            actTransMasterId = EnumType.ActTransactMasterEnum.Start_OPD.getActTransactMasterTypeId();
+            patMrNo = 0;
+        }else if(source.equals("end_opd")){
+            slotAppId = 0;
+            actTransMasterId = EnumType.ActTransactMasterEnum.End_OPD.getActTransactMasterTypeId();
+            patMrNo = 0;
+        }else if(source.equals("no_show")){
+            slotAppId = qStatus.getAppId();
+            actTransMasterId = EnumType.ActTransactMasterEnum.No_Show.getActTransactMasterTypeId();
+            patMrNo = qStatus.getMRNo();
+        }else if(source.equals("msg_broadcast")){
+            slotAppId = 0;
+            actTransMasterId = EnumType.ActTransactMasterEnum.Msg_Broadcast.getActTransactMasterTypeId();
+            patMrNo = 0;
+        }
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("actBuildVersion",buildVersionName);
+        obj.addProperty("delivered",0);
+        obj.addProperty("actUserRoleId",frontOfficeUserRoleId);
+        obj.addProperty("actSubTenantId",subTanentId);
+        obj.addProperty("actScheduleId",scheduleId);
+        obj.addProperty("actAppId",slotAppId);
+        obj.addProperty("actUserMediumId",9);
+        obj.addProperty("drUserRoleId",user_role_id);
+        obj.addProperty("actRemarks","");
+        obj.addProperty("actTransMasterId",actTransMasterId);
+        obj.addProperty("patMrno",patMrNo);
+        obj.addProperty("actOthers","");
+
+        mCuraApplication.getInstance().mCuraEndPoint.postActivityTracker(obj, new Callback<PostActivityTrackerModel>() {
+            @Override
+            public void success(PostActivityTrackerModel postActivityTrackerModel, Response response) {
+                getQueueData();
+                dismissLoadingDialog();
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                getQueueData();
+                dismissLoadingDialog();
+            }
+        });
     }
 
     public void showConfirmPopup() {
@@ -520,6 +730,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                                 @Override
                                 public void success(String s, Response response) {
                                     if (s.equals("1")) {
+                                        postActivityTrackerFromAPI("msg_broadcast");
                                         Toast.makeText(QueueStatusActivity.this, "Message Successfully Send", Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(QueueStatusActivity.this, "Message Failed", Toast.LENGTH_LONG).show();
@@ -553,25 +764,23 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         // Set the message show for the Alert time
         String alert1 = "OPD cannot be re-started, if it has ended.";
         String alert2 = "Do you want to proceed further with ending the OPD?";
-        builder.setMessage(alert1+"\n"+alert2);
+        builder.setMessage(alert1 + "\n" + alert2);
 
         builder.setCancelable(false);
 
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                               postEndOpd();
-                            }
-                        });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                postEndOpd();
+            }
+        });
 
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                dialog.cancel();
-                            }
-                        });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
@@ -596,8 +805,9 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 int endChartGenerateStatus = generateTokenResultModel.getStatus();
                 if (endChartGenerateStatus == 1) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
-                    getQueueData();
-                }else if (endChartGenerateStatus == 2) {
+                    postActivityTrackerFromAPI("end_opd");
+                    //getQueueData();
+                } else if (endChartGenerateStatus == 2) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
                     getQueueData();
                 } else if (endChartGenerateStatus == 3) {
@@ -636,7 +846,8 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 chartGenerateStatus = generateTokenResultModel.getStatus();
                 if (chartGenerateStatus == 1) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
-                    getQueueData();
+                    postActivityTrackerFromAPI("start_opd");
+                    //getQueueData();
                 } else if (chartGenerateStatus == 2) {
                     Toast.makeText(QueueStatusActivity.this, msg, Toast.LENGTH_LONG).show();
                     getQueueData();
@@ -674,7 +885,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         mCuraApplication.getInstance().mCuraEndPoint.tokenViewOther(user_role_id, subTanentId, scheduleId, completeDate, new Callback<QueueStatus[]>() {
             @Override
             public void success(QueueStatus[] queueStatus, Response response) {
-                if(queueStatus!=null){
+                if (queueStatus != null) {
                     queueStatusArray = queueStatus;
                     if (queueStatusArray.length > 0) {
                         tv_opd_msg.setVisibility(View.GONE);
@@ -682,7 +893,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                         for (int i = 0; i < queueStatusArray.length; i++) {
                             list.add(queueStatusArray[i]);
                         }
-                        adapter = new Queue_Adapter(QueueStatusActivity.this, list,scheduleId);
+                        adapter = new Queue_Adapter(QueueStatusActivity.this, list, scheduleId);
                         queueList.setAdapter(adapter);
                         Collections.sort(list, new Comparator<QueueStatus>() {
                             @Override
@@ -691,17 +902,17 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                             }
                         });
                         dismissLoadingDialog();
-                    } else if(queueStatusArray==null){
-                        Toast.makeText(QueueStatusActivity.this, "Data Not Available", Toast.LENGTH_LONG).show();
+                    } else if (queueStatusArray == null) {
+                        Toast.makeText(QueueStatusActivity.this, "NoShowData Not Available", Toast.LENGTH_LONG).show();
                         dismissLoadingDialog();
-                    }else {
+                    } else {
                         queueList.setVisibility(View.GONE);
                         tv_opd_msg.setVisibility(View.VISIBLE);
-                        //Toast.makeText(QueueStatusActivity.this, "Data Not Available", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(QueueStatusActivity.this, "NoShowData Not Available", Toast.LENGTH_LONG).show();
                         dismissLoadingDialog();
                     }
-                }else{
-                    Toast.makeText(QueueStatusActivity.this, "Data Not Available", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(QueueStatusActivity.this, "NoShowData Not Available", Toast.LENGTH_LONG).show();
                     dismissLoadingDialog();
                 }
             }

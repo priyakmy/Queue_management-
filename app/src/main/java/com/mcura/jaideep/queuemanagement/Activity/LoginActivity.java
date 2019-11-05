@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Adapter.DoctorSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.ScheduleSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
@@ -26,10 +29,12 @@ import com.mcura.jaideep.queuemanagement.Model.DoctorListModel;
 import com.mcura.jaideep.queuemanagement.Model.GetSubTenantLogoModel;
 import com.mcura.jaideep.queuemanagement.Model.GetSubtenantDetailsModel;
 import com.mcura.jaideep.queuemanagement.Model.LoginModel;
+import com.mcura.jaideep.queuemanagement.Model.PatientVerificationModel.PatVerificationResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.ScheduleModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchHospital;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
+import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.mcura.jaideep.queuemanagement.helper.Helper;
 
 import java.util.Calendar;
@@ -249,9 +254,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString(Constant.SUB_TANENT_IMAGE_PATH, subtanentImagePath);
                     editor.commit();
                 }
-                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
-                startActivity(i);
-
+                postEndUserTrackingAPI();
                 dismissLoadingDialog();
             }
 
@@ -261,7 +264,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+    private void postEndUserTrackingAPI() {
+        PackageInfo pInfo = null;
+        try {
+            pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("actSubTenantId", subTanentId);
+        obj.addProperty("actUserRoleId", userRoleId);
+        obj.addProperty("actUserMediumId", 9);
+        obj.addProperty("patMrno", 0);
+        obj.addProperty("actTransMasterId", EnumType.ActTransactMasterEnum.User_Login.getActTransactMasterTypeId());
+        obj.addProperty("actRemarks", "");
+        obj.addProperty("actBuildVersion", pInfo.versionName);
+        obj.addProperty("RecordId", 0);
+        obj.addProperty("delivered", 0);
+        mCuraApplication.getInstance().mCuraEndPoint.postEndUserTracking(obj, new Callback<PatVerificationResponseModel>() {
+            @Override
+            public void success(PatVerificationResponseModel patVerificationResponseModel, Response response) {
+                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
+                startActivity(i);
+                dismissLoadingDialog();
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
+                startActivity(i);
+            }
+        });
+    }
     public void getDoctorDetail() {
         showLoadingDialog();
         mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {

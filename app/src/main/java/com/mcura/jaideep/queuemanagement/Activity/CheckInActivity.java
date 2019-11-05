@@ -525,17 +525,18 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                 } else if (tokenStatus.equals("NEW_USER")) {
                     appointmentBookedOrNot();
                 } else if (tokenStatus.equals("BLOCK_USER")) {
+                    appointmentBookedOrNot();
                     //setCheckInStatusforBlock();
-                    if (subTanentId == 515 || subTanentId == 547) {
+                    /*if (subTanentId == 515 || subTanentId == 547) {
                         setCheckInStatusForBlockWithFee();
-                        /*if(user_role_id==2331 || user_role_id==2332 || user_role_id==2333){
+                        *//*if(user_role_id==2331 || user_role_id==2332 || user_role_id==2333){
                             setCheckInStatusForBlockWithoutFee();
                         }else{
                             setCheckInStatusForBlockWithFee();
-                        }*/
+                        }*//*
                     } else {
                         setCheckInStatusForBlockWithoutFee();
-                    }
+                    }*/
                 }
                 break;
             case R.id.chk_in:
@@ -719,7 +720,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 Log.d("patmodelsize", patientSearchModel.getData().size() + "");
-                /*if (lv.getLastVisiblePosition() == patientSearchModel.getData().size()-1) {
+                /*if (lv.getLastVisiblePosition() == patientSearchModel.getNoShowData().size()-1) {
                     Log.d("firstIndex", firstIndex + "");
                     getPatientSearchDetail_v2(firstIndex, query);
                     firstIndex=firstIndex+1;
@@ -1003,7 +1004,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                     chartGenerateStatus = generateTokenResultModel.getStatus();
                     if (chartGenerateStatus == 1) {
                         Toast.makeText(CheckInActivity.this, msg, Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                        postActivityTrackerFromAPI("CHECK_IN",EnumType.ActTransactMasterEnum.Check_In.getActTransactMasterTypeId());
+                        //startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
                     } else if (chartGenerateStatus == 2) {
                         Toast.makeText(CheckInActivity.this, msg, Toast.LENGTH_LONG).show();
                     } else if (chartGenerateStatus == 3) {
@@ -1049,7 +1051,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                     chartGenerateStatus = generateTokenResultModel.getStatus();
                     if (chartGenerateStatus == 1) {
                         Toast.makeText(CheckInActivity.this, msg, Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                        postActivityTrackerFromAPI("CHECK_IN",EnumType.ActTransactMasterEnum.Check_In.getActTransactMasterTypeId());
+                        //startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
                     } else if (chartGenerateStatus == 2) {
                         Toast.makeText(CheckInActivity.this, msg, Toast.LENGTH_LONG).show();
                     } else if (chartGenerateStatus == 3) {
@@ -1500,7 +1503,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         mCuraApplication.getInstance().mCuraEndPoint.insertAppointments(obj, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                postActivityTrackerFromAPI("BLOCK_USER");
+                postActivityTrackerFromAPI("BLOCK_USER",EnumType.ActTransactMasterEnum.Booking_APT.getActTransactMasterTypeId());
                 dismissLoadingDialog();
             }
 
@@ -1646,7 +1649,12 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                             setCheckInStatusWithoutFee();
                         }
                     } else if (tokenStatus.equals("BLOCK_USER")) {
-                        startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                        if (subTanentId == 515 || subTanentId == 547) {
+                            setCheckInStatusWithFee();
+                        } else {
+                            setCheckInStatusWithoutFee();
+                        }
+                        //startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
                     }
 
                 } else if (postPaymentModel.getStatusId() == EnumType.AppointmentOrNot.mNewAppointment.getID()) {
@@ -1702,7 +1710,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void success(String s, Response response) {
                 if (s.equals("true")) {
-                    postActivityTrackerFromAPI("NEW_USER");
+                    postActivityTrackerFromAPI("NEW_USER",EnumType.ActTransactMasterEnum.Booking_APT.getActTransactMasterTypeId());
                 }else{
                     dismissLoadingDialog();
                 }
@@ -1715,7 +1723,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
     }
-    private void postActivityTrackerFromAPI(final String userType) {
+    private void postActivityTrackerFromAPI(final String userType,int trancMasterId) {
         showLoadingDialog();
         JsonObject obj = new JsonObject();
         obj.addProperty("actBuildVersion",buildVersionName);
@@ -1727,7 +1735,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         obj.addProperty("actUserMediumId",9);
         obj.addProperty("drUserRoleId",user_role_id);
         obj.addProperty("actRemarks","");
-        obj.addProperty("actTransMasterId",actTransactId);
+        obj.addProperty("actTransMasterId",trancMasterId);
         obj.addProperty("patMrno",mr_no);
         obj.addProperty("actOthers","");
 
@@ -1735,19 +1743,44 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void success(PostActivityTrackerModel postActivityTrackerModel, Response response) {
                 if(userType.equals("BLOCK_USER")){
-                    startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                    if (subTanentId == 515 || subTanentId == 547) {
+                        setCheckInStatusWithFee();
+                    } else {
+                        setCheckInStatusWithoutFee();
+                    }
+                    //startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
                 }else if(userType.equals("NEW_USER")){
                     if (subTanentId == 515 || subTanentId == 547) {
                         setCheckInStatusWithFee();
                     } else {
                         setCheckInStatusWithoutFee();
                     }
+                }else if(userType.equals("CHECK_IN")){
+                    startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                    finish();
                 }
 
                 dismissLoadingDialog();
             }
             @Override
             public void failure(RetrofitError error) {
+                if(userType.equals("BLOCK_USER")){
+                    if (subTanentId == 515 || subTanentId == 547) {
+                        setCheckInStatusWithFee();
+                    } else {
+                        setCheckInStatusWithoutFee();
+                    }
+                    //startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                }else if(userType.equals("NEW_USER")){
+                    if (subTanentId == 515 || subTanentId == 547) {
+                        setCheckInStatusWithFee();
+                    } else {
+                        setCheckInStatusWithoutFee();
+                    }
+                }else if(userType.equals("CHECK_IN")){
+                    startActivity(new Intent(CheckInActivity.this, QueueStatusActivity.class));
+                    finish();
+                }
                 dismissLoadingDialog();
             }
         });

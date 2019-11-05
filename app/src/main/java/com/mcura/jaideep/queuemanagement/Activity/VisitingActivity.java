@@ -55,6 +55,7 @@ import com.mcura.jaideep.queuemanagement.Model.GetNatureByUserRoleModel;
 import com.mcura.jaideep.queuemanagement.Model.LastBillDetailModel;
 import com.mcura.jaideep.queuemanagement.Model.MainModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
+import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
 import com.mcura.jaideep.queuemanagement.Model.TokenStatusModel;
@@ -142,6 +143,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
     private CheckBox cb_mrno, cb_mobile, cb_patname, cb_hospitalid;
     private ArrayList<Integer> searchByList;
     private String strSearchBy="";
+    private String buildVersionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +158,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         mSharedPreference = getSharedPreferences(getString(R.string.app_name),
                 Context.MODE_PRIVATE);
+        buildVersionName = mSharedPreference.getString(Constant.BUILD_VERSION_NAME,"");
         String docProfilePic = mSharedPreference.getString(Constant.USER_PROFILE_PIC, "default");
         frontOfficeUserRoleId = mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0);
         Log.d("docProfilePic", docProfilePic);
@@ -494,8 +497,9 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
             public void success(GenerateTokenResultModel generateTokenResultModel, Response response) {
                 if(generateTokenResultModel!=null){
                     Toast.makeText(VisitingActivity.this,generateTokenResultModel.getMsg(),Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
-                    finish();
+                    postActivityTrackerFromAPI(EnumType.ActTransactMasterEnum.Checkout.getActTransactMasterTypeId());
+                    /*startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
+                    finish();*/
                 }
                 dismissLoadingDialog();
             }
@@ -646,7 +650,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 Log.d("patmodelsize", patientSearchModel.getData().size() + "");
-                /*if (lv.getLastVisiblePosition() == patientSearchModel.getData().size()-1) {
+                /*if (lv.getLastVisiblePosition() == patientSearchModel.getNoShowData().size()-1) {
                     Log.d("firstIndex", firstIndex + "");
                     getPatientSearchDetail_v2(firstIndex, query);
                     firstIndex=firstIndex+1;
@@ -823,7 +827,7 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                 chartGenerateStatus = s.getStatus();
                 if (chartGenerateStatus == 1) {
                     Toast.makeText(VisitingActivity.this, msg, Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
+                    postActivityTrackerFromAPI(EnumType.ActTransactMasterEnum.Visiting.getActTransactMasterTypeId());
                 } else {
                     Toast.makeText(VisitingActivity.this, msg, Toast.LENGTH_LONG).show();
                 }
@@ -839,7 +843,37 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+    private void postActivityTrackerFromAPI(int actTransactionId) {
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("actBuildVersion",buildVersionName);
+        obj.addProperty("delivered",0);
+        obj.addProperty("actUserRoleId",frontOfficeUserRoleId);
+        obj.addProperty("actSubTenantId",subTanentId);
+        obj.addProperty("actScheduleId",scheduleId);
+        obj.addProperty("actAppId",appId);
+        obj.addProperty("actUserMediumId",9);
+        obj.addProperty("drUserRoleId",user_role_id);
+        obj.addProperty("actRemarks","");
+        obj.addProperty("actTransMasterId",actTransactionId);
+        obj.addProperty("patMrno",mr_no);
+        obj.addProperty("actOthers","");
 
+        mCuraApplication.getInstance().mCuraEndPoint.postActivityTracker(obj, new Callback<PostActivityTrackerModel>() {
+            @Override
+            public void success(PostActivityTrackerModel postActivityTrackerModel, Response response) {
+                startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
+                finish();
+                dismissLoadingDialog();
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                startActivity(new Intent(VisitingActivity.this, QueueStatusActivity.class));
+                finish();
+                dismissLoadingDialog();
+            }
+        });
+    }
     /**
      *
      */

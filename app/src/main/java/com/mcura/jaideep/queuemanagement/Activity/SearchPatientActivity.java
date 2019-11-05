@@ -32,6 +32,7 @@ import com.mcura.jaideep.queuemanagement.Model.SearchHospital;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
+import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.mcura.jaideep.queuemanagement.view.DividerItemDecoration;
 import com.squareup.picasso.Picasso;
 
@@ -86,7 +87,7 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
         add_patient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SearchPatientActivity.this, AddNewAppointment.class).putExtra("appNatureId", 1).putExtra("updateStatus", "add_new_patient").putExtra("registerStatus", "search"));
+                startActivity(new Intent(SearchPatientActivity.this, AddNewAppointment.class).putExtra("appNatureId", 1).putExtra("updateStatus", "add_new_patient").putExtra("registerStatus", "search").putExtra("actTransactionId", EnumType.ActTransactMasterEnum.Register_Patient_From_Top_Panel.getActTransactMasterTypeId()));
             }
         });
         if (mToolbar != null) {
@@ -146,11 +147,12 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
         getHospitalFromAPI();
     }
 
-    /*@Override
+    @Override
     protected void onRestart() {
         super.onRestart();
-        getHospitalFromAPI();
-    }*/
+        dataList.clear();
+        getPatientSearchDetail(1, this.query);
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

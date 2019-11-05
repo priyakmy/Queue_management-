@@ -59,6 +59,7 @@ import com.mcura.jaideep.queuemanagement.Model.MedantaPatInfo;
 import com.mcura.jaideep.queuemanagement.Model.PatDemoGraphics;
 import com.mcura.jaideep.queuemanagement.Model.PatientInfoModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
+import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchHospital;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
 import com.mcura.jaideep.queuemanagement.Model.SgrhPatientInfoModel.GetSgrhPatientInfoModel;
@@ -67,6 +68,7 @@ import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.mcura.jaideep.queuemanagement.Utils.GraphicsUtil;
 import com.google.gson.JsonObject;
+import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.mcura.jaideep.queuemanagement.view.SegmentedGroup;
 
@@ -115,6 +117,10 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     private TextView etDob;
     private Calendar patDobDate;
     private MedantaPatInfo medantaPatInfo;
+    private int actTransactionId;
+    private String buildVersionName;
+    private int frontOfficeUserRoleId;
+    private int scheduleId;
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -200,6 +206,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     private static final int REQUEST_DIRECT_REGISTRATION = 2;
     private static final int REQUEST_APPOINTMENT_REGISTRATION = 3;
     private static final int REQUEST_UPDATE_REGISTRATION = 4;
+    private static final int REQUEST_QUEUE_REGISTRATION = 5;
     Date currentDate, patientDob;
     String[] arr = {"Select any one"};
     SimpleDateFormat df = null;
@@ -223,6 +230,8 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
         );
 
         updateStatus = getIntent().getStringExtra("updateStatus");
+        actTransactionId = getIntent().getIntExtra("actTransactionId",0);
+        Log.d("actTransactionId",actTransactionId+"");
         registrationDate = Helper.getCurrentDate();
         //Toast.makeText(AddNewAppointment.this,updateStatus,Toast.LENGTH_LONG).show();
         //getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -316,7 +325,9 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
         appNatureId = getIntent().getIntExtra("appNatureId", 0);
         //Toast.makeText(AddNewAppointment.this, "appNatureId=" + appNatureId, Toast.LENGTH_LONG).show();
         //close = (ImageView) findViewById(R.id.close);
-
+        buildVersionName = mSharedPreference.getString(Constant.BUILD_VERSION_NAME,"");
+        frontOfficeUserRoleId = mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0);
+        scheduleId = mSharedPreference.getInt(Constant.SCHEDULE_ID, 0);
         hospital_id = (EditText) findViewById(R.id.hospital_id);
         //hospital_id.setText(subTanentId+"");
 
@@ -917,6 +928,9 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 } else if (registerStatus.equals("search")) {
                     Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_DIRECT_REGISTRATION);
                     startActivityForResult(intent, REQUEST_DIRECT_REGISTRATION);
+                }else if (registerStatus.equals("queue")) {
+                    Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_QUEUE_REGISTRATION);
+                    startActivityForResult(intent, REQUEST_QUEUE_REGISTRATION);
                 }
                 /*Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_APPOINTMENT_REGISTRATION);
                 startActivityForResult(intent, REQUEST_APPOINTMENT_REGISTRATION);*/
@@ -1395,14 +1409,16 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
         } else if (requestCode == REQUEST_DIRECT_REGISTRATION) {
             startActivity(new Intent(AddNewAppointment.this, SearchPatientActivity.class));
             finish();
-        } else if (requestCode == REQUEST_UPDATE_REGISTRATION) {
+        } else if (requestCode == REQUEST_QUEUE_REGISTRATION) {
+            //startActivity(new Intent(AddNewAppointment.this, SearchPatientActivity.class));
+            finish();
+        }/*else if (requestCode == REQUEST_UPDATE_REGISTRATION) {
             startActivity(new Intent(AddNewAppointment.this, SearchPatientActivity.class));
             finish();
-        }
+        }*/
     }
 
     public void postContactDetailApi() {
-
         JsonObject contactDetail = new JsonObject();
         contactDetail.addProperty("Mobile", mobileNumber);
         contactDetail.addProperty("Optmobile", "");
@@ -1482,6 +1498,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             @Override
             public void success(String s, Response response) {
                 dismissLoadingDialog();
+                mrno = Integer.parseInt(s);
                 if (!s.equals("-1")) {
                     Log.d("response", s);
                     patientRegistrationId = Integer.parseInt(s);
@@ -1504,6 +1521,8 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                         Intent intent = new Intent(AddNewAppointment.this, NewAppointmentActivity.class);
                         startActivity(intent);
                     } else if (registerStatus.equals("search")) {
+                        finish();
+                    }else if (registerStatus.equals("queue")) {
                         finish();
                     }
                 }
@@ -1683,15 +1702,8 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             @Override
             public void success(String s, Response response) {
                 dismissLoadingDialog();
+                postActivityTrackerFromAPI();
                 //Toast.makeText(AddNewAppointment.this, "response=" + s + "  " + response, Toast.LENGTH_LONG).show();
-                if (registerStatus.equals("appointment")) {
-                    Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_APPOINTMENT_REGISTRATION);
-                    startActivityForResult(intent, REQUEST_APPOINTMENT_REGISTRATION);
-                } else if (registerStatus.equals("search")) {
-                    Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_DIRECT_REGISTRATION);
-                    startActivityForResult(intent, REQUEST_DIRECT_REGISTRATION);
-                }
-
             }
 
             @Override
@@ -1861,13 +1873,86 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
         mCuraApplication.getInstance().mCuraEndPoint.updatePatientDetails(obj, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
-                Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("mrnoValue", mrno).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_UPDATE_REGISTRATION);
-                startActivityForResult(intent, REQUEST_UPDATE_REGISTRATION);
+                if(s.equals("true")){
+                    showSuccessDialog("Patient updated Successfully");
+                }
+                //Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("mrnoValue", mrno).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_UPDATE_REGISTRATION);
+                //startActivityForResult(intent, REQUEST_UPDATE_REGISTRATION);
+
                 dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void showSuccessDialog(String msg) {
+        alertDialog = new AlertDialog.Builder(AddNewAppointment.this);
+        alertDialog.setMessage(msg);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ad.dismiss();
+                postActivityTrackerFromAPI();
+            }
+        });
+        ad = alertDialog.show();
+    }
+    private void postActivityTrackerFromAPI() {
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("actBuildVersion",buildVersionName);
+        obj.addProperty("delivered",0);
+        obj.addProperty("actUserRoleId",frontOfficeUserRoleId);
+        obj.addProperty("actSubTenantId",subTanentId);
+        obj.addProperty("actScheduleId",scheduleId);
+        obj.addProperty("actAppId",0);
+        obj.addProperty("actUserMediumId",9);
+        obj.addProperty("drUserRoleId",userRoleId);
+        obj.addProperty("actRemarks","");
+        obj.addProperty("actTransMasterId",actTransactionId);
+        obj.addProperty("patMrno",mrno);
+        obj.addProperty("actOthers","");
+
+        mCuraApplication.getInstance().mCuraEndPoint.postActivityTracker(obj, new Callback<PostActivityTrackerModel>() {
+            @Override
+            public void success(PostActivityTrackerModel postActivityTrackerModel, Response response) {
+                if (updateStatus.equals("update_patient")) {
+                    finish();
+                }else if(updateStatus.equals("add_new_patient")){
+                    if (registerStatus.equals("appointment")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_APPOINTMENT_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_APPOINTMENT_REGISTRATION);
+                    } else if (registerStatus.equals("search")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_DIRECT_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_DIRECT_REGISTRATION);
+                    }else if (registerStatus.equals("queue")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_QUEUE_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_QUEUE_REGISTRATION);
+                    }
+                }
+                dismissLoadingDialog();
+            }
+            @Override
+            public void failure(RetrofitError error) {
+                if (updateStatus.equals("update_patient")) {
+                    finish();
+                }else if(updateStatus.equals("add_new_patient")){
+                    if (registerStatus.equals("appointment")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_APPOINTMENT_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_APPOINTMENT_REGISTRATION);
+                    } else if (registerStatus.equals("search")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_DIRECT_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_DIRECT_REGISTRATION);
+                    }else if (registerStatus.equals("queue")) {
+                        Intent intent = new Intent(AddNewAppointment.this, LoadNFC.class).putExtra("hospital_id", hospital_id.getText().toString()).putExtra("mrnoValue", patientRegistrationId).putExtra("subTanentId", subTanentId).putExtra("id", REQUEST_QUEUE_REGISTRATION);
+                        startActivityForResult(intent, REQUEST_QUEUE_REGISTRATION);
+                    }
+                }
                 dismissLoadingDialog();
             }
         });

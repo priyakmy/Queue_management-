@@ -27,6 +27,41 @@ public class PatDemoGraphics implements Serializable{
     @SerializedName("Patname")
     @Expose
     private String Patname;
+    @SerializedName("HospitalId")
+    @Expose
+    private String hospitalId;
+
+    @SerializedName("Email")
+    @Expose
+    private String email;
+
+    @SerializedName("Mobile")
+    @Expose
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getHospitalId() {
+        return hospitalId;
+    }
+
+    public void setHospitalId(String hospitalId) {
+        this.hospitalId = hospitalId;
+    }
 
     public int getAddressId() {
         return AddressId;

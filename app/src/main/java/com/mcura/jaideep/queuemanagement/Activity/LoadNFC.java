@@ -39,6 +39,7 @@ public class LoadNFC extends AppCompatActivity {
     private static final int REQUEST_DIRECT_REGISTRATION = 2;
     private static final int REQUEST_APPOINTMENT_REGISTRATION = 3;
     private static final int REQUEST_UPDATE_REGISTRATION = 4;
+    private static final int REQUEST_QUEUE_REGISTRATION = 5;
     int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,8 @@ public class LoadNFC extends AppCompatActivity {
                             setResult(REQUEST_DIRECT_REGISTRATION,intent);
                         }else if(id == REQUEST_UPDATE_REGISTRATION){
                             setResult(REQUEST_UPDATE_REGISTRATION,intent);
+                        }else if(id == REQUEST_QUEUE_REGISTRATION){
+                            setResult(REQUEST_QUEUE_REGISTRATION,intent);
                         }
                         LoadNFC.this.finish();
                     }

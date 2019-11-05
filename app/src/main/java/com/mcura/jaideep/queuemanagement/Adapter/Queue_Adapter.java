@@ -166,6 +166,10 @@ public class Queue_Adapter extends BaseAdapter {
                 holder.txtViewStatus.setText("BLOCKED");
                 row.setBackgroundColor(context.getResources().getColor(R.color.bg_norm));
             }
+            if (tokenStatus.equals("NO_SHOW")) {
+                holder.statusImg.setImageResource(R.mipmap.ic_no_show);
+                holder.txtViewStatus.setText("NO SHOW");
+            }
         }
             final ViewHolder finalHolder = holder;
             holder.txtViewNo.setOnClickListener(new View.OnClickListener() {

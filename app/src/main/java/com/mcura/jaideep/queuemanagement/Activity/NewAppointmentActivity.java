@@ -255,7 +255,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                 NewAppointmentActivity.this.finish();
                 break;
             case R.id.add:
-                startActivity(new Intent(NewAppointmentActivity.this, AddNewAppointment.class).putExtra("appNatureId", appNatureId).putExtra("updateStatus", "add_new_patient").putExtra("registerStatus", "appointment"));
+                startActivity(new Intent(NewAppointmentActivity.this, AddNewAppointment.class).putExtra("appNatureId", appNatureId).putExtra("updateStatus", "add_new_patient").putExtra("registerStatus", "appointment").putExtra("actTransactionId", EnumType.ActTransactMasterEnum.Register_patient_From_Appointment.getActTransactMasterTypeId()));
                 NewAppointmentActivity.this.finish();
                 break;
             case R.id.close:

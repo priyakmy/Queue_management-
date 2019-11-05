@@ -36,7 +36,10 @@ import com.mcura.jaideep.queuemanagement.Model.LoginModel;
 import com.mcura.jaideep.queuemanagement.Model.MainModel;
 import com.mcura.jaideep.queuemanagement.Model.OrderBoothSearchListModel;
 import com.mcura.jaideep.queuemanagement.Model.PatDemoGraphics;
+import com.mcura.jaideep.queuemanagement.Model.PatDemographics.PatDemographicsModel;
+import com.mcura.jaideep.queuemanagement.Model.PatientNoShowModelResponse.PostPatientNoShowModelResponse;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
+import com.mcura.jaideep.queuemanagement.Model.PatientVerificationModel.PatVerificationResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderGetModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderTransactionDetail.PharmacyOrderTxnWithDetailByOrdIdModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyTransactionDatum;
@@ -369,4 +372,10 @@ public interface MCuraEndPointInterface {
 
     @POST("/postCheckInSms")
     void postCheckInSms(@Body JsonObject jsonObject, Callback<PostActivityTrackerModel> restCallback);
+
+    @POST("/PostPatientNoShow")
+    void postPatientNoShow(@Body JsonObject jsonObject, Callback<PostPatientNoShowModelResponse> restCallback);
+
+    @POST("/postEndUserTracking")
+    void postEndUserTracking(@Body JsonObject jsonObject, Callback<PatVerificationResponseModel> restCallback);
 }

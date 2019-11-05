@@ -23,6 +23,7 @@ import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
+import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -56,8 +57,8 @@ public class SearchPatientAdapter_v1 extends RecyclerView.Adapter<SearchPatientA
         this.patientSearchModel = patientSearchModelsArray;
         //this.patientSearchModelsArray = patientSearchModelsArray;
         /*List<Datum> dataList = new ArrayList<Datum>();
-        Datum[] data = new Datum[patientSearchModelsArray.getData().size()];
-        dataList = patientSearchModelsArray.getData();*/
+        Datum[] data = new Datum[patientSearchModelsArray.getNoShowData().size()];
+        dataList = patientSearchModelsArray.getNoShowData();*/
         SharedPreferences sharedPreferences = context.getSharedPreferences("myPref", Context.MODE_PRIVATE);
         subTanentId = sharedPreferences.getInt(Constant.SUB_TANENT_ID_KEY, 0);
         /*for(int i=0;i<patientSearchModelsArray.length;i++){
@@ -108,7 +109,7 @@ public class SearchPatientAdapter_v1 extends RecyclerView.Adapter<SearchPatientA
                     Datum model = patientSearchModel.getData().get(getPosition());
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("PatientSearchModel",  model);
-                    context.startActivity(new Intent(context, AddNewAppointment.class).putExtra("updateStatus", "update_patient").putExtras(bundle));
+                    context.startActivity(new Intent(context, AddNewAppointment.class).putExtra("updateStatus", "update_patient").putExtras(bundle).putExtra("actTransactionId", EnumType.ActTransactMasterEnum.Edit_Patient_From_Top_Panel.getActTransactMasterTypeId()));
                     //context.this.finish();
                 }
             });
