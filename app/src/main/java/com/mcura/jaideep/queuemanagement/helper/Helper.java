@@ -1,10 +1,17 @@
 package com.mcura.jaideep.queuemanagement.helper;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.mcura.jaideep.queuemanagement.Activity.LoginActivity;
+import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.encryption.AESCrypt;
 
 import java.net.URLEncoder;
@@ -14,11 +21,65 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import android.app.ProgressDialog;
 
 /**
  * Created by mCURA1 on 8/17/2016.
  */
-public class Helper {
+public  class Helper {
+    public static enum RecordNatureEnum {
+        Chief_Complaints("Chief Complaints", 1),
+        Lab_Report("Lab Report", 2),
+        Advice("Advice", 3),
+        Lab_Order("Lab Order", 4),
+        Doctor_Note("Doctor Note", 5),
+        Current_Visit_Image("Current Visit Image", 6),
+        Doctor_Comments("Doctor Comments", 7),
+        Referrals("Referrals", 8),
+        Template("Template", 9),
+        Plan(" Plan", 11),
+        Medical_History("Medical History", 12),
+        Visit_Summary("Visit Summary", 13),
+        Clinical_Summary(" Clinical Summary", 14),
+        Physical_Examination("Physical Examination", 15),
+        Lab_Report_Finding("Lab Report Finding", 16),
+        Instructions("Instructions", 18),
+        Next_Follow_Up(" Next Follow Up", 19);
+
+        String natureName;
+        int natureId;
+
+        RecordNatureEnum(String toString, int value) {
+            natureName = toString;
+            natureId = value;
+        }
+
+        public String getNatureName() {
+            return natureName;
+        }
+
+        public int getNatureId() {
+            return natureId;
+        }
+    }
+
+    private ProgressDialog progressDialog;
+    private Messages msg;
+    public Helper() {
+
+        msg = new Messages();
+    }
+
+    public static Date JsonDateToDate(String jsonDate) {
+        int idx1 = jsonDate.indexOf("(");
+        int idx2 = jsonDate.indexOf(")") - 5;
+        String s = jsonDate.substring(idx1+1, idx2);
+        long l = Long.parseLong(s);
+        return new Date(l);
+    }
+
+
+
     public static String getAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -35,6 +96,35 @@ public class Helper {
         String ageS = ageInt.toString();
 
         return ageS;
+    }
+
+    public static String getCompleteDate(){
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH) + 1;
+        int date = now.get(Calendar.DATE);
+        String completeDate = year + "-" + month + "-" + date; //"2016-05-09"
+        return completeDate;
+    }
+
+    public void showLoadingDialog(Context self) {
+
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(self);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(msg.MSG01);
+        }
+        progressDialog.show();
+    }
+
+    /**
+     *
+     */
+    public void dismissLoadingDialog() {
+
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
     private static final String[] specialNames = {
             "",
@@ -99,6 +189,16 @@ public class Helper {
         return numNames[number] + " Hundred" + current;
     }
 
+    public static String getBuildVersion(Context context) {
+        String version = null;
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
     public static String convert(int number) {
 
         if (number == 0) { return "Zero"; }

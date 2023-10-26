@@ -14,27 +14,30 @@
     android:text="6:00 pm To 9:00 pm"
     android:textColor="@color/black"
     android:layout_centerVertical="true"
-    android:layout_alignParentLeft="true"/>
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true" />
     <LinearLayout
         android:id="@+id/ll_fix_block"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_alignParentEnd="true">
         <ImageButton
             android:id="@+id/fix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/fix"
-            android:layout_marginRight="3dp"/>
+            android:layout_marginRight="3dp"
+            android:layout_marginEnd="3dp" />
         <ImageButton
             android:id="@+id/block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/block"
             android:layout_marginLeft="3dp"
-            />
+            android:layout_marginStart="3dp" />
     </LinearLayout>
     <ImageButton
         android:id="@+id/unblock"
@@ -43,5 +46,7 @@
         android:background="@drawable/unblock"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="3dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="3dp" />
 </RelativeLayout>

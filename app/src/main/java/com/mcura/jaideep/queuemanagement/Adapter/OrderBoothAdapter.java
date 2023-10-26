@@ -173,8 +173,13 @@ public class OrderBoothAdapter extends BaseAdapter implements Filterable {
             }
         });
         String dobEncode = pharmacyModels.getDob();
-        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+        Date createdOn = Helper.JsonDateToDate(dobEncode);
+//        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = sdf.format(createdOn);
         pharmacyViewHolder.tv_datetime.setText(formattedDate);

@@ -5,7 +5,6 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
-    <!--<include layout="@layout/appointment_toolbar" />-->
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
         android:id="@+id/doctor_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hospital_profile"
         android:orientation="horizontal">
 
         <ImageView
@@ -44,7 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_05"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/margin_05">
 
             <TextView
                 android:id="@+id/docname"
@@ -55,7 +54,7 @@
                 android:gravity="center_vertical"
                 android:text="Doctor name"
                 android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/docdept"
@@ -66,7 +65,7 @@
                 android:gravity="center_vertical"
                 android:text="Doctor Department"
                 android:textColor="#585858"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -118,7 +117,8 @@
             android:layout_weight="7"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/margin_05">
 
             <TextView
                 android:id="@+id/tv_nature_name"
@@ -127,7 +127,7 @@
                 android:layout_marginBottom="@dimen/margin_02"
                 android:text="Doctor name"
                 android:textColor="#585858"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_last_record_date"
@@ -136,7 +136,7 @@
                 android:layout_marginTop="@dimen/margin_03"
                 android:text="Doctor Department"
                 android:textColor="#585858"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -156,7 +156,7 @@
             android:id="@+id/nature_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible"></Spinner>
+            android:visibility="visible" />
 
     </RelativeLayout>
 
@@ -167,7 +167,8 @@
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_05"
         android:text="Before Checkin, Please complete"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/margin_10" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -176,7 +177,8 @@
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_05"
         android:text="your payment."
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/margin_10" />
 
     <TextView
         android:id="@+id/tv_bill_amount"
@@ -187,7 +189,8 @@
         android:layout_marginTop="@dimen/margin_10"
         android:text="Rs. 000/-"
         android:textColor="@color/orange"
-        android:textSize="@dimen/text_20sp" />
+        android:textSize="@dimen/text_20sp"
+        android:layout_marginStart="@dimen/margin_10" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -4,7 +4,8 @@
     android:orientation="horizontal"
     android:elevation="5dp"
     android:paddingLeft="20dp"
-    android:background="@mipmap/listbg">
+    android:background="@mipmap/listbg"
+    android:paddingStart="20dp">
 
     <CheckBox
         android:id="@+id/cb_select_row_level_second"
@@ -19,13 +20,16 @@
         android:enabled="true"
         android:scaleX="1.3"
         android:scaleY="1.3"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_30"
+        android:layout_marginEnd="@dimen/margin_05" />
     <ImageButton
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@mipmap/plus"
-        android:layout_toRightOf="@+id/cb_select_row_level_second" />
+        android:layout_toRightOf="@+id/cb_select_row_level_second"
+        android:layout_toEndOf="@+id/cb_select_row_level_second" />
 
 
     <TextView
@@ -37,7 +41,8 @@
         android:layout_marginLeft="@dimen/margin_05"
         android:layout_marginRight="@dimen/margin_05"
         android:textSize="@dimen/text_16sp"
-        android:text="Test" />
+        android:text="Test"
+        android:layout_toEndOf="@+id/indicator" />
 
     <TextView
         android:id="@+id/tv_test_cost_second"
@@ -48,7 +53,9 @@
         android:text=""
         android:textColor="@color/black"
         android:visibility="gone"
-        android:layout_marginRight="@dimen/margin_10"/>
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/margin_10" />
 </RelativeLayout>
 
 

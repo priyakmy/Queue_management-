@@ -1781,8 +1781,13 @@ public class BillPaymentActivity extends AppCompatActivity implements View.OnCli
     }
 
     private String getDob(String dob) {
-        String timestamp = dob.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+        Date createdOn = Helper.JsonDateToDate(dob);
+   //     String timestamp = dob.split("\\(")[1].split("\\+")[0];
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
         String formattedDate = sdf.format(createdOn);
         System.out.println("formattedDate-->" + formattedDate);

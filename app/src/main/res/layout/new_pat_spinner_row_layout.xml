@@ -6,5 +6,5 @@
     android:id="@+id/search_patient"
     android:textColor="@color/text_hint"
     android:padding="10dp"
-    android:textSize="14dp"
+    android:textSize="14sp"
     android:singleLine="true"/>

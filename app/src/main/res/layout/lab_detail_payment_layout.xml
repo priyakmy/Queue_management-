@@ -14,7 +14,7 @@
         android:divider="@null"
         android:dividerHeight="5dp"
         android:focusable="true"
-        android:visibility="gone"></ListView>
+        android:visibility="gone" />
 
 
     <ListView

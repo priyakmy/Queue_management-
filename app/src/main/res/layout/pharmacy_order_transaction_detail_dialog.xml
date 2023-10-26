@@ -35,7 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_10"
         android:layout_below="@+id/top"
-        android:layout_above="@+id/bottom_view"></ExpandableListView>
+        android:layout_above="@+id/bottom_view" />
     <View
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
@@ -91,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left">
+            android:gravity="start">
 
             <TextView
                 android:id="@+id/btnCancel"
@@ -109,7 +110,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right">
+            android:gravity="end">
 
             <TextView
                 android:id="@+id/btnSubmit"

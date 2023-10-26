@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:layout_marginBottom="@dimen/margin_10">
+    <TextView
+        android:id="@+id/tv_upload_pdf"
+        android:textSize="@dimen/margin_20"
+        android:padding="@dimen/padding_10"
+        android:layout_gravity="center"
+        android:text="Upload PDF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cccccc"
+        android:visibility="visible"/>
+    <TextView
+        android:id="@+id/tv_capture_from_camera"
+        android:textSize="@dimen/margin_20"
+        android:padding="@dimen/padding_10"
+        android:layout_gravity="center"
+        android:text="Take Photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cccccc"/>
+    <TextView
+        android:id="@+id/tv_capture_from_gallary"
+        android:textSize="@dimen/margin_20"
+        android:padding="@dimen/padding_10"
+        android:layout_gravity="center"
+        android:text="Choose from Gallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="visible"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cccccc"/>
+    <TextView
+        android:id="@+id/tv_upload_video"
+        android:textSize="@dimen/margin_20"
+        android:padding="@dimen/padding_10"
+        android:layout_gravity="center"
+        android:text="Upload Video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#cccccc"/>
+    <TextView
+        android:id="@+id/cancel"
+        android:textSize="@dimen/margin_20"
+        android:padding="@dimen/padding_10"
+        android:layout_gravity="center"
+        android:text="Cancel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"/>
+
+</LinearLayout>

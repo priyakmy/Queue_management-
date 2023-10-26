@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.mcura.jaideep.queuemanagement.Activity.AddNewAppointment;
+import com.mcura.jaideep.queuemanagement.Activity.CheckInActivity;
 import com.mcura.jaideep.queuemanagement.Activity.LoadNFC;
 import com.mcura.jaideep.queuemanagement.Activity.SearchPatientActivity;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
@@ -24,6 +26,7 @@ import com.mcura.jaideep.queuemanagement.Model.PatientContactDetails;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
+import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -102,6 +105,9 @@ public class SearchPatientLoadNFCAdapter extends RecyclerView.Adapter<SearchPati
                     context.startActivity(new Intent(context.getApplicationContext(), LoadNFC.class).putExtra("mrnoValue", Integer.parseInt(mrno.getText().toString())).putExtra("subTanentId", hospitalSubtanentId).putExtra("hospital_id",hospital_id.getText().toString()));
                 }
             });
+
+
+
             edit_patient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,8 +136,13 @@ public class SearchPatientLoadNFCAdapter extends RecyclerView.Adapter<SearchPati
         PatientSearchModel model = patientSearchModelsList.get(position);
 
         String dobEncode = model.getDob();
-        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+       // String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+        Date createdOn = Helper.JsonDateToDate(dobEncode);
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
         String formattedDate = sdf.format(createdOn);
         System.out.println("formattedDate-->" + formattedDate);

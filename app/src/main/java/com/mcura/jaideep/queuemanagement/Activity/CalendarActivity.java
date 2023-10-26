@@ -36,6 +36,7 @@ import com.mcura.jaideep.queuemanagement.Model.ScheduleModel;
 import com.mcura.jaideep.queuemanagement.Model.ScheduleModelResult;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
+import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.helper.StringUtil;
@@ -115,6 +116,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String docProfilePic;
     private TextView billing,tv_fillcard;
     private String version;
+    private Helper helper;
 
     /***
      * Method to convert week days
@@ -137,7 +139,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
     }
     public void getUserPhotoFromAPi(){
-        showLoadingDialog();
+       helper.showLoadingDialog(CalendarActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getUser_Photo(userRoleId, new Callback<GetUserPhotoModel>() {
             @Override
             public void success(GetUserPhotoModel getUserPhotoModel, Response response) {
@@ -155,12 +157,12 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                     }
 
                 }
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
@@ -170,6 +172,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_calender);
 
         //getSupportActionBar().hide();
+        helper = new Helper();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -710,7 +713,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         //Toast.makeText(CalendarActivity.this,"reqDate = "+reqDate,Toast.LENGTH_LONG).show();
         //mScheduleArray = new ScheduleModel[]{};
         scheduleModelResult = new ScheduleModelResult();
-        showLoadingDialog();
+       helper.showLoadingDialog(CalendarActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSchedule_Day(userRoleId, reqDate, new Callback<ScheduleModel[]>() {
             @Override
             public void success(ScheduleModel[] scheduleModels, Response response) {
@@ -722,41 +725,17 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 //scheduleModelList.add(mScheduleArray);
                 //scheduleModelResult.setList(scheduleModelList);
                 setScheduleLayout(reqDate);
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
 
             }
 
             @Override
             public void failure(RetrofitError error) {
                 //Toast.makeText(CalendarActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
-
-    /**
-     *
-     */
-    public void showLoadingDialog() {
-
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(CalendarActivity.this);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getString(R.string.loading_message));
-        }
-        progressDialog.show();
-    }
-
-    /**
-     *
-     */
-    public void dismissLoadingDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
     private void setScheduleLayout(String reqDate) {
         mScheduleHeight = (mScreenWidth / 320) * 110;
         mMidViewWidth = mScreenWidth - (mScreenWidth / 320) * 10;
@@ -768,8 +747,13 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
 
             //System.out.println("==mScheduleArray.length=="+mScheduleArray.length);
             String jsonValue = mScheduleArray[j].getDate();
-            String timestamp = jsonValue.split("\\(")[1].split("\\+")[0];
-            Date createdOn = new Date(Long.parseLong(timestamp));
+            Date createdOn = Helper.JsonDateToDate(jsonValue);
+//            String timestamp = jsonValue.split("\\(")[1].split("\\+")[0];
+//            Date createdOn = new Date();
+//            try {
+//                createdOn  = new Date(Long.parseLong(timestamp));
+//            }catch (NumberFormatException  numberFormatException){
+//            }
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             String formattedDate = sdf.format(createdOn);
             System.out.print("formattedDate-->" + formattedDate);
@@ -818,13 +802,13 @@ private void setSchedule(final int j){
             RelativeLayout.LayoutParams l_date_time_params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
             ll_date_time_layout.setLayoutParams(l_date_time_params);
-            ll_date_time_layout.setBackgroundResource(R.color.main_layout_backgroung);
+            ll_date_time_layout.setBackgroundResource(R.color.main_layout_background);
 
             TextView tvTimeSlot = new TextView(this);
             ViewGroup.LayoutParams tvTime_params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             tvTimeSlot.setLayoutParams(tvTime_params);
-            tvTimeSlot.setBackgroundResource(R.color.main_layout_backgroung);
+            tvTimeSlot.setBackgroundResource(R.color.main_layout_background);
             tvTimeSlot.setTypeface(null, Typeface.BOLD);
             fromTime=mScheduleArray[0].getFromTime();
             String fromTime1=mScheduleArray[j].getFromTime();
@@ -841,7 +825,7 @@ private void setSchedule(final int j){
                     RelativeLayout.LayoutParams.WRAP_CONTENT);
             tvDate_params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             tvDateSlot.setLayoutParams(tvDate_params);
-            tvDateSlot.setBackgroundResource(R.color.main_layout_backgroung);
+            tvDateSlot.setBackgroundResource(R.color.main_layout_background);
             tvDateSlot.setTypeface(null, Typeface.BOLD);
             tvDateSlot.setText(currDate);
             tvDateSlot.setTextSize(14);
@@ -968,19 +952,19 @@ private void setSchedule(final int j){
         day = dt[2];
     }
     public void getHospitalName(int subTanentId,int userRoleId){
-        showLoadingDialog();
+       helper.showLoadingDialog(CalendarActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSubTenantOne(subTanentId, userRoleId, new Callback<HospitalName>() {
             @Override
             public void success(HospitalName hospitalName, Response response) {
                 hospitalNameStr = hospitalName.getSubTenantName();
                 tvHospitalName.setText(hospitalNameStr);
 
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
@@ -1023,7 +1007,7 @@ private void setSchedule(final int j){
 
     }
     public void getDoctorDetail(){
-        showLoadingDialog();
+       helper.showLoadingDialog(CalendarActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(sub_tanent_id, new Callback<DoctorListModel[]>() {
             @Override
             public void success(DoctorListModel[] doctors, Response response) {
@@ -1035,17 +1019,17 @@ private void setSchedule(final int j){
                         android.R.layout.simple_spinner_item,
                         doctorArray);
                 doctor_name.setAdapter(doctorSpinnerAdapter);
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
     private void getScheduleData() {
-        showLoadingDialog();
+       helper.showLoadingDialog(CalendarActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSchedule_Day(userRoleId, currDate, new Callback<ScheduleModel[]>() {
             @Override
             public void success(ScheduleModel[] scheduleModels, Response response) {
@@ -1058,13 +1042,13 @@ private void setSchedule(final int j){
                         android.R.layout.simple_spinner_item,
                         mScheduleArray);
                 doctor_schedule.setAdapter(scheduleSpinnerAdapter);
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(CalendarActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }*/

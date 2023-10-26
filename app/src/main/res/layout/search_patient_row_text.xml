@@ -8,5 +8,5 @@
         android:id="@+id/search_patient"
         android:textColor="@color/black"
     android:padding="10dp"
-    android:textSize="14dp"
+    android:textSize="14sp"
     android:singleLine="true"/>

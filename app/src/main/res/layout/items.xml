@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
@@ -16,53 +17,60 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:layout_marginStart="20dp">
 
             <TextView
                 android:id="@+id/tv_No"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/orange"
                 android:background="@drawable/token_bg_outline"
                 android:gravity="center"/>
 
             <LinearLayout
-                android:gravity="left"
+                android:gravity="start"
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/tv_No"
-                android:layout_toEndOf="@+id/tv_No"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp">
+                android:layout_marginLeft="20dp"
+                tools:ignore="NestedWeights"
+                android:layout_marginStart="20dp">
 
                 <TextView
                     android:id="@+id/tv_Name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textSize="12dp"
-                    android:textColor="#000000"/>
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:id="@+id/tv_Mrno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textSize="12dp"
-                    android:textColor="#000000" />
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:id="@+id/tv_hospital_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textSize="12dp"
-                    android:textColor="#000000" />
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:paddingStart="10dp"
+                    tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
         </LinearLayout>
@@ -71,11 +79,13 @@
 
         <LinearLayout
             android:gravity="center"
+            android:layout_gravity="center"
             android:orientation="horizontal"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp">
 
 
             <LinearLayout
@@ -83,7 +93,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center|center_vertical">
+                android:gravity="center|center_vertical"
+                tools:ignore="NestedWeights">
 
                 <ImageView
 
@@ -104,7 +115,7 @@
                     android:id="@+id/tv_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="10dp"
+                    android:textSize="10sp"
                     android:textColor="#000000"
                     android:gravity="center_vertical"
                     />

@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung"
+        android:background="@color/main_layout_background"
         >
 
         <ImageView
@@ -24,10 +24,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logout"
-            android:layout_gravity="right"
-            android:textSize="16dp"
+            android:layout_gravity="end"
+            android:textSize="16sp"
             android:gravity="center"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp" />
     </android.support.v7.widget.Toolbar>
     <View
         android:layout_width="match_parent"
@@ -72,7 +73,10 @@
             android:paddingLeft="5dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:background="@drawable/spiner"></TextView>
+            android:background="@drawable/spiner"
+            android:layout_marginEnd="5dp"
+            android:paddingStart="5dp"
+            tools:ignore="RtlSymmetry" />
 
         <Spinner
             android:id="@+id/doctor_nature"
@@ -80,7 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/spiner"></Spinner>
+            android:background="@drawable/spiner"
+            android:layout_marginEnd="5dp" />
     </LinearLayout>
 
     <EditText
@@ -91,14 +96,14 @@
         android:background="@drawable/edittext_bg"
         android:hint="Amount"
         android:inputType="number"
-        android:singleLine="true"></EditText>
+        android:singleLine="true" />
 
     <Spinner
         android:id="@+id/doctor_department"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/spiner"></Spinner>
+        android:background="@drawable/spiner" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

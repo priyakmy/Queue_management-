@@ -1,6 +1,7 @@
 package com.mcura.jaideep.queuemanagement.Activity;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -96,7 +97,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
         doctor_name = (TextView) findViewById(R.id.doctor_name);
         doctor_schedule = (Spinner) findViewById(R.id.doctor_sechedule);
         go_to_chart_btn = (ImageButton) findViewById(R.id.go_to_chart_btn);
-        logout = (ImageView) mToolbar.findViewById(R.id.logout);
+        logout = mToolbar.findViewById(R.id.logout);
         //set hospital logo
         subtanentImagePath = mSharedPreference.getString(Constant.SUB_TANENT_IMAGE_PATH, "default");
         ImageView hospital_logo = (ImageView) mToolbar.findViewById(R.id.hospital_logo);
@@ -128,14 +129,14 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
                 if (Helper.isInternetConnected(DoctorScheduleActivity.this)) {
                     builder = new AlertDialog.Builder(DoctorScheduleActivity.this);
                     LayoutInflater inflater = getLayoutInflater();
-                    View convertView = (View) inflater.inflate(R.layout.search_doctor_dialog, null);
+                    View convertView = inflater.inflate(R.layout.search_doctor_dialog, null);
                     builder.setView(convertView);
-                    SearchView search_doctor = (SearchView) convertView.findViewById(R.id.search_doctor);
+                    SearchView search_doctor = convertView.findViewById(R.id.search_doctor);
                     search_doctor.setIconified(false);
                     search_doctor.setIconifiedByDefault(false);
                     search_doctor.setOnQueryTextListener(DoctorScheduleActivity.this);
                     search_doctor.setQueryHint("Search Here");
-                    lv = (ListView) convertView.findViewById(R.id.doctor_list);
+                    lv = convertView.findViewById(R.id.doctor_list);
                     lv.setTextFilterEnabled(true);
                     doctorSpinnerAdapter = new DoctorSpinnerAdapter(DoctorScheduleActivity.this,
                             android.R.layout.simple_spinner_item,
@@ -165,7 +166,8 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
 
                     dialog = builder.show();
                 } else {
-                    Toast.makeText(DoctorScheduleActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DoctorScheduleActivity.this, "Check Internet Connection!", Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -184,8 +186,10 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
         for(int i=0;i<doctorArray.length;i++){
             if(userRoleId==doctorArray[i].getUserRoleId()){
                 doctorListModel = doctorArray[i];
+
                 break;
             }
+
         }
         return doctorListModel;
     }
@@ -214,6 +218,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
         mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {
             @Override
             public void success(DoctorListModel[] doctors, Response response) {
+
                 doctorArray = doctors;
                 if(loginRoleId==7){
                     userRoleId =  mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0);

@@ -240,8 +240,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 contact.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent callIntent = new Intent(Intent.ACTION_CALL);
-                        callIntent.setData(Uri.parse("tel:"+callPat.getText().toString()));
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
+
+                        callIntent.setData(Uri.parse("tel:"+extractPhoneNumber( "tel:"+callPat.getText().toString())));
+
                         try{
                             context.startActivity(callIntent);
                         }
@@ -282,7 +284,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         for (int j = 0; j < mScheduleArray.length; j++) {
             String jsonValue = mScheduleArray[j].getDate();
             String timestamp = jsonValue.split("\\(")[1].split("\\+")[0];
-            Date createdOn = new Date(Long.parseLong(timestamp));
+            Date createdOn = Helper.JsonDateToDate(jsonValue);
+//            Date createdOn = new Date();
+//            try {
+//                createdOn  = new Date(Long.parseLong(timestamp));
+//            }catch (NumberFormatException  numberFormatException){
+//            }
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             String formattedDate = sdf.format(createdOn);
 
@@ -393,8 +400,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         String dobEncode = appointmentsBooked.get(i).getPatdemographics().getDob();
                         //System.out.println("patName-->" + dobEncode);
                         //String dob= getDob(dobEncode);
-                        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-                        Date createdOn = new Date(Long.parseLong(timestamp));
+//                        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+//                        Date createdOn = new Date();
+//                        try {
+//                            createdOn  = new Date(Long.parseLong(timestamp));
+//                        }catch (NumberFormatException  numberFormatException){
+//                        }
+                        Date createdOn = Helper.JsonDateToDate(dobEncode);
                         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
                         String formattedDate = sdf.format(createdOn);
                         System.out.println("formattedDate-->" + formattedDate);
@@ -556,8 +568,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 String dobEncode = patDemoGraphicsString.getDob();
                 //System.out.println("patName-->" + dobEncode);
                 //String dob= getDob(dobEncode);
-                String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-                Date createdOn = new Date(Long.parseLong(timestamp));
+//                String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+//                Date createdOn = new Date();
+//                try {
+//                    createdOn  = new Date(Long.parseLong(timestamp));
+//                }catch (NumberFormatException  numberFormatException){
+//                }
+                Date createdOn = Helper.JsonDateToDate(dobEncode);
                 SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
                 String formattedDate = sdf.format(createdOn);
                 System.out.println("formattedDate-->" + formattedDate);
@@ -703,8 +720,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     private String getDob(String dob) {
-        String timestamp = dob.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+        Date createdOn = Helper.JsonDateToDate(dob);
+//        String timestamp = dob.split("\\(")[1].split("\\+")[0];
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
         String formattedDate = sdf.format(createdOn);
         System.out.println("formattedDate-->" + formattedDate);
@@ -900,6 +922,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 dismissLoadingDialog();
             }
         });
+    }
+
+    public static String extractPhoneNumber(String phoneNumberWithPrefix) {
+        // Check if the string contains "tel:Mobile : " prefix
+        if (phoneNumberWithPrefix.startsWith("tel:Mobile : ")) {
+            // Remove the prefix from the phone number
+            return phoneNumberWithPrefix.replace("tel:Mobile : ", "");
+        } else {
+            // If no prefix is found, return the original string as it is
+            return phoneNumberWithPrefix;
+        }
     }
 
 }

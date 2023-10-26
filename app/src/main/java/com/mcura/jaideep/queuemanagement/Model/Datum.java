@@ -11,6 +11,13 @@ public class Datum implements Serializable{
     @SerializedName("addressId")
     @Expose
     private Integer addressId;
+    @SerializedName("fileName")
+    @Expose
+    private String fileName;
+
+    @SerializedName("pathId")
+    @Expose
+    private String pathId;
     @SerializedName("contactId")
     @Expose
     private Integer contactId;
@@ -141,4 +148,11 @@ public class Datum implements Serializable{
         this.recordCount = recordCount;
     }
 
+    public String getPathId() {
+        return pathId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
 }

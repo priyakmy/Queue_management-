@@ -18,6 +18,7 @@ import com.mcura.jaideep.queuemanagement.Model.GenerateCashCardModel_v1;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
 import com.mcura.jaideep.queuemanagement.Model.GetLabIdModel;
 import com.mcura.jaideep.queuemanagement.Model.GetLabTransactionsByMrnoSubtenantModel;
+import com.mcura.jaideep.queuemanagement.Model.GetMedicalRecordNatureModel;
 import com.mcura.jaideep.queuemanagement.Model.GetNatureByUserRoleModel;
 import com.mcura.jaideep.queuemanagement.Model.GetOrderBoothListModel;
 import com.mcura.jaideep.queuemanagement.Model.GetPatDemographics;
@@ -44,6 +45,7 @@ import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderGetModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderTransactionDetail.PharmacyOrderTxnWithDetailByOrdIdModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyTransactionDatum;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
+import com.mcura.jaideep.queuemanagement.Model.PostPatMedRecord;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
 import com.mcura.jaideep.queuemanagement.Model.QueueStatus;
 import com.mcura.jaideep.queuemanagement.Model.ScheduleModel;
@@ -55,14 +57,19 @@ import com.mcura.jaideep.queuemanagement.Model.State;
 import com.mcura.jaideep.queuemanagement.Model.TokenStatusModel;
 import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Model.TransactionDetail;
+import com.mcura.jaideep.queuemanagement.Model.UploadImageMultipartResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.UserInfoModel;
 
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.Headers;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
 import retrofit.http.Query;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by mcura on 11/5/2015.
@@ -229,6 +236,9 @@ public interface MCuraEndPointInterface {
 
     @POST("/UpdatePatientDetails")
     void updatePatientDetails(@Body JsonObject mObj, Callback<String> restCallback);
+    @Multipart
+    @POST("/UploadMultipartImages")
+    void uploadMultipartImages(@Part("stream") TypedFile file, Callback<UploadImageMultipartResponseModel> restCallback);
 
     @GET("/GetSubTenant_Logo")
     void getSubTenant_Logo(@Query("UserRoleId") int userRoleId, @Query("SubTenantId") int subTenantId, Callback<GetSubTenantLogoModel> resCallback);
@@ -359,13 +369,13 @@ public interface MCuraEndPointInterface {
     void postLabOrderdetails_v2(@Body JsonObject mObj, Callback<LabPharmacyPostResponseModel> restCallback);
 
     @GET("/GetLab")
-    void getLab(@Query("UserRoleID") int userRoleID,@Query("SchedulesID") int schedulesID, Callback<GetLabIdModel[]> restCallback);
+    void getLab(@Query("UserRoleID") int userRoleID, @Query("SchedulesID") int schedulesID, Callback<GetLabIdModel[]> restCallback);
 
     @GET("/TransactionDetailBySubTenant_v2")
-    void transactionDetailBySubTenant_v1(@Query("subTenantId") int subTenantId,@Query("fromDate") String fromDate,@Query("toDate") String toDate, Callback<TransactionDetail> restCallback);
+    void transactionDetailBySubTenant_v1(@Query("subTenantId") int subTenantId, @Query("fromDate") String fromDate, @Query("toDate") String toDate, Callback<TransactionDetail> restCallback);
 
     @GET("/GetPharmacyOrderTxnWithDetailByOrdId")
-    void getPharmacyOrderTxnWithDetailByOrdId(@Query("UserRoleId") int userRoleId,@Query("prescriptionId") int prescriptionId, Callback<PharmacyOrderTxnWithDetailByOrdIdModel> restCallback);
+    void getPharmacyOrderTxnWithDetailByOrdId(@Query("UserRoleId") int userRoleId, @Query("prescriptionId") int prescriptionId, Callback<PharmacyOrderTxnWithDetailByOrdIdModel> restCallback);
 
     @POST("/postActivityTracker_v2")
     void postActivityTracker(@Body JsonObject jsonObject, Callback<PostActivityTrackerModel> restCallback);
@@ -378,4 +388,19 @@ public interface MCuraEndPointInterface {
 
     @POST("/postEndUserTracking")
     void postEndUserTracking(@Body JsonObject jsonObject, Callback<PatVerificationResponseModel> restCallback);
+
+    @POST("/PostPat_Med_Record_v2")
+    void postPat_Med_Record(@Body JsonObject mObj, Callback<PostPatMedRecord> restCallback);
+
+    @Headers("Host: test.tn.mcura.com")
+    @POST("/UploadOrderImage_V1")
+    void uploadOrderImage(@Body JsonObject mObj, Callback<String> restCallback);
+    @POST("/UploadOrderImage_V1")
+    void fileUploadPDF(@Body JsonObject mObj, Callback<String> restCallback);
+    @GET("/GetMedicalRecordNature_v2")
+    void getMedicalRecordNature(@Query("subtenantId") int subTenantId,@Query("roleId") int roleId, Callback<GetMedicalRecordNatureModel[]> resCallback);
+
+    @Headers("Host: test.tn.mcura.com")
+    @POST("/UploadOrderImage_V1")
+    void uploadOrderVedio(@Body JsonObject mObj, Callback<String> restCallback);
 }

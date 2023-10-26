@@ -23,7 +23,8 @@
         android:layout_marginLeft="@dimen/margin_05"
         android:layout_marginRight="@dimen/margin_05"
         android:maxLines="1"
-        android:text="Test" />
+        android:text="Test"
+        android:layout_toEndOf="@+id/indicator" />
 
     <LinearLayout
         android:id="@+id/ll_right_most"
@@ -33,7 +34,8 @@
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:layout_margin="@dimen/margin_05"
-        android:gravity="right">
+        android:gravity="end"
+        android:layout_alignParentEnd="true">
 
         <CheckBox
             android:id="@+id/cb_select_row_level_first"

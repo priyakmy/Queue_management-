@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mcura.jaideep.queuemanagement.Activity.DoctorScheduleActivity;
 import com.mcura.jaideep.queuemanagement.Model.DoctorListModel;
@@ -32,6 +33,7 @@ public class DoctorSpinnerAdapter extends ArrayAdapter<DoctorListModel> implemen
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = new ArrayList<>(Arrays.asList(values));
+
 
         DoctorListModel mDoctorRecord = new DoctorListModel();
         mDoctorRecord.setUserRoleId(0);

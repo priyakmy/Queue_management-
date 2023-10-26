@@ -11,13 +11,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="236dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:scaleType="fitStart" />
 
         <ImageView
@@ -25,16 +25,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/margin_20"
-            android:background="@drawable/logout" />
+            android:layout_gravity="end"
+            android:background="@drawable/logout"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:layout_marginRight="@dimen/margin_20" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/doctor_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hospital_profile"
         android:background="#f7f7f7"
         android:orientation="horizontal">
 
@@ -59,7 +59,8 @@
             android:gravity="center_vertical"
             android:text="Dr. Atul Prasad"
             android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textSize="15sp"
+            android:layout_marginStart="5dp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -77,7 +78,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="#fafafa"
-                android:src="@drawable/checkin" />
+                android:src="@drawable/checkin"
+                android:layout_marginStart="10dp"
+                tools:ignore="NestedWeights" />
 
 
             <ImageButton
@@ -105,85 +108,110 @@
         android:id="@+id/doctor_profile_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/doctor_profile"
+        android:weightSum="5"
         android:layout_marginTop="10dp"
         android:background="#ffffff">
 
 
         <TextView
             android:id="@+id/start_opd_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/margin_10dp"
             android:text="Start OPD"
+            android:gravity="center"
             android:foreground="@drawable/ripple"
             android:background="@drawable/red_border_btn_bg"
             android:padding="@dimen/padding_05"
-            android:textColor="@color/orange"/>
+            android:textColor="@color/orange"
+            android:layout_marginStart="@dimen/margin_10dp" />
 
 
-        <ToggleButton
-            android:id="@+id/queue_status_toggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:background="@null"
-            android:button="@drawable/check"
-            android:textColor="#ffffff"
-            android:textOff="@null"
-            android:textOn="@null"
-            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/bQueueHold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_weight="1"
+            android:background="@drawable/red_border_btn_bg"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="hold"
+                    android:textColor="#FF680E"
+                   />
+
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_end_opd"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/padding_05"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/margin_10"
             android:layout_marginLeft="10dp"
             android:text="End OPD"
             android:foreground="@drawable/ripple"
             android:background="@drawable/red_border_btn_bg"
-            android:padding="@dimen/padding_05"
             android:visibility="visible"
-            android:textColor="@color/orange"/>
+            android:textColor="@color/orange"
+            android:layout_marginStart="10dp"
+            android:layout_marginRight="@dimen/margin_10" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/btn_next"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:src="@drawable/next_arrow"
+                tools:ignore="NestedWeights" />
 
             <ImageView
                 android:id="@+id/btn_refresh"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/btn_rupee"
-                android:src="@drawable/refresh" />
+                android:src="@drawable/refresh"
+                android:layout_weight="0.25" />
 
             <ImageView
                 android:id="@+id/btn_rupee"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/mail_btn"
-                android:src="@drawable/repees" />
+                android:layout_weight="0.25"
+               android:src="@drawable/repees"/>
 
             <ImageView
                 android:id="@+id/mail_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/mail"
+                android:layout_weight="0.25"
+               android:src="@drawable/mail"
                 android:textColor="#ffffff"
-                android:textSize="10dp" />
-        </RelativeLayout>
+                />
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -192,7 +220,6 @@
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/doctor_profile_bottom"
         android:layout_marginTop="10dp"
         android:background="#f2f2f2" />
 
@@ -201,7 +228,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/view1"
         android:background="#ffffff"
         android:orientation="vertical">
 
@@ -229,7 +255,6 @@
             android:id="@+id/view5"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/doctor_profile_bottom"
             android:layout_marginTop="10dp"
             android:background="#f2f2f2" />
 
@@ -268,7 +293,6 @@
             android:id="@+id/bottom_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <View
@@ -288,7 +312,6 @@
                     android:id="@+id/appointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:text="APPOINTMENT"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -300,15 +323,14 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
 
                 <TextView
                     android:id="@+id/queue_mgmt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="QUEUE"
                     android:textStyle="bold"
                     android:textColor="@color/orange"
@@ -320,14 +342,13 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15dp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/billing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="BILLING"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -339,14 +360,13 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15dp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/tv_fillcard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="FILL CASHCARD"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -361,11 +381,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/mcura_logo" />
+                android:src="@drawable/mcura_logo"
+                android:layout_marginEnd="5dp" />
 
         </LinearLayout>
     </LinearLayout>

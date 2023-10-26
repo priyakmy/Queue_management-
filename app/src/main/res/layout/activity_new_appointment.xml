@@ -9,7 +9,7 @@
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:src="@drawable/popup_close" />
 
     <TextView
@@ -19,7 +19,6 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/heading_bg"
-        android:elevation="3dp"
         android:gravity="center"
         android:text="New Appointment"
         android:textColor="#000000" />
@@ -28,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,8 +35,9 @@
             android:layout_gravity="center_vertical"
             android:text="@string/searchby"
             android:textColor="@color/black"
-            android:textSize="12dp"
-            android:layout_marginLeft="@dimen/margin_10"/>
+            android:textSize="12sp"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_10" />
 
         <CheckBox
             android:id="@+id/cb_mrno"
@@ -87,10 +87,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/input_box"
-        android:elevation="3dp"
         android:padding="5dp"
         android:textColor="@color/black"
-        android:textSize="12dp" />
+        android:textSize="12sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -103,14 +102,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/search" />
+            android:background="@drawable/search"
+            android:layout_alignParentStart="true" />
 
         <ImageButton
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/add" />
+            android:background="@drawable/add"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <LinearLayout
@@ -119,14 +120,16 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/appointment_name"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/appointment_name"
@@ -134,7 +137,7 @@
             android:layout_height="wrap_content"
             android:text="Evening"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -144,14 +147,16 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/appointment_time"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/appointment_time"
@@ -159,7 +164,7 @@
             android:layout_height="wrap_content"
             android:text="From 4:00 pm to 4:10 pm"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -170,7 +175,9 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp">
 
         <TextView
             android:layout_width="0dp"
@@ -178,7 +185,7 @@
             android:layout_weight="1"
             android:text="@string/nature"
             android:textColor="@color/black"
-            android:textSize="12dp" />
+            android:textSize="12sp" />
 
         <Spinner
             android:id="@+id/appointment_nature"
@@ -189,26 +196,55 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:weightSum="3"
         android:layout_marginTop="20dp">
 
         <ImageButton
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/submit" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+           android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:id="@+id/iv_upload"
+            android:background="#E1E0E0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_05"
+                android:background="@drawable/prescription_upload_grey" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prescription"
+                android:layout_marginRight="@dimen/margin_02"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_16sp"
+                android:textColor="#252525"
+                android:layout_marginEnd="@dimen/margin_02" />
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/new_appointment_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/cancel" />
-    </RelativeLayout>
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/cancel"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 </LinearLayout>

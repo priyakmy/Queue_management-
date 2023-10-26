@@ -9,13 +9,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="220dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:scaleType="fitStart" />
 
         <ImageView
@@ -25,23 +25,26 @@
             android:layout_gravity="right"
             android:layout_marginRight="@dimen/margin_05"
             android:visibility="gone"
-            android:src="@drawable/bill_summary" />
+            android:src="@drawable/bill_summary"
+            android:layout_marginEnd="@dimen/margin_05" />
 
         <ImageView
             android:id="@+id/add_patient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_20"
-            android:src="@drawable/add_patient" />
+            android:src="@drawable/add_patient"
+            android:layout_marginEnd="@dimen/margin_20" />
 
         <ImageView
             android:id="@+id/iv_transaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_20"
-            android:src="@mipmap/ic_visit_summary" />
+            android:src="@mipmap/ic_visit_summary"
+            android:layout_marginEnd="@dimen/margin_20" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -61,7 +64,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/ll_pat_detail"
@@ -92,12 +95,12 @@
                             android:id="@+id/et_search_key"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
                             android:layout_weight="8"
                             android:background="@null"
                             android:maxLines="1"
                             android:paddingLeft="@dimen/margin_10"
-                            android:paddingRight="@dimen/margin_10" />
+                            android:paddingRight="@dimen/margin_10"
+                            tools:ignore="NestedWeights" />
 
                         <RelativeLayout
                             android:id="@+id/ib_search_icon"
@@ -111,7 +114,9 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="10dp"
-                                android:background="@drawable/search_icon" />
+                                android:background="@drawable/search_icon"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="10dp" />
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -128,7 +133,8 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/margin_05"
                             android:visibility="visible"
-                            android:src="@drawable/upload_gray" />
+                            android:src="@drawable/upload_gray"
+                            android:layout_marginEnd="@dimen/margin_05" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -143,7 +149,8 @@
                     android:layout_marginBottom="@dimen/margin_10"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginTop="@dimen/margin_10"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/margin_10">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -157,7 +164,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="Patient Name"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -166,7 +174,8 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:id="@+id/bill_payment_activity_patient_age"
@@ -174,7 +183,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="xxY"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,7 +193,9 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/bill_payment_activity_patient_gender"
@@ -191,7 +203,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="Gender"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -211,7 +224,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="0000"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -220,7 +234,8 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -234,7 +249,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="0000"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -243,7 +259,9 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05"
+                            android:focusable="true" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -258,7 +276,8 @@
                             android:layout_marginRight="@dimen/margin_05"
                             android:singleLine="true"
                             android:text="9999999999"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -288,7 +307,7 @@
                         android:id="@+id/service_type_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"></Spinner>
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
@@ -408,7 +427,8 @@
                             android:layout_marginLeft="@dimen/margin_10"
                             android:background="@drawable/add_discount_bg"
                             android:text="Add Discount"
-                            android:textColor="#ff5533" />
+                            android:textColor="#ff5533"
+                            android:layout_marginStart="@dimen/margin_10" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -417,7 +437,7 @@
                 android:id="@+id/listviewDiscountAmount"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/ll_ll_pay_amount"></ListView>
+                android:layout_below="@id/ll_ll_pay_amount" />
 
             <View
                 android:id="@+id/bottomView"
@@ -432,10 +452,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="right"
+                android:gravity="end"
                 android:layout_below="@+id/bottomView"
                 android:layout_marginBottom="@dimen/margin_20"
-                android:paddingLeft="@dimen/padding_10">
+                android:paddingLeft="@dimen/padding_10"
+                android:paddingStart="@dimen/padding_10">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -509,7 +530,6 @@
                 android:id="@+id/appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:text="APPOINTMENT"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp"
@@ -521,15 +541,14 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
 
             <TextView
                 android:id="@+id/queue_mgmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="QUEUE"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp"
@@ -541,14 +560,13 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/billing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="BILLING"
                 android:textColor="@color/orange"
                 android:textSize="12sp"
@@ -560,14 +578,13 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/tv_fillcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="FILL CASHCARD"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp"
@@ -586,7 +603,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/mcura_logo" />
+            android:src="@drawable/mcura_logo"
+            android:layout_marginEnd="5dp" />
 
     </LinearLayout>
 </RelativeLayout>

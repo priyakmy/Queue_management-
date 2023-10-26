@@ -1,6 +1,5 @@
 package com.mcura.jaideep.queuemanagement.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -45,7 +43,6 @@ import retrofit.client.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private Spinner doctor_name, doctor_schedule;
-    private ProgressDialog progressDialog;
     public MCuraApplication mCuraApplication;
     private EditText loginUsername, loginPassword;
     private ImageButton loginButton, go_to_chart;
@@ -64,26 +61,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     int subTanentId, scheduleId;
     String subtanentImagePath;
     public static String APP_URL;
+    public Helper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //getSupportActionBar().hide();
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
-        mSharedPreference = getSharedPreferences(getString(R.string.app_name),
-                Context.MODE_PRIVATE);
+
+        mSharedPreference = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
         editor = mSharedPreference.edit();
-        if (mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0) != 0) {
-            Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
-            startActivity(i);
-            finish();
-        } else {
-            initView();
+        helper = new Helper();
+
+            if (mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0) != 0) {
+                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
+                startActivity(i);
+                finish();
+            } else {
+                initView();
+            }
+            
         }
-    }
+
+
 
     public void initView() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -92,13 +91,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        loginUsername = (EditText) findViewById(R.id.login_username);
+        loginUsername = findViewById(R.id.login_username);
         loginPassword = (EditText) findViewById(R.id.login_password);
-        loginButton = (ImageButton) findViewById(R.id.login_btn);
-        doctor_name = (Spinner) findViewById(R.id.doctor_name);
-        doctor_schedule = (Spinner) findViewById(R.id.doctor_sechedule);
-        go_to_chart = (ImageButton) findViewById(R.id.go_to_chart_btn);
-        ll_doctor = (LinearLayout) findViewById(R.id.ll_doctor);
+        loginButton = findViewById(R.id.login_btn);
+        doctor_name = findViewById(R.id.doctor_name);
+        doctor_schedule = findViewById(R.id.doctor_sechedule);
+        go_to_chart = findViewById(R.id.go_to_chart_btn);
+        ll_doctor = findViewById(R.id.ll_doctor);
         //logout = (ImageView) findViewById(R.id.logout);
         Calendar now = Calendar.getInstance();
         year = now.get(Calendar.YEAR);
@@ -160,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void getLoginDetail() {
-        showLoadingDialog();
+       helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getLogin(username, password, new Callback<LoginModel>() {
             @Override
             public void success(LoginModel loginModel, Response response) {
@@ -180,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //dismissLoadingDialog();
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid Username and Password", Toast.LENGTH_LONG).show();
-                    dismissLoadingDialog();
+                    helper.dismissLoadingDialog();
                 }
 
             }
@@ -188,13 +187,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
 
     public void getSubtenantId() {
-        showLoadingDialog();
+        helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getHospital(userRoleId, new Callback<SearchHospital[]>() {
             @Override
             public void success(SearchHospital[] searchHospitals, Response response) {
@@ -207,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     getSubtanentDatail();
                 } else {
                     Toast.makeText(LoginActivity.this, "Login Again", Toast.LENGTH_LONG).show();
-                    dismissLoadingDialog();
+                    helper.dismissLoadingDialog();
                 }
                 /*ll_doctor.setVisibility(View.VISIBLE);
                 getDoctorDetail();*/
@@ -218,13 +217,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
 
     private void getSubtanentDatail() {
-        showLoadingDialog();
+        helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSubtenantDetailsBySubTenantId(subTanentId, userRoleId, new Callback<GetSubtenantDetailsModel>() {
             @Override
             public void success(GetSubtenantDetailsModel getSubtenantDetailsModel, Response response) {
@@ -233,12 +232,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString(Constant.SUBTANENT_CONTACT, getSubtenantDetailsModel.getMobile().trim());
                 editor.commit();
                 getSubtanentLogoFromApi();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
@@ -255,12 +254,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.commit();
                 }
                 postEndUserTrackingAPI();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }
@@ -271,7 +270,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        showLoadingDialog();
+        helper.showLoadingDialog(LoginActivity.this);
         JsonObject obj = new JsonObject();
         obj.addProperty("actSubTenantId", subTanentId);
         obj.addProperty("actUserRoleId", userRoleId);
@@ -287,19 +286,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void success(PatVerificationResponseModel patVerificationResponseModel, Response response) {
                 Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
                 startActivity(i);
-                dismissLoadingDialog();
+               helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
                 Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
                 startActivity(i);
             }
         });
     }
     public void getDoctorDetail() {
-        showLoadingDialog();
+        helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {
             @Override
             public void success(DoctorListModel[] doctors, Response response) {
@@ -311,12 +310,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         android.R.layout.simple_spinner_item,
                         doctorArray);
                 doctor_name.setAdapter(doctorSpinnerAdapter);
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                dismissLoadingDialog();
+                  helper.dismissLoadingDialog();
             }
         });
     }
@@ -324,25 +323,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      *
      */
-    public void showLoadingDialog() {
 
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(LoginActivity.this);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage(getString(R.string.loading_message));
-        }
-        progressDialog.show();
-    }
-
-    /**
-     *
-     */
-    public void dismissLoadingDialog() {
-
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -358,7 +339,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //editor.putString(Constant.UNAME_KEY, doctorSpinnerAdapter.getItem(position).getUname());
                 editor.putInt(Constant.USER_ROLE_ID, doctorSpinnerAdapter.getItem(position).getUserRoleId());
                 editor.apply();
-                getScheduleData();
                 break;
             case R.id.doctor_sechedule:
                 scheduleId = scheduleSpinnerAdapter.getItem(position).getScheduleId();
@@ -382,7 +362,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void getScheduleData() {
-        showLoadingDialog();
+        helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSchedule_Day(userRoleId, completeDate, new Callback<ScheduleModel[]>() {
             @Override
             public void success(ScheduleModel[] scheduleModels, Response response) {
@@ -395,13 +375,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         android.R.layout.simple_spinner_item,
                         mScheduleArray);
                 doctor_schedule.setAdapter(scheduleSpinnerAdapter);
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 Toast.makeText(LoginActivity.this, error.getMessage().toString(), Toast.LENGTH_LONG).show();
-                dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }

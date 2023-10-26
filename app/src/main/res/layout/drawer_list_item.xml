@@ -25,5 +25,6 @@
     android:paddingLeft="40dp"
     android:paddingRight="10dp"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    />
+    android:paddingStart="40dp"
+    android:paddingEnd="10dp" />
 

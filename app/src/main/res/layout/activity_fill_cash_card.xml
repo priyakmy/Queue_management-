@@ -9,32 +9,34 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="236dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:scaleType="fitStart" />
 
         <ImageView
             android:id="@+id/bill_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_10"
             android:src="@drawable/bill_summary"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/margin_10" />
 
         <ImageView
             android:id="@+id/add_patient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_20"
             android:src="@drawable/add_patient"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/margin_20" />
 
     </android.support.v7.widget.Toolbar>
     <View
@@ -71,14 +73,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -95,7 +98,6 @@
                         android:id="@+id/et_search_key"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
                         android:layout_weight="8"
                         android:background="@null"
                         android:paddingLeft="@dimen/margin_10"
@@ -114,7 +116,9 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="10dp"
-                            android:background="@drawable/search_icon" />
+                            android:background="@drawable/search_icon"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="10dp" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -131,7 +135,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="@dimen/margin_05"
-                        android:src="@drawable/upload_gray" />
+                        android:src="@drawable/upload_gray"
+                        android:layout_marginEnd="@dimen/margin_05" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -146,7 +151,8 @@
                 android:layout_marginBottom="@dimen/margin_10"
                 android:layout_marginLeft="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_10"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/margin_10">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -154,7 +160,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_05"
                         android:layout_weight="8"
@@ -166,7 +172,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="Patient Name"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -175,7 +182,9 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/bill_payment_activity_patient_age"
@@ -183,7 +192,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="xxY"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -192,7 +202,9 @@
                             android:clickable="true"
                             android:text="|"
                             android:textColor="@color/tv_colorTextBrightGrey1"
-                            android:textSize="15dp" />
+                            android:textSize="15sp"
+                            android:layout_marginEnd="@dimen/margin_05"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/bill_payment_activity_patient_gender"
@@ -200,7 +212,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/margin_05"
                             android:text="Gender"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="@dimen/margin_05" />
                     </LinearLayout>
 
                     <RelativeLayout
@@ -208,13 +221,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2">
 
-                        <ImageView
-                            android:id="@+id/fill_card_summary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/margin_10"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/bill_summary" />
+
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -235,7 +242,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_05"
                         android:text="0000"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -244,7 +252,9 @@
                         android:clickable="true"
                         android:text="|"
                         android:textColor="@color/tv_colorTextBrightGrey1"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        android:layout_marginEnd="@dimen/margin_05"
+                        android:focusable="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -258,7 +268,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/margin_05"
                         android:text="0000"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -267,7 +278,9 @@
                         android:clickable="true"
                         android:text="|"
                         android:textColor="@color/tv_colorTextBrightGrey1"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        android:layout_marginEnd="@dimen/margin_05"
+                        android:focusable="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -282,199 +295,11 @@
                         android:layout_marginRight="@dimen/margin_05"
                         android:singleLine="true"
                         android:text="9999999999"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="@dimen/margin_05" />
                 </LinearLayout>
             </LinearLayout>
-            <!--<RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/bill_edittext_bg"
-                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/hospital_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:background="@null"
-                    android:enabled="true"
-                    android:hint="Hospital ID:"
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-
-                <ImageView
-                    android:id="@+id/h_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/h" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10"
-                android:background="@drawable/bill_edittext_bg"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/bill_payment_activity_mrno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:background="@null"
-                    android:ems="@integer/large_size"
-                    android:enabled="true"
-                    android:hint="MR No."
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10"
-                android:background="@drawable/bill_edittext_bg"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/bill_payment_activity_patient_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:background="@null"
-                    android:ems="@integer/large_size"
-                    android:enabled="true"
-                    android:hint="Patient Name"
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/dob_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bill_edittext_bg"
-                    android:gravity="center"
-                    android:hint="DD"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-
-                <EditText
-                    android:id="@+id/dob_month"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bill_edittext_bg"
-                    android:gravity="center"
-                    android:hint="MM"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-
-                <EditText
-                    android:id="@+id/dob_year"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bill_edittext_bg"
-                    android:gravity="center"
-                    android:hint="YYYY"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:singleLine="true"
-                    android:textColor="@color/text_hint"
-                    android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Gender"
-                    android:textColor="@color/black" />
-
-                <RadioGroup
-                    android:id="@+id/gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radio_male"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_widget_background"
-                        android:button="@null"
-                        android:checked="true"
-                        android:gravity="center"
-                        android:text="Male"
-                        android:textColor="@color/black" />
-
-                    <RadioButton
-                        android:id="@+id/radio_female"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_widget_background"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="Female"
-                        android:textColor="@color/black" />
-                </RadioGroup>
-
-            </LinearLayout>
--->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -497,7 +322,8 @@
                     android:layout_marginRight="@dimen/margin_05"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/newcard" />
+                    android:src="@drawable/newcard"
+                    android:layout_marginEnd="@dimen/margin_05" />
 
                 <ImageView
                     android:id="@+id/iv_oldcard"
@@ -516,7 +342,8 @@
                     android:layout_marginLeft="@dimen/margin_05"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/none_s" />
+                    android:src="@drawable/none_s"
+                    android:layout_marginStart="@dimen/margin_05" />
             </LinearLayout>
 
             <RelativeLayout
@@ -541,7 +368,8 @@
                     android:hint="Mobile"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginStart="5dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -566,7 +394,8 @@
                     android:hint="Email Id"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginStart="5dp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -583,8 +412,9 @@
                     android:layout_marginRight="@dimen/margin_05"
                     android:layout_weight="1"
                     android:background="@drawable/doc_spinner"
-                    android:gravity="center_vertical|left"
-                    android:textColor="@color/black">
+                    android:gravity="center_vertical|start"
+                    android:textColor="@color/black"
+                    android:layout_marginEnd="@dimen/margin_05">
 
                 </Spinner>
 
@@ -597,7 +427,8 @@
                     android:background="@drawable/edittext_bg"
                     android:hint="Enter Amount"
                     android:maxLines="1"
-                    android:inputType="number">
+                    android:inputType="number"
+                    android:layout_marginStart="@dimen/margin_05">
 
                 </EditText>
             </LinearLayout>
@@ -721,8 +552,6 @@
                                 android:id="@+id/tvdate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
                                 android:text="date"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
@@ -731,8 +560,6 @@
                                 android:id="@+id/tvtime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
                                 android:text="time"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
@@ -756,8 +583,6 @@
                                 android:id="@+id/tvnature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
                                 android:text="nature"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
@@ -766,8 +591,6 @@
                                 android:id="@+id/tvamount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
                                 android:text="0000"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
@@ -793,7 +616,9 @@
                 android:inputType="number"
                 android:paddingLeft="@dimen/padding_05"
                 android:singleLine="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:paddingStart="@dimen/padding_05"
+                tools:ignore="RtlSymmetry" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -877,7 +702,8 @@
                     android:paddingLeft="@dimen/padding_30"
                     android:paddingRight="@dimen/padding_30"
                     android:text="Fill"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
 
@@ -887,7 +713,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
         android:layout_weight="2"
         android:gravity="bottom"
         android:orientation="vertical">
@@ -909,7 +734,6 @@
                 android:id="@+id/appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:text="APPOINTMENT"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
@@ -921,15 +745,14 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
 
             <TextView
                 android:id="@+id/queue_mgmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="QUEUE"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
@@ -941,18 +764,17 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/tv_billing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="BILLING"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -960,18 +782,17 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/tv_fillcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="FILL CASHCARD"
                 android:textStyle="bold"
                 android:textColor="@color/orange"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <View
@@ -982,10 +803,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/mcura_logo" />
+            android:src="@drawable/mcura_logo"
+            android:layout_marginEnd="5dp" />
     </LinearLayout>
 </LinearLayout>

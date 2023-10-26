@@ -10,12 +10,12 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="236dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:scaleType="fitStart" />
 
         <ImageView
@@ -24,12 +24,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/logout"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/margin_20"/>
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20" />
     </android.support.v7.widget.Toolbar>
     <LinearLayout
         android:id="@+id/doctor_profile"
-        android:layout_below="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fafafa"
@@ -50,12 +50,13 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Dr. Atul Prasad"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:gravity="center_vertical"
             android:drawablePadding="5dp"
             android:layout_gravity="center_vertical"
             android:textColor="#000000"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="5dp" />
 
 
         <LinearLayout
@@ -74,7 +75,9 @@
                 android:src="@drawable/checkin"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:background="#fafafa"/>
+                android:background="#fafafa"
+                tools:ignore="NestedWeights"
+                android:layout_marginStart="10dp" />
 
 
             <ImageButton
@@ -101,10 +104,8 @@
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_gravity="center_vertical"
-        android:layout_below="@+id/view_check"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
 
         <TextView
@@ -112,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Check-In"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/orange"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -136,7 +137,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/margin_10"
             android:paddingRight="@dimen/margin_10"
-            android:layout_centerVertical="true"
             android:background="@null"/>
         <RelativeLayout
             android:id="@+id/ib_search_icon"
@@ -149,7 +149,9 @@
                 android:background="@drawable/search_icon"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp" />
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
@@ -166,7 +168,8 @@
             android:layout_marginLeft="@dimen/margin_10"
             android:text="@string/searchby"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_16sp" />
+            android:textSize="@dimen/text_16sp"
+            android:layout_marginStart="@dimen/margin_10" />
 
         <CheckBox
             android:id="@+id/cb_mrno"
@@ -228,7 +231,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:text="Patient Name"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/block_gray"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -240,14 +243,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="xxY"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textColor="@color/block_gray"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="|"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textColor="@color/block_gray"/>
 
             <TextView
@@ -255,7 +258,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="M"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textColor="@color/block_gray"/>
         </LinearLayout>
         <LinearLayout
@@ -267,7 +270,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mo."
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textColor="@color/block_gray"
                 />
             <TextView
@@ -275,7 +278,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+xx-xxxxxxxxxx"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textColor="@color/block_gray"                />
         </LinearLayout>
 
@@ -287,36 +290,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/token_bg"
-            android:gravity="center_horizontal"
-            >
+            android:gravity="center_horizontal">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:background="@drawable/token_bgf"
-                >
+                android:background="@drawable/token_bgf">
                 <TextView
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Token No."
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="#ffffff"
                     android:layout_marginLeft="3dp"
-                    />
+                    android:layout_marginStart="3dp" />
                 <TextView
                     android:id="@+id/checkin_token_number"
                     android:gravity="center"
                     android:background="@drawable/tokenno_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/orange"
                     android:layout_marginLeft="15dp"
-                    />
+                    android:layout_marginStart="15dp" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_10"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_10"
+            android:id="@+id/iv_upload"
+            android:background="#FF5722">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_05"
+                android:padding="@dimen/margin_05"
+                android:layout_marginEnd="@dimen/margin_05"
+                android:background="@drawable/precription_upload"
+                android:layout_marginStart="@dimen/margin_05"
+                android:layout_marginRight="@dimen/margin_05" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" UPLOAD PRESCRIPTION"
+                android:textSize="@dimen/text_18sp"
+                android:textColor="#FFF" />
         </LinearLayout>
 
     </LinearLayout>
@@ -329,7 +358,6 @@
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
         <View
@@ -349,7 +377,6 @@
                 android:id="@+id/appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:text="APPOINTMENT"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
@@ -361,15 +388,14 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
 
             <TextView
                 android:id="@+id/queue_mgmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="QUEUE"
                 android:textStyle="bold"
                 android:textColor="@color/orange"
@@ -381,14 +407,13 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/billing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="BILLING"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
@@ -400,14 +425,13 @@
                 android:clickable="true"
                 android:text="  |  "
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15dp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/tv_fillcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:text="FILL CASHCARD"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
@@ -426,7 +450,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/mcura_logo" />
+            android:src="@drawable/mcura_logo"
+            android:layout_marginEnd="5dp" />
 
     </LinearLayout>
 

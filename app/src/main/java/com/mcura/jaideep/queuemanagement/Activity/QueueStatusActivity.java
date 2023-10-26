@@ -8,29 +8,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Adapter.Queue_Adapter;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
 import com.mcura.jaideep.queuemanagement.Model.AvailableTokenAdapter;
@@ -43,7 +42,6 @@ import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActi
 import com.mcura.jaideep.queuemanagement.Model.QueueStatus;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
-import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.squareup.picasso.Picasso;
 
@@ -66,7 +64,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     int appId;
     SwipeMenuItem item1;
     QueueStatus qStatus;
-    private ToggleButton queueStatusToggle;
+    LinearLayout bQueueHold;
     int mrno;
     AlertDialog.Builder alertDialog;
     AlertDialog ad;
@@ -85,7 +83,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     int year, month, date;
     String completeDate;
     ImageButton load_nfc;
-    ImageView queue_current_status, queue_queue_status, queue_checkIn, queue_visting_entry, logout;
+    ImageView btnNextVisit,queue_current_status, queue_queue_status, queue_checkIn, queue_visting_entry, logout;
     TextView appointment, queue_mgmt, doctorName, start_opd_btn;
     AvailableTokenList[] availableTokenListsArray;
     int chartGenerateStatus;
@@ -130,6 +128,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         completeDate = year + "-" + month + "-" + date; //"2016-05-09"
         Log.d("completeDate", completeDate);
         getQueueData();
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
@@ -144,6 +143,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         queue_queue_status=(ImageView)findViewById(R.id.queue_queue_status);
         queue_checkIn=(ImageView)findViewById(R.id.queue_checkIn);
         queue_visting_entry=(ImageView)findViewById(R.id.queue_visit_entry);*/
+        bQueueHold = findViewById(R.id.bQueueHold);
         start_opd_btn = findViewById(R.id.start_opd_btn);
         logout = (ImageView) mToolbar.findViewById(R.id.logout);
         checkin = (ImageButton) findViewById(R.id.chk_in);
@@ -210,21 +210,72 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         queue_checkIn.setOnClickListener(this);
         queue_visting_entry.setOnClickListener(this);*/
         visit_entry_btn = (ImageButton) findViewById(R.id.visit_entry_btn);
-        queueStatusToggle = (ToggleButton) findViewById(R.id.queue_status_toggle);
-        /*if(MainActivity.queueStatus==true){
-            queueStatusToggle.setChecked(MainActivity.queueStatus);
-        }
-        else{
-            queueStatusToggle.setChecked(MainActivity.queueStatus);
-        }*/
-        //MainActivity.queueStatus = queueStatusToggle.isChecked();
+
         logout.setOnClickListener(this);
-        queueStatusToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        bQueueHold.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //MainActivity.queueStatus = queueStatusToggle.isChecked();
+            public void onClick(View v) {
+                postDrMessage();
             }
         });
+
+        btnNextVisit = findViewById(R.id.btn_next);
+
+        btnNextVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("list_size", list.size() + "");
+                boolean flag = false;
+                int patMRNo = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getTokenStatus() != null) {
+                        if (list.get(i).getTokenStatus().equals("CHECK_IN") && patMRNo == 0) {
+                            patMRNo = list.get(i).getMRNo();
+                            if (flag) {
+                                break;
+                            }
+                        }
+                        if (list.get(i).getTokenStatus().equals("CURRENTLY_VISITING")) {
+                            patMRNo = 0;
+                            flag = true;
+                        }
+                    }
+                }
+                if (patMRNo != 0) {
+                    getVisitingStatus(patMRNo);
+                } else {
+                    Toast.makeText(QueueStatusActivity.this, "No checked In patient available to visit", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+      /*  btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("list_size", list.size() + "");
+                boolean flag = false;
+                int patMRNo = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getTokenStatus() != null) {
+                        if (list.get(i).getTokenStatus().equals("CHECK_IN") && patMRNo == 0) {
+                            patMRNo = list.get(i).getMRNo();
+                            if (flag) {
+                                break;
+                            }
+                        }
+                        if (list.get(i).getTokenStatus().equals("CURRENTLY_VISITING")) {
+                            patMRNo = 0;
+                            flag = true;
+                        }
+                    }
+                }
+                if (patMRNo != 0) {
+                    getVisitingStatus(patMRNo);
+                } else {
+                    Toast.makeText(QueueStatusActivity.this, "No checked In patient available to visit", Toast.LENGTH_LONG).show();
+                }
+            }
+        });*/
 
         chkin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -300,7 +351,8 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
 
                     switch (index) {
                         case 0:
-                            if (mrno > 0) {
+                            getAllAvailableTokenPopup();
+                            /*if (mrno > 0) {
                                 if (tokenStatus.equals("CHECK_IN")) {
                                     getAllAvailableTokenPopup();
                                 } else if (tokenStatus.equals("PRE_BOOKED")) {
@@ -312,14 +364,16 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(QueueStatusActivity.this, "This Slot is blocked", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
-                            }
+                            }*/
                             break;
                         case 1:
-                            if (mrno > 0) {
+                            showConfirmPopup(2);
+                            /*if (mrno > 0) {
+
                                 if (tokenStatus.equals("CHECK_IN")) {
-                                    showConfirmPopup();
+                                    showConfirmPopup(2);
                                 } else if (tokenStatus.equals("PRE_BOOKED")) {
-                                    showConfirmPopup();
+                                    showConfirmPopup(1);
                                 } else {
                                     Toast.makeText(QueueStatusActivity.this, "Sorry! You cannot cancel", Toast.LENGTH_LONG).show();
                                 }
@@ -327,13 +381,13 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(QueueStatusActivity.this, "This Slot is blocked", Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
-                            }
+                            }*/
                             break;
                         case 2:
                             if (mrno > 0) {
                                 if (tokenStatus.equals("PRE_BOOKED")) {
                                     //Toast.makeText(QueueStatusActivity.this,qStatus.getAppId()+"",Toast.LENGTH_LONG).show();
-                                    postPatientNoShowApi();
+                                    showConfirmPopup(6);
                                 } else {
                                     Toast.makeText(QueueStatusActivity.this, "Wrong Selection", Toast.LENGTH_LONG).show();
                                 }
@@ -342,7 +396,6 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                             }
                             break;
                     }
-
                 } else {
                     Toast.makeText(QueueStatusActivity.this, "Some Issue Occur", Toast.LENGTH_LONG).show();
                 }
@@ -400,6 +453,58 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
             }
         });
 */
+    }
+
+    public void getVisitingStatus(int mrno) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.patient_Visit_Entry(mrno, user_role_id, subTanentId, scheduleId, completeDate, new Callback<GenerateTokenResultModel>() {
+            @Override
+            public void success(GenerateTokenResultModel s, Response response) {
+                int chartGenerateStatus;
+                String msg = s.getMsg();
+                chartGenerateStatus = s.getStatus();
+                if (chartGenerateStatus == 1) {
+                    showSuccessDialog(msg);
+                } else {
+                    showErrorDialog(msg);
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+
+    private void postDrMessage() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("UserRoleId", user_role_id);
+        obj.addProperty("SubTenantId", subTanentId);
+        obj.addProperty("ScheduleId", scheduleId);
+        obj.addProperty("message", "QUEUE ON HOLD");
+        obj.addProperty("status", 1);
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.addDrMessage(obj, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                if (s.equals("1")) {
+                    Toast.makeText(QueueStatusActivity.this, "Queue Kept On Hold", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(QueueStatusActivity.this, "Something failed", Toast.LENGTH_LONG).show();
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                ad.dismiss();
+                Toast.makeText(QueueStatusActivity.this, "Something failed", Toast.LENGTH_LONG).show();
+                dismissLoadingDialog();
+            }
+        });
     }
 
     @Override
@@ -509,50 +614,49 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getQueueData();
                 ad.dismiss();
-                postActivityTrackerFromAPI("no_show");
-
             }
         });
         ad = alertDialog.show();
     }
 
     private void postActivityTrackerFromAPI(String source) {
-        int slotAppId=0;
+        int slotAppId = 0;
         int actTransMasterId = 0;
-        int patMrNo=0;
-        if(source.equals("start_opd")){
+        int patMrNo = 0;
+        if (source.equals("start_opd")) {
             slotAppId = 0;
             actTransMasterId = EnumType.ActTransactMasterEnum.Start_OPD.getActTransactMasterTypeId();
             patMrNo = 0;
-        }else if(source.equals("end_opd")){
+        } else if (source.equals("end_opd")) {
             slotAppId = 0;
             actTransMasterId = EnumType.ActTransactMasterEnum.End_OPD.getActTransactMasterTypeId();
             patMrNo = 0;
-        }else if(source.equals("no_show")){
+        } else if (source.equals("no_show")) {
             slotAppId = qStatus.getAppId();
             actTransMasterId = EnumType.ActTransactMasterEnum.No_Show.getActTransactMasterTypeId();
             patMrNo = qStatus.getMRNo();
-        }else if(source.equals("msg_broadcast")){
+        } else if (source.equals("msg_broadcast")) {
             slotAppId = 0;
             actTransMasterId = EnumType.ActTransactMasterEnum.Msg_Broadcast.getActTransactMasterTypeId();
             patMrNo = 0;
         }
         showLoadingDialog();
         JsonObject obj = new JsonObject();
-        obj.addProperty("actBuildVersion",buildVersionName);
-        obj.addProperty("delivered",0);
-        obj.addProperty("actUserRoleId",frontOfficeUserRoleId);
-        obj.addProperty("actSubTenantId",subTanentId);
-        obj.addProperty("actScheduleId",scheduleId);
-        obj.addProperty("actAppId",slotAppId);
-        obj.addProperty("actUserMediumId",9);
-        obj.addProperty("drUserRoleId",user_role_id);
-        obj.addProperty("actRemarks","");
-        obj.addProperty("actTransMasterId",actTransMasterId);
-        obj.addProperty("patMrno",patMrNo);
-        obj.addProperty("actOthers","");
+        obj.addProperty("actBuildVersion", Helper.getBuildVersion(QueueStatusActivity.this));
+        obj.addProperty("delivered", 0);
+        obj.addProperty("actUserRoleId", user_role_id);
+        obj.addProperty("actSubTenantId", subTanentId);
+        obj.addProperty("actScheduleId", scheduleId);
+        obj.addProperty("actAppId", slotAppId);
+        obj.addProperty("actUserMediumId", 4);
+        obj.addProperty("drUserRoleId", user_role_id);
+        obj.addProperty("actRemarks", "");
+        obj.addProperty("actTransMasterId", actTransMasterId);
+        obj.addProperty("patMrno", patMrNo);
+        obj.addProperty("actOthers", "");
 
         mCuraApplication.getInstance().mCuraEndPoint.postActivityTracker(obj, new Callback<PostActivityTrackerModel>() {
             @Override
@@ -560,6 +664,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 getQueueData();
                 dismissLoadingDialog();
             }
+
             @Override
             public void failure(RetrofitError error) {
                 getQueueData();
@@ -568,13 +673,25 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    public void showConfirmPopup() {
+    public void showConfirmPopup(final int tokenStatusId) {
+        String msg="";
+        if(tokenStatusId==1 || tokenStatusId==2){
+            msg = "Do you want to cancel token number " + qStatus.getTokenNo() + " for " + qStatus.getPatName();
+        }else if(tokenStatusId == 6){
+            msg = "Do you want to No Show token number " + qStatus.getTokenNo() + " for " + qStatus.getPatName();
+        }
         alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setMessage("Do you want to cancel token number " + qStatus.getTokenNo() + " for " + qStatus.getPatName());
+        alertDialog.setTitle("Confimation");
+        alertDialog.setMessage(msg);
         alertDialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                cancelToken(mrno);
+                if(tokenStatusId==1 || tokenStatusId==2){
+                    cancelToken(mrno);
+                }else if(tokenStatusId == 6){
+                    postPatientNoShowApi();
+                }
+                ad.dismiss();
             }
         });
         alertDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -876,6 +993,7 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(QueueStatusActivity.this, "Something went wrong. Please try again.", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     public void getQueueData() {

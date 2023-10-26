@@ -1,30 +1,51 @@
 package com.mcura.jaideep.queuemanagement.Activity;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,23 +60,37 @@ import com.mcura.jaideep.queuemanagement.Model.CurrentTokenModel;
 import com.mcura.jaideep.queuemanagement.Model.Datum;
 import com.mcura.jaideep.queuemanagement.Model.FeeFetch;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
+import com.mcura.jaideep.queuemanagement.Model.GetMedicalRecordNatureModel;
 import com.mcura.jaideep.queuemanagement.Model.GetNatureByUserRoleModel;
 import com.mcura.jaideep.queuemanagement.Model.LastBillDetailModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
+import com.mcura.jaideep.queuemanagement.Model.PostPatMedRecord;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
+import com.mcura.jaideep.queuemanagement.Model.RecNatureListAdapter;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
 import com.mcura.jaideep.queuemanagement.Model.TokenStatusModel;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.SqliteHelper.SqlLiteDbHelper;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.google.gson.JsonObject;
+import com.mcura.jaideep.queuemanagement.Utils.NatureEnum;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
+import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -66,7 +101,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class NewAppointmentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class NewAppointmentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
     private SearchPatientModel patientSearchModel;
     private int firstIndex;
     private ArrayList<Datum> dataList;
@@ -86,7 +121,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     private SharedPreferences mSharedPreference;
     SqlLiteDbHelper dbHelper;
     private TextView tv_no_record_found_msg;
-    private LinearLayout ll_last_record;
+    private LinearLayout ll_last_record,iv_upload;
     private TextView tv_nature_name;
     private TextView tv_last_record_date;
     private String strSearchBy;
@@ -96,6 +131,32 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     private String buildVersionName;
     private android.support.v7.app.AlertDialog successAlertDialog;
     private android.support.v7.app.AlertDialog errorAlertDialog;
+    private String mCameraFileName;
+    public static int natureId = 0;
+    private static final int REQUESTCODE_PICK_PDF = 3;
+    final int REQUEST_CAMERA = 2;
+    final int REQUEST_GALLARY = 1;
+    public static final int RequestPermissionCode = 4;
+    private ArrayList<GetMedicalRecordNatureModel> recordNatureModelArrayList;
+
+    private String pdfPick;
+    private String pdfName;
+    private String pdfDate;
+    private ListView recNatureListView;
+    private TextView tvListNatureId;
+    private GetMedicalRecordNatureModel[] medicalRecordNatureModelArray;
+    private RecNatureListAdapter recNatureListAdapter;
+    public PatientSearchModel[] patientSearchModelsArray;
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
+    }
 
     public enum ScheduleStatus {
         kScheduleStatusChartNotGenerated(1), kScheduleStatusChartGenerated(2);
@@ -139,8 +200,8 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     int chartGenerateStatus;
     Spinner appointmentNature;
     public MCuraApplication mCuraApplication;
-    public PatientSearchModel[] patientSearchModelsArray;
-    public AppointmentNature[] appointmentNaturesArray;
+
+    public GetNatureByUserRoleModel[] appointmentNaturesArray;
     int appId, avlStatusId, appNatureId, currentStatusId, mrno, others;
     HashMap<Integer, String> hmNature = new HashMap<>();
     List<String> nature = new ArrayList<String>();
@@ -178,18 +239,6 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         currTime = getIntent().getStringExtra("time");
         dbHelper = new SqlLiteDbHelper(this);
         dbHelper.openDataBase();
-        init();
-        setAppointmentNature();
-
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        init();
-    }
-
-    private void init() {
         SharedPreferences sharedPreferences = getSharedPreferences("myPref", Context.MODE_PRIVATE);
         mSharedPreference = getSharedPreferences(getString(R.string.app_name),
                 Context.MODE_PRIVATE);
@@ -208,6 +257,19 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         time = mSharedPreference.getString("timekey", "default");
         scheduleName = sharedPreferences.getString("scheduleName", "default OPD");
         subTanentId = sharedPreferences.getInt(Constant.SUB_TANENT_ID_KEY, 0);
+        init();
+        setAppointmentNature();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        init();
+    }
+
+    private void init() {
+
         System.out.println("subTanentId-->" + subTanentId);
         close = (ImageView) findViewById(R.id.close);
         submit = (ImageButton) findViewById(R.id.submit);
@@ -230,6 +292,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         cb_mobile = (CheckBox) findViewById(R.id.cb_mobile);
         cb_patname = (CheckBox) findViewById(R.id.cb_patname);
         cb_hospitalid = (CheckBox) findViewById(R.id.cb_hospitalid);
+        iv_upload = findViewById(R.id.iv_upload);
 
     /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
             R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -245,6 +308,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         submit.setOnClickListener(this);
         cancel.setOnClickListener(this);
         appointmentNature.setOnItemSelectedListener(this);
+        iv_upload.setOnClickListener(this);
     }
 
     @Override
@@ -303,15 +367,673 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.submit:
-                appointmentBookedOrNot();
+                if (Helper.isInternetConnected(NewAppointmentActivity.this)) {
+                    if(!TextUtils.isEmpty(searchBy.getText().toString())){
+                        if(mrno>0){
+                            if(appNatureId>0){
+                                appointmentBookedOrNot();
+                            }else{
+                                Toast.makeText(NewAppointmentActivity.this, "Please select nature", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(NewAppointmentActivity.this, "Please search patient", Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(NewAppointmentActivity.this, "Please search patient", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(NewAppointmentActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
                 //insertAppointmentApi();
                 break;
            /* case R.id.cancel:
                 //startActivity(new Intent(NewAppointmentActivity.this, MainActivity.class));
                 NewAppointmentActivity.this.finish();
                 break;*/
+            case R.id.iv_upload:
+                if(mrno>0) {
+
+                        selectImageDialog();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please select Patient", Toast.LENGTH_SHORT).show();
+                }
         }
     }
+
+    public void selectImageDialog() {
+        final Dialog dialog = new Dialog(this, R.style.AppTheme);
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.getWindow().setDimAmount(0.5f);
+        Window dialogWindow = dialog.getWindow();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        dialogWindow.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.upload_image_list_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int) (width * 0.9);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.alpha = 1f; // Transparency
+
+        dialogWindow.setAttributes(lp);
+        dialog.show();
+        TextView tv_capture_from_camera = dialog.findViewById(R.id.tv_capture_from_camera);
+        TextView tv_capture_from_gallary = dialog.findViewById(R.id.tv_capture_from_gallary);
+        TextView tv_upload_pdf = dialog.findViewById(R.id.tv_upload_pdf);
+        TextView tv_upload_video = dialog.findViewById(R.id.tv_upload_video);
+        TextView cancel =  dialog.findViewById(R.id.cancel);
+
+        tv_upload_pdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickPdf();
+                dialog.dismiss();
+            }
+
+
+        });
+        tv_capture_from_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkPermission()) {
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
+                    Intent intent = new Intent();
+                    // intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    File destination = new File(Environment.getExternalStorageDirectory(),
+                            System.currentTimeMillis() + ".png");
+
+                    mCameraFileName = destination.toString();
+                    Log.d("mCameraFileName",mCameraFileName);
+                    Uri outuri = Uri.fromFile(destination);
+
+                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, REQUEST_CAMERA);
+
+
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
+//                    startActivityForResult(intent, REQUEST_CAMERA);
+
+
+
+
+
+                } else {
+                    requestPermission();
+                }
+                dialog.dismiss();
+            }
+        });
+
+        tv_capture_from_gallary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkPermission()) {
+                    galleryIntent();
+                } else {
+                    requestPermission();
+                }
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                CAMERA);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new
+                String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, RequestPermissionCode);
+    }
+    private void galleryIntent() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
+        //We pass an extra array with the accepted mime types. This will ensure only components with these MIME types as targeted.
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        galleryIntent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+
+        startActivityForResult(Intent.createChooser(galleryIntent, "Select File"), REQUEST_GALLARY);
+
+    }
+
+    private void pickPdf() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/pdf");   //XML file only
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"),
+                    REQUESTCODE_PICK_PDF);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(getApplicationContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == REQUEST_CAMERA) {
+
+            if (data != null) {
+
+
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                File destination = new File(Environment.getExternalStorageDirectory(),
+                        System.currentTimeMillis() + ".jpg");
+                FileOutputStream fo;
+                try {
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                startActivity(new Intent(this, UploadImageActivity.class).
+                        putExtra("resultCode","REQUEST_CAMERA").
+                        putExtra("image",thumbnail).
+                        putExtra("mr_no",mrno).
+                        putExtra("rec_nature_list",recordNatureModelArrayList));
+                this.overridePendingTransition(R.anim.layout_slide_in_up, R.anim.stay);
+//
+
+            }
+
+
+//                Uri  selectedImageUri = data.getData();
+//                if (null != selectedImageUri) {
+//                    // Get the path from the Uri
+//                    String path = getPathFromURI(selectedImageUri);
+//                    Log.i(TAG, "Image Path : " + path);
+//
+//                    startActivity(new Intent(this, UploadImageActivity.class).
+//                            putExtra("resultCode",REQUEST_GALLARY).
+//                            putExtra("imagePathUri",path).
+//                            putExtra("rec_nature_list",recordNatureModelArrayList));
+//                    this.overridePendingTransition(R.anim.layout_slide_in_up, R.anim.stay);
+//                    // Set the image in ImageView
+//
+//                }
+            // camera_image.setImageURI(selectedImageUri);
+
+
+
+
+
+
+
+            //   onCaptureImageResult(data);
+
+
+
+        } else if (requestCode == REQUEST_GALLARY) {
+
+
+            if (data != null) {
+                Uri  selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+                    // Get the path from the Uri
+                    String path = getPathFromURI(selectedImageUri);
+
+
+                    startActivity(new Intent(this, UploadImageActivity.class).
+                            putExtra("resultCode","REQUEST_GALLARY").
+                            putExtra("imagePathUri",path).
+                            putExtra("mr_no",mrno).
+                            putExtra("rec_nature_list",recordNatureModelArrayList));
+                    this.overridePendingTransition(R.anim.layout_slide_in_up, R.anim.stay);
+                    // Set the image in ImageView
+
+                }
+                // camera_image.setImageURI(selectedImageUri);
+
+            }
+
+
+
+
+
+
+                /*uploadImageViaRecNature(REQUEST_GALLARY);
+                onSelectFromGalleryResult(data);*/
+        } else if (requestCode == REQUESTCODE_PICK_PDF) {
+            onSelectPdfFromStorage(data);
+            if (data != null) {
+                String pdfFilePath = getFilePathForN(getApplicationContext(), data.getData());
+                Log.d("pdfFilePath",pdfFilePath);
+                pdfName = pdfFilePath.substring(pdfFilePath.lastIndexOf('/')+1);
+                Log.d("pdfFilePath",pdfName);
+                File file = new File(pdfFilePath);
+                try {
+                    fileTOBase64(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private String fileTOBase64(File yourFile) throws IOException{
+        int size = (int) yourFile.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(yourFile));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        pdfPick = Base64.encodeToString(bytes,Base64.NO_WRAP);
+        showRecNatureDialog(pdfPick);
+
+        return pdfPick;
+    }
+
+    private void showRecNatureDialog(final String pdfPick) {
+        natureId = 0;
+        final Dialog dialog = new Dialog(NewAppointmentActivity.this, R.style.AppTheme);
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.getWindow().setDimAmount(0.5f);
+        Window dialogWindow = dialog.getWindow();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        dialogWindow.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.show_rec_nature_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int) (width * 0.9);
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.alpha = 1f; // Transparency
+
+        dialogWindow.setAttributes(lp);
+
+        TextView tv_cancel = (TextView) dialog.findViewById(R.id.tv_cancel);
+        TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
+
+        final TextView tv_cal = (TextView) dialog.findViewById(R.id.tv_cal);
+        tv_cal.setText(Helper.getCompleteDate());
+        pdfDate = tv_cal.getText().toString();
+        TextView tv_show_lab_report = (TextView) dialog.findViewById(R.id.tv_show_lab_report);
+        TextView tv_show_current_visit = (TextView) dialog.findViewById(R.id.tv_show_current_visit);
+        TextView tv_show_visit_summary = (TextView) dialog.findViewById(R.id.tv_show_visit_summary);
+        TextView tvPdfName = dialog.findViewById(R.id.tvPdfName);
+        tvPdfName.setText("File Name: "+pdfName);
+        tvListNatureId = dialog.findViewById(R.id.tvListNatureId);
+        tvListNatureId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(medicalRecordNatureModelArray!=null){
+                    if(medicalRecordNatureModelArray.length>0){
+                        showMedicalRecordNatureDialog(2);
+                    }else{
+                        getMedicalRecordNature(2);
+                    }
+                }else{
+                    getMedicalRecordNature(2);
+                }
+            }
+        });
+        tv_cal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int yy = calendar.get(Calendar.YEAR);
+                int mm = calendar.get(Calendar.MONTH);
+                int dd = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePicker = new DatePickerDialog(NewAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int yy, int mm, int dd) {
+                        pdfDate = yy + "-" + (mm + 1) + "-" + dd;
+                        tv_cal.setText(pdfDate);
+                    }
+                }, yy, mm, dd);
+                datePicker.show();
+
+            }
+        });
+        tv_show_lab_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                natureId = NatureEnum.mLabReport.natureId();
+                fileUploadPDF(pdfPick);
+                dialog.dismiss();
+            }
+        });
+        tv_show_current_visit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                natureId = NatureEnum.mCurrentVisitImage.natureId();
+                fileUploadPDF(pdfPick);
+                dialog.dismiss();
+            }
+        });
+        tv_show_visit_summary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                natureId = NatureEnum.mVisitSummary.natureId();
+                Log.d("natureId", natureId + "");
+                fileUploadPDF(pdfPick);
+                dialog.dismiss();
+            }
+        });
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                natureId = 0;
+                dialog.dismiss();
+            }
+        });
+        tv_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (natureId != 0) {
+                    fileUploadPDF(pdfPick);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Please Choose Nature", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void fileUploadPDF(String takephoto_img) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("fileStream", takephoto_img);
+        obj.addProperty("type", "document");
+        obj.addProperty("extension", "pdf");
+        System.out.println("===pdfbase64" + takephoto_img);
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.fileUploadPDF(obj, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                showLoadingDialog();
+                postPDFPatMedRecordAPI(s);
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void postPDFPatMedRecordAPI(String pdfPathId) {
+        String sessionKey = "SES" + Helper.getCurrentTimestamp();
+
+        showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        obj.addProperty("UserRoleID", userRoleId);
+        obj.addProperty("RecNatureId", natureId);
+        obj.addProperty("MRNo", mrno);
+        obj.addProperty("date", pdfDate);
+        obj.addProperty("datatype", 0);
+        obj.addProperty("SubTenantId", subTanentId);
+        obj.addProperty("sessionkey", sessionKey);
+        JsonArray jsonArrayFilename = new JsonArray();
+        JsonObject jsonfile = new JsonObject();
+        jsonfile.addProperty("laterDate", "");
+        jsonfile.addProperty("description", pdfPathId);
+        jsonArrayFilename.add(jsonfile);
+        obj.add("fileName", jsonArrayFilename);
+
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.postPat_Med_Record(obj, new Callback<PostPatMedRecord>() {
+            @Override
+            public void success(PostPatMedRecord postPatMedRecord, Response response) {
+                natureId = postPatMedRecord.getIds().get(0);
+                Toast.makeText(getApplicationContext(),"Pdf upload success", Toast.LENGTH_SHORT).show();
+
+
+                //   postEndUserTrackingAPI(postPatMedRecord.getIds().get(0));
+                /*if (postPatMedRecord.getStatus()) {
+                    showSuccessDialog("postPatMedRecord.getMsg()");
+                } else {
+                    showErrorDialog(postPatMedRecord.getMsg());
+                }*/
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void getMedicalRecordNature(final int show) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getMedicalRecordNature(subTanentId,0, new Callback<GetMedicalRecordNatureModel[]>() {
+            @Override
+            public void success(GetMedicalRecordNatureModel[] getMedicalRecordNatureModels, Response response) {
+                if(getMedicalRecordNatureModels!=null){
+                    if(getMedicalRecordNatureModels.length>0){
+                        medicalRecordNatureModelArray = getMedicalRecordNatureModels;
+                        if(show==1){
+                            showMedicalRecordNatureDialog(medicalRecordNatureModelArray);
+                        }else if(show==2){
+                            showMedicalRecordNatureDialog(2);
+                        }
+
+                    }else {
+                        Toast.makeText(NewAppointmentActivity.this,"No Responce!",Toast.LENGTH_LONG).show();
+
+                    }
+                }else {
+                    Toast.makeText(NewAppointmentActivity.this,"No responce received!",Toast.LENGTH_LONG).show();
+
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+
+    private void showMedicalRecordNatureDialog(int show) {
+        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
+        GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
+        recNature.setRecNatureId(0);
+        recNature.setRecNatureProperty("Select Nature");
+        recordNatureModelArrayList.set(0,recNature);
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(NewAppointmentActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = (View) inflater.inflate(R.layout.medical_record_nature_dialog, null);
+        builder.setView(convertView);
+        SearchView filterRecNature = convertView.findViewById(R.id.filterRecNature);
+        InputMethodManager imm = (InputMethodManager) NewAppointmentActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(filterRecNature.getWindowToken(), 0);
+        filterRecNature.setIconified(true);
+        filterRecNature.setIconifiedByDefault(true);
+        filterRecNature.setOnQueryTextListener(this);
+        filterRecNature.setQueryHint("Search Here");
+        recNatureListView = (ListView) convertView.findViewById(R.id.recNatureList);
+        recNatureListView.setTextFilterEnabled(true);
+        recNatureListAdapter = new RecNatureListAdapter(NewAppointmentActivity.this,
+                android.R.layout.simple_spinner_item, recordNatureModelArrayList);
+        recNatureListView.setAdapter(recNatureListAdapter);
+        dialog = builder.show();
+        Window dialogWindow = dialog.getWindow();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        dialogWindow.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int) (width * 0.9);
+        lp.height = (int) (height * 0.5);
+        lp.alpha = 1f; // Transparency
+
+        dialogWindow.setAttributes(lp);
+
+        recNatureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                natureId = recNatureListAdapter.getItem(position).getRecNatureId();
+                tvListNatureId.setText(recNatureListAdapter.getItem(position).getRecNatureProperty()+"");
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showMedicalRecordNatureDialog(GetMedicalRecordNatureModel[] getMedicalRecordNatureModels) {
+        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(getMedicalRecordNatureModels));
+        GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
+        recNature.setRecNatureId(0);
+        recNature.setRecNatureProperty("Show all Nature");
+        recordNatureModelArrayList.set(0,recNature);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewAppointmentActivity.this);
+        LayoutInflater inflater = NewAppointmentActivity.this.getLayoutInflater();
+        View convertView = (View) inflater.inflate(R.layout.medical_record_nature_dialog, null);
+        builder.setView(convertView);
+        SearchView filterRecNature = convertView.findViewById(R.id.filterRecNature);
+        filterRecNature.setIconified(false);
+        filterRecNature.setIconifiedByDefault(false);
+        filterRecNature.setOnQueryTextListener((SearchView.OnQueryTextListener) this);
+        filterRecNature.setQueryHint("Search Here");
+        recNatureListView = (ListView) convertView.findViewById(R.id.recNatureList);
+        recNatureListView.setTextFilterEnabled(true);
+        recNatureListAdapter = new RecNatureListAdapter(NewAppointmentActivity.this,
+                android.R.layout.simple_spinner_item, recordNatureModelArrayList);
+        recNatureListView.setAdapter(recNatureListAdapter);
+        dialog = builder.show();
+        Window dialogWindow = dialog.getWindow();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        dialogWindow.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        int width = displaymetrics.widthPixels;
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = (int) (width * 0.9);
+        lp.height = (int) (height * 0.5);
+        lp.alpha = 1f; // Transparency
+
+        dialogWindow.setAttributes(lp);
+
+    /*    recNatureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                natureId = recNatureListAdapter.getItem(position).getRecNatureId();
+                et_filter.setText(recNatureListAdapter.getItem(position).getRecNatureProperty()+"");
+                dialog.dismiss();
+            }
+        });*/
+    }
+    private static String getFilePathForN(Context context, Uri uri) {
+        Uri returnUri = uri;
+        Cursor returnCursor = context.getContentResolver().query(returnUri, null, null, null, null);
+        /*
+         * Get the column indexes of the data in the Cursor,
+         *     * move to the first row in the Cursor, get the data,
+         *     * and display it.
+         * */
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        String name = (returnCursor.getString(nameIndex));
+        String size = (Long.toString(returnCursor.getLong(sizeIndex)));
+        File file = new File(context.getFilesDir(), name);
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            int read = 0;
+            int maxBufferSize = 1 * 1024 * 1024;
+            int bytesAvailable = inputStream.available();
+
+            //int bufferSize = 1024;
+            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+
+            final byte[] buffers = new byte[bufferSize];
+            while ((read = inputStream.read(buffers)) != -1) {
+                outputStream.write(buffers, 0, read);
+            }
+            Log.e("File Size", "Size " + file.length());
+            inputStream.close();
+            outputStream.close();
+            Log.e("File Path", "Path " + file.getPath());
+            Log.e("File Size", "Size " + file.length());
+        } catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+        }
+        return file.getPath();
+    }
+
+    private void onSelectPdfFromStorage(Intent data) {
+        Uri pdfURI = data.getData();
+        if (pdfURI.getLastPathSegment().endsWith("pdf")) {
+
+            String docId = pdfURI.getLastPathSegment();
+            final String[] split = docId.split(":");
+            final String type = split[0];
+
+            if ("primary".equalsIgnoreCase(type)) {
+                docId = split[1];
+            }
+
+
+            final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/", docId);
+            Log.d("pdf_path", file.getAbsolutePath());
+            try {
+                fileTOBase64(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = this.getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+
+        return res;
+    }
+
 
     private void appointmentBookedOrNot() {
         showLoadingDialog();
@@ -524,7 +1246,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         ad.dismiss();
     }
 
-    public void setAppointmentNature() {
+    /*public void setAppointmentNature() {
         showLoadingDialog();
         mCuraApplication.getInstance().mCuraEndPoint.getAppNature(new Callback<AppointmentNature[]>() {
             @Override
@@ -539,31 +1261,55 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                 dismissLoadingDialog();
             }
         });
-    }
+    }*/
+    public void setAppointmentNature() {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getNatureByUserRole(userRoleId, subTanentId, new Callback<GetNatureByUserRoleModel[]>() {
+            @Override
+            public void success(GetNatureByUserRoleModel[] appointmentNatures, Response response) {
+                appointmentNaturesArray = appointmentNatures;
+                setNatureToList();
+                //feeAmount = "0";
+                dismissLoadingDialog();
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
     public void setNatureToList() {
-        for (int i = 0; i < appointmentNaturesArray.length; i++) {
+        /*for (int i = 0; i < appointmentNaturesArray.length; i++) {
             //nature.add(appointmentNaturesArray[i].getAppNature());
-            hmNature.put(appointmentNaturesArray[i].getAppNatureIdProperty(), appointmentNaturesArray[i].getAppNature());
+            hmNature.put(appointmentNaturesArray[i].getAppNatureID(), appointmentNaturesArray[i].getAppNature());
         }
         nature = new ArrayList<String>(hmNature.values());
         System.out.print("nature-->" + nature);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.search_patient_row_text, nature);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        appointmentNature.setAdapter(dataAdapter);
+        appointmentNature.setAdapter(dataAdapter);*/
+        getNatureByUserRoleIdAdapter = new GetNatureByUserRoleIdAdapter(NewAppointmentActivity.this,
+                android.R.layout.simple_spinner_item,
+                appointmentNaturesArray);
+        appointmentNature.setAdapter(getNatureByUserRoleIdAdapter);
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String natureName = parent.getItemAtPosition(position).toString();
+        getNatureByUserRoleModel = getNatureByUserRoleIdAdapter.getItem(position);
+        appNatureId = getNatureByUserRoleModel.getAppNatureID();
+        //appNatureName = getNatureByUserRoleModel.getAppNature();
+
+        /*String natureName = parent.getItemAtPosition(position).toString();
 
         for (Integer natureId : hmNature.keySet()) {
             if (hmNature.get(natureId).equals(natureName)) {
                 appNatureId = natureId;
                 //Toast.makeText(parent.getContext(), "key: " + appNatureId, Toast.LENGTH_LONG).show();
             }
-        }
+        }*/
     }
 
     @Override
@@ -1145,7 +1891,6 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     }
 
     public void postStartOPD() {
-
         JsonObject obj = new JsonObject();
         obj.addProperty("UserRoleId", userRoleId);
         obj.addProperty("SubTenantId", subTanentId);

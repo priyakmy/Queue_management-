@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,30 +10,30 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="236dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
-            android:scaleType="fitStart" />
+            android:layout_gravity="start|center_vertical"
+            android:scaleType="fitStart"/>
 
         <ImageView
             android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_20"
-            android:background="@drawable/logout" />
+            android:background="@drawable/logout"
+            android:layout_marginEnd="@dimen/margin_20" />
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/main_layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_layout"
         android:background="#f7f7f7">
 
         <ImageButton
@@ -42,7 +43,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/doctors_btn" />
+            android:background="@drawable/doctors_btn"
+            android:layout_marginStart="10dp" />
 
         <ImageButton
             android:id="@+id/doctor_info"
@@ -52,38 +54,10 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/doctors_info_btn" />
-        <!--<RelativeLayout
-            android:layout_marginRight="10dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/search_box"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="50dp"
-            android:visibility="gone">
+            android:background="@drawable/doctors_info_btn"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp" />
 
-            <EditText
-                android:id="@+id/et_search_key"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/margin_10"
-                android:paddingRight="@dimen/margin_10"
-                android:layout_centerVertical="true"
-                android:background="@drawable/search_box"
-                android:singleLine="true"
-
-                android:textColor="@color/date_color"/>
-
-            <ImageButton
-                android:id="@+id/ib_search_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/search_icon"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
-        </RelativeLayout>-->
 
     </RelativeLayout>
 
@@ -92,7 +66,6 @@
         android:id="@+id/doctor_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_layout"
         android:background="#fafafa"
         android:orientation="horizontal">
 
@@ -117,7 +90,8 @@
             android:gravity="center_vertical"
             android:text="Dr. Atul Prasad"
             android:textColor="#000000"
-            android:textSize="15dp" />
+            android:textSize="15sp"
+            android:layout_marginStart="10dp" />
 
 
         <LinearLayout
@@ -127,7 +101,8 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginEnd="@dimen/margin_10">
 
             <ImageButton
                 android:id="@+id/chk_in"
@@ -137,7 +112,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="#fafafa"
-                android:src="@drawable/checkin" />
+                android:src="@drawable/checkin"
+                android:layout_marginStart="10dp"
+                tools:ignore="NestedWeights" />
 
 
             <ImageButton
@@ -158,14 +135,6 @@
                 android:background="#fafafa"
                 android:src="@drawable/card" />
 
-            <!--<ImageButton
-                android:id="@+id/calendar_account"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="#fafafa"
-                android:src="@drawable/rupees" />-->
         </LinearLayout>
 
     </LinearLayout>
@@ -322,7 +291,6 @@
             android:id="@+id/bottom_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <View
@@ -342,7 +310,6 @@
                     android:id="@+id/appointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:text="APPOINTMENT"
                     android:textStyle="bold"
                     android:textColor="@color/orange"
@@ -354,15 +321,14 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
 
                 <TextView
                     android:id="@+id/queue_mgmt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="QUEUE"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -374,14 +340,13 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15dp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/billing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="BILLING"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -393,14 +358,13 @@
                     android:clickable="true"
                     android:text="  |  "
                     android:textColor="@color/tv_colorTextBrightGrey1"
-                    android:textSize="15dp" />
+                    android:textSize="15sp"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/tv_fillcard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:text="FILL CASHCARD"
                     android:textStyle="bold"
                     android:textColor="@color/txt_dark"
@@ -415,11 +379,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/mcura_logo" />
+                android:src="@drawable/mcura_logo"
+                android:layout_marginEnd="5dp" />
 
         </LinearLayout>
     </LinearLayout>

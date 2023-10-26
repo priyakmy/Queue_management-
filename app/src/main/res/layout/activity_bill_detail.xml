@@ -10,7 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung"
+        android:background="@color/main_layout_background"
         android:elevation="@dimen/margin_02">
 
         <ImageView
@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_20"
-            android:background="@drawable/mcura_logo" />
+            android:background="@drawable/mcura_logo"
+            android:layout_marginStart="@dimen/margin_20" />
     </android.support.v7.widget.Toolbar>
 
     <View
@@ -35,7 +36,8 @@
         android:drawableRight="@drawable/ic_search"
         android:text="Select Doctor"
         android:textColor="#454545"
-        android:textColorHint="#8a8a8a" />
+        android:textColorHint="#8a8a8a"
+        android:drawableEnd="@drawable/ic_search" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +61,8 @@
                 android:drawablePadding="@dimen/padding_05"
                 android:gravity="center"
                 android:text="28 July 2016"
-                android:textColor="@color/black">
+                android:textColor="@color/black"
+                android:drawableStart="@drawable/ic_cal">
 
             </TextView>
         </RelativeLayout>
@@ -80,7 +83,9 @@
                 android:drawablePadding="@dimen/padding_05"
                 android:gravity="center"
                 android:text="28 July 2016"
-                android:textColor="@color/black">
+                android:textColor="@color/black"
+                android:layout_alignParentEnd="true"
+                android:drawableStart="@drawable/ic_cal">
 
             </TextView>
         </RelativeLayout>
@@ -114,7 +119,8 @@
                 android:layout_toRightOf="@+id/tv_amount"
                 android:text="0000.00"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_16sp" />
+                android:textSize="@dimen/text_16sp"
+                android:layout_toEndOf="@+id/tv_amount" />
         </RelativeLayout>
 
         <LinearLayout
@@ -142,7 +148,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/bill_printer" />
+            android:src="@drawable/bill_printer"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <View

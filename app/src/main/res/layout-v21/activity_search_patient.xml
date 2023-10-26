@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f2f2f2">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_layout_background">
+
+        <ImageView
+            android:id="@+id/hospital_logo"
+            android:layout_width="236dp"
+            android:layout_height="33dp"
+            android:layout_gravity="start|center_vertical"
+            android:scaleType="fitStart" />
+
+        <ImageView
+            android:id="@+id/add_patient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/add_patient"
+            android:layout_marginEnd="@dimen/margin_20" />
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/margin_05"
+            android:background="@drawable/spinner_border">
+
+            <Spinner
+                android:id="@+id/select_hospital_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+
+      
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/searchby"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginStart="@dimen/margin_10" />
+
+            <CheckBox
+                android:id="@+id/cb_mrno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="1"
+                android:text="Mrno"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12sp" />
+
+            <CheckBox
+                android:id="@+id/cb_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="2"
+                android:text="Mobile"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12sp" />
+
+            <CheckBox
+                android:id="@+id/cb_patname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:checked="true"
+                android:tag="3"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12sp" />
+
+            <CheckBox
+                android:id="@+id/cb_hospitalid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="4"
+                android:text="Hospital Id"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/spinner_border"
+            android:layout_margin="@dimen/margin_05">
+
+            <SearchView
+                android:id="@+id/select_patient_searchview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc"
+            android:layout_marginBottom="@dimen/margin_05"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRecyclerViewSearchPatient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+    </LinearLayout>
+</LinearLayout>

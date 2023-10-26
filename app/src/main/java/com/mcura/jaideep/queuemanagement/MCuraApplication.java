@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.mcura.jaideep.queuemanagement.Model.LocalBillModel;
 import com.mcura.jaideep.queuemanagement.SqliteHelper.SqlLiteDbHelper;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
@@ -19,7 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.mcura.jaideep.queuemanagement.singlton.MySingleTon;
 import com.squareup.okhttp.OkHttpClient;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -64,8 +64,8 @@ public class MCuraApplication extends Application {
         super.onCreate();
         SharedPreferences mSharedPreference = getSharedPreferences(getString(R.string.app_name),
                 Context.MODE_PRIVATE);
-        Fabric.with(this, new Crashlytics());
-        Crashlytics.setUserName(mSharedPreference.getString(Constant.LOGIN_NAME_KEY, "Default"));
+//        Fabric.with(this, new Crashlytics());
+//        Crashlytics.setUserName(mSharedPreference.getString(Constant.LOGIN_NAME_KEY, "Default"));
         mContext = getApplicationContext();
         instance = this;
 

@@ -11,13 +11,13 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:id="@+id/hospital_logo"
             android:layout_width="236dp"
             android:layout_height="33dp"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center_vertical"
             android:scaleType="fitStart" />
 
         <ImageView
@@ -25,9 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="@dimen/margin_10"
-            android:src="@drawable/logout" />
+            android:src="@drawable/logout"
+            android:layout_marginEnd="@dimen/margin_10" />
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
@@ -59,17 +60,18 @@
             android:id="@+id/go_to_chart_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginRight="50dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/goto_chart_bg" />
+            android:background="@drawable/goto_chart_bg"
+            android:layout_marginEnd="50dp" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
         android:background="@drawable/bottom_layout_highlight">
 
         <ImageView
@@ -79,6 +81,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:background="@drawable/mcura_logo" />
+            android:background="@drawable/mcura_logo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp" />
     </RelativeLayout>
 </LinearLayout>

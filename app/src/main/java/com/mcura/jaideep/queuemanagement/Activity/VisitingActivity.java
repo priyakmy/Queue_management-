@@ -64,6 +64,7 @@ import com.mcura.jaideep.queuemanagement.SqliteHelper.SqlLiteDbHelper;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
+import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -675,8 +676,13 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
         mr_no = datumModel.getMrNo();
         //Toast.makeText(VisitActivity.this,"subtenentid = "+subTanentId,Toast.LENGTH_LONG).show();
         String dobEncode = datumModel.getDob();
-        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+        Date createdOn = Helper.JsonDateToDate(dobEncode);
+//        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
         String formattedDate = sdf.format(createdOn);
         System.out.println("formattedDate-->" + formattedDate);
@@ -948,8 +954,13 @@ public class VisitingActivity extends AppCompatActivity implements View.OnClickL
                 visiting_pat_name.setText(mainModelData.getPatname().toString());
                 //mr_no = mainModel.getMRNO();
                 String dobEncode = mainModelData.getDob();
-                String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
-                Date createdOn = new Date(Long.parseLong(timestamp));
+                Date createdOn = Helper.JsonDateToDate(dobEncode);
+//                String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
+//                Date createdOn = new Date();
+//                try {
+//                    createdOn  = new Date(Long.parseLong(timestamp));
+//                }catch (NumberFormatException  numberFormatException){
+//                }
                 SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
                 String formattedDate = sdf.format(createdOn);
                 System.out.println("formattedDate-->" + formattedDate);

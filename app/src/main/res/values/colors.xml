@@ -6,8 +6,10 @@
     <color name="red">#ff0000</color>
     <color name="orange">#ff5533</color>
     <color name="gray">#5d5d5d</color>
-    <color name="main_layout_backgroung">#eeeeee</color>
+    <color name="main_layout_background">#eeeeee</color>
+    <color name="view_border">#cccccc</color>
     <color name="colorPrimary">#AFAFAF</color>
+    <color name="bg_queue">#ededed</color>
     <color name="colorPrimaryButton">#eee9e9</color>
     <color name="colorPrimaryDark">#AFAFAF</color>
     <color name="textColorPrimary">#FFFFFF</color>

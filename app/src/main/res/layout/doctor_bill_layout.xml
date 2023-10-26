@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_doc_nature"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,7 +26,10 @@
             android:paddingLeft="5dp"
             android:paddingTop="@dimen/padding_10"
             android:text="Select Doctor"
-            android:textColor="@color/black"></TextView>
+            android:textColor="@color/black"
+            android:layout_marginEnd="@dimen/margin_05"
+            android:paddingStart="5dp"
+            tools:ignore="RtlSymmetry" />
 
         <Spinner
             android:id="@+id/nature"
@@ -35,7 +39,8 @@
             android:layout_marginLeft="@dimen/margin_05"
             android:layout_weight="1"
             android:background="@drawable/doc_spinner"
-            android:prompt="@array/select_hospital">
+            android:prompt="@array/select_hospital"
+            android:layout_marginStart="@dimen/margin_05">
 
         </Spinner>
     </LinearLayout>
@@ -61,7 +66,8 @@
             android:maxLines="1"
             android:textColor="@color/text_hint"
             android:textSize="@dimen/text_14sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_marginStart="5dp" />
     </RelativeLayout>
 
     <TextView
@@ -195,8 +201,6 @@
                         android:id="@+id/tvdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:text="date"
                         android:textColor="#454545"
                         android:textSize="@dimen/text_12sp" />
@@ -205,8 +209,6 @@
                         android:id="@+id/tvtime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:text="time"
                         android:textColor="#454545"
                         android:textSize="@dimen/text_12sp" />
@@ -230,8 +232,6 @@
                         android:id="@+id/tvnature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:text="nature"
                         android:textColor="#454545"
                         android:textSize="@dimen/text_12sp" />
@@ -240,8 +240,6 @@
                         android:id="@+id/tvamount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
                         android:text="0000"
                         android:textColor="#454545"
                         android:textSize="@dimen/text_12sp" />

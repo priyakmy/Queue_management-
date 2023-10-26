@@ -13,7 +13,8 @@
         android:background="@drawable/token_outline"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_16sp" />
+        android:textSize="@dimen/text_16sp"
+        android:layout_marginEnd="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
-                android:text="Rs. 1,999" />
+                android:text="Rs. 1,999"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +83,7 @@
                     android:id="@+id/tv_hospital_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/txnDesc"

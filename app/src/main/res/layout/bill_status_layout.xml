@@ -5,8 +5,7 @@
     android:shrinkColumns="*"  android:stretchColumns="*" android:background="#ffffff">
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        >
+        android:layout_height="fill_parent">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

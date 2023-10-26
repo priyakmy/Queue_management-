@@ -61,5 +61,6 @@
     <dimen name="margin_03">3dp</dimen>
     <dimen name="text_18sp">18sp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
 
 </resources>

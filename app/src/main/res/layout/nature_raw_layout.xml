@@ -5,5 +5,5 @@
     android:id="@+id/tv_doctorName"
     android:textColor="#000000"
     android:padding="10dp"
-    android:textSize="14dp"
+    android:textSize="14sp"
     android:singleLine="true"/>

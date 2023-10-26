@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,14 +9,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_layout_backgroung">
+        android:background="@color/main_layout_background">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/margin_20"
-            android:background="@drawable/logo" />
+            android:background="@drawable/logo"
+            android:layout_marginStart="@dimen/margin_20" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -35,7 +34,8 @@
             android:layout_alignParentLeft="true"
             android:background="@drawable/new_appointment_btn_bg_layer"
             android:text="Cancel"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:id="@+id/submit"
@@ -44,7 +44,8 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/new_appointment_btn_bg_layer"
             android:text="Submit"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <ScrollView
@@ -96,14 +97,18 @@
                     android:enabled="true"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toStartOf="@+id/h_id"
+                    android:layout_toEndOf="@+id/tv_hospital_id" />
 
                 <ImageView
                     android:id="@+id/h_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/h" />
+                    android:src="@drawable/h"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <EditText
@@ -170,11 +175,12 @@
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
                     android:textSize="@dimen/text_14sp"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    android:layout_marginEnd="2dp" />
 
                 <EditText
                     android:id="@+id/et_age"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="2dp"
                     android:layout_weight="1"
@@ -187,7 +193,8 @@
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
                     android:textSize="@dimen/text_14sp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:layout_marginEnd="2dp" />
 
             </LinearLayout>
 
@@ -214,7 +221,8 @@
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginEnd="2dp" />
 
                 <EditText
                     android:id="@+id/dob_month"
@@ -231,7 +239,9 @@
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="2dp" />
 
                 <EditText
                     android:id="@+id/dob_year"
@@ -247,7 +257,8 @@
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
-                    android:textSize="@dimen/text_14sp" />
+                    android:textSize="@dimen/text_14sp"
+                    android:layout_marginStart="3dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -287,7 +298,8 @@
                         android:checked="true"
                         android:gravity="center"
                         android:text="Male"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:layout_marginStart="1dp" />
 
                     <RadioButton
                         android:id="@+id/radio_female"
@@ -301,7 +313,8 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="Female"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:layout_marginEnd="1dp" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -355,7 +368,6 @@
                 android:layout_marginLeft="@dimen/text_14sp"
                 android:layout_marginRight="@dimen/text_14sp"
                 android:layout_marginTop="@dimen/text_14sp"
-
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -399,21 +411,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_14sp"
-                    android:background="@drawable/new_spiner"></Spinner>
+                    android:background="@drawable/new_spiner" />
 
                 <Spinner
                     android:id="@+id/state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_14sp"
-                    android:background="@drawable/new_spiner"></Spinner>
+                    android:background="@drawable/new_spiner" />
 
                 <Spinner
                     android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_14sp"
-                    android:background="@drawable/new_spiner"></Spinner>
+                    android:background="@drawable/new_spiner" />
 
                 <Spinner
                     android:id="@+id/area"
@@ -421,7 +433,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/text_14sp"
                     android:layout_marginTop="@dimen/text_14sp"
-                    android:background="@drawable/new_spiner"></Spinner>
+                    android:background="@drawable/new_spiner" />
             </LinearLayout>
 
 

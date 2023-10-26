@@ -267,8 +267,13 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 email.setText(patientSearchModel.getEmailId());
             }
             String dateOfBirth = patientSearchModel.getDob();
-            String timestamp = dateOfBirth.split("\\(")[1].split("\\+")[0];
-            Date createdOn = new Date(Long.parseLong(timestamp));
+            Date createdOn = Helper.JsonDateToDate(dateOfBirth);
+//            String timestamp = dateOfBirth.split("\\(")[1].split("\\+")[0];
+//            Date createdOn = new Date();
+//            try {
+//                createdOn  = new Date(Long.parseLong(timestamp));
+//            }catch (NumberFormatException  numberFormatException){
+//            }
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
             String formatted = sdf.format(createdOn);
             System.out.println("formattedDate-->" + formatted);
@@ -572,8 +577,13 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     }
 
     private String getDob(String dob) {
-        String timestamp = dob.split("\\(")[1].split("\\+")[0];
-        Date createdOn = new Date(Long.parseLong(timestamp));
+        Date createdOn = Helper.JsonDateToDate(dob);
+       // String timestamp = dob.split("\\(")[1].split("\\+")[0];
+//        Date createdOn = new Date();
+//        try {
+//            createdOn  = new Date(Long.parseLong(timestamp));
+//        }catch (NumberFormatException  numberFormatException){
+//        }
         SimpleDateFormat sdf = new SimpleDateFormat("MM,dd,yyyy");
         String formattedDate = sdf.format(createdOn);
         System.out.println("formattedDate-->" + formattedDate);

@@ -13,6 +13,6 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:divider="@null"
-        android:dividerHeight="5dp"></ListView>
+        android:dividerHeight="5dp" />
 
 </LinearLayout>

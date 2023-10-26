@@ -17,14 +17,15 @@
             android:id="@+id/radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:buttonTint="@color/orange"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toRightOf="@+id/radioButton"
-            android:layout_marginLeft="@dimen/margin_10">
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_toEndOf="@+id/radioButton"
+            android:layout_marginStart="@dimen/margin_10">
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
@@ -51,12 +52,15 @@
             android:layout_height="wrap_content"
             android:src="@drawable/spinner_arrow"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/margin_20"/>
+            android:layout_marginLeft="@dimen/margin_20"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/margin_20" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_toLeftOf="@+id/ivIndicator">
+            android:layout_toLeftOf="@+id/ivIndicator"
+            android:layout_toStartOf="@+id/ivIndicator">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

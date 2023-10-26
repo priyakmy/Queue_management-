@@ -7,10 +7,13 @@
     <string name="searchby">Search by:</string>
     <string name="nature">Nature : </string>
     <string name="appointment_name">Appointment Name :</string>
+    <string name="postdate">Post Date</string>
     <string name="appointment_time">Appointment Time :</string>
     <string-array name="select_hospital">
         <item>Select Hospital</item>
     </string-array>
+    <string name="cancel">Cancel</string>
+    <string name="upload">Upload</string>
     <string name="error_detected">TAG NOT DETECTED. WHERE DO YOU WANT WRITE!?!?</string>
     <string name="ok_writing">WRITTEN YOUR TAG SUCCESSFULLY!!</string>
     <string name="error_writing">ERROR DURING WRITING. ARE YOU SURE THAT YOUR TAG IS CLOSE TO YOUR MOBILE PHONE?</string>

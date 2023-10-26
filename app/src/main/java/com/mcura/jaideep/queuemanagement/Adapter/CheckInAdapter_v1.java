@@ -63,6 +63,11 @@ public class CheckInAdapter_v1 extends BaseAdapter {
         }
         //put the data in it
         String item = searchPatientModel.getData().get(position).getPatName();
+
+
+        int mrno = searchPatientModel.getData().get(position).getMrNo();
+
+
         if (item != null) {
             TextView text1 = (TextView) row.findViewById(R.id.txt_third_page_spinner_item);
             text1.setText(item);
