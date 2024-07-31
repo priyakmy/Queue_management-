@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.kk121:File-Loader:1.2@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a00fe8baf1c5660513a610b2cc2f67e5/transformed/File-Loader-1.2/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a00fe8baf1c5660513a610b2cc2f67e5/transformed/File-Loader-1.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a00fe8baf1c5660513a610b2cc2f67e5/transformed/File-Loader-1.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a00fe8baf1c5660513a610b2cc2f67e5/transformed/File-Loader-1.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.kk121/File-Loader/1.2/191f25fb1fef80127cad495e30bd720707037ff7/File-Loader-1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
