@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class QueueStatus {
 
+    @SerializedName("lastPrescDate")
+    @Expose
+    private String lastPrescDate;
     @SerializedName("AppId")
     @Expose
     private Integer appId;
@@ -42,6 +45,15 @@ public class QueueStatus {
     @SerializedName("toTime")
     @Expose
     private Object toTime;
+
+
+    public String getLastPrescDate() {
+        return lastPrescDate;
+    }
+
+    public void setLastPrescDate(String lastPrescDate) {
+        this.lastPrescDate = lastPrescDate;
+    }
 
     public Integer getAppId() {
         return appId;

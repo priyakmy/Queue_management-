@@ -1,10 +1,15 @@
 package com.mcura.jaideep.queuemanagement.Adapter;
 
+import static com.mcura.jaideep.queuemanagement.Activity.Helper.convertDate;
+import static com.mcura.jaideep.queuemanagement.helper.Helper.getCompleteDate;
+import static com.mcura.jaideep.queuemanagement.helper.Helper.getCompleteDateyyMMdd;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +20,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
-import com.mcura.jaideep.queuemanagement.Activity.CalendarActivity;
 import com.mcura.jaideep.queuemanagement.Activity.CheckInActivity;
 import com.mcura.jaideep.queuemanagement.Activity.QueueStatusActivity;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
+import com.mcura.jaideep.queuemanagement.Model.Dataa;
+import com.mcura.jaideep.queuemanagement.Model.Patmedrecordd;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.QueueStatus;
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,6 +136,9 @@ public class Queue_Adapter extends BaseAdapter {
             holder = (ViewHolder) row.getTag();
         }
         holder.txtViewNo.setText(model.getTokenNo().toString());
+
+
+
         if (model.getHospitalNo() != null) {
             if (!model.getHospitalNo().toString().equals("")) {
                 holder.txtViewHospitalNo.setText(model.getHospitalNo() + "");
@@ -141,7 +153,16 @@ public class Queue_Adapter extends BaseAdapter {
         }
         if (model.getMRNo() != null) {
             holder.txtViewMrno.setText(model.getMRNo().toString());
+
         }
+
+        if (model.getLastPrescDate() != null) {
+            if(convertApiDate(model.getLastPrescDate()).equals(convertApiDate(getCompleteDateyyMMdd()))){
+                holder.txtViewNo.setTextColor(ContextCompat.getColor(context, R.color.green));
+            }
+
+        }
+
         if (model.getTokenStatus() != null) {
             String tokenStatus = model.getTokenStatus().toString();
             //holder.txtViewStatus.setText(tokenStatus);
@@ -289,6 +310,55 @@ public class Queue_Adapter extends BaseAdapter {
     public void dismissLoadingDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
+    }
+
+//    public void getlatestData(int userRoleId, String mrno, int subTanentId, TextView txtViewtokenNo) {
+//
+//        showLoadingDialog();
+//
+//        mCuraApplication.getInstance().mCuraEndPoint.getLatestPatientRecord( userRoleId, Integer.parseInt(mrno),subTanentId, new Callback<Dataa>() {
+//
+//            @Override
+//            public void success(Dataa patLatestRecord, Response response) {
+//                if (patLatestRecord != null) {
+//
+//                    if (patLatestRecord.getPatmedrecords() != null &&
+//                            patLatestRecord.getPatmedrecords().size() > 0) {
+//                        Patmedrecordd patmedrecordd = patLatestRecord.getPatmedrecords().get(0);
+//                        Log.d("CurrentTime", "success: "+convertApiDate(convertDate(patmedrecordd.getDate()))+" "+convertApiDate(getCompleteDate()));
+//                        if(convertApiDate(convertDate(patmedrecordd.getDate())).equals(convertApiDate(getCompleteDate()))){
+//                            txtViewtokenNo.setTextColor(ContextCompat.getColor(context, R.color.green));
+//                        }
+//                    }
+//                }
+//            }
+//            @Override
+//            public void failure(RetrofitError error) {
+//                dismissLoadingDialog();
+//            }
+//        });
+//
+//
+//        dismissLoadingDialog();
+//    }
+
+    private LocalDate convertApiDate(String dateString) {
+        // Define the possible date formats
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-d");
+
+        try {
+            // Try parsing with the first format
+            return LocalDate.parse(dateString, formatter1);
+        } catch (DateTimeParseException e) {
+            try {
+                // Try parsing with the second format
+                return LocalDate.parse(dateString, formatter2);
+            } catch (DateTimeParseException e2) {
+                // Handle the exception or return a default value if parsing fails
+                return LocalDate.now(); // Default value (current date)
+            }
         }
     }
 }

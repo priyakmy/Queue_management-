@@ -1,16 +1,26 @@
 package com.mcura.jaideep.queuemanagement.Activity;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Adapter.DoctorSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.ScheduleSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
@@ -35,6 +46,11 @@ import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 import retrofit.Callback;
@@ -47,6 +63,9 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
     AlertDialog.Builder builder;
     SearchView search_doctor;
     ListView doctor_list;
+    String Assistat_Roll_id = "";
+    String  AssistantUserrollid = "";
+    String   AssistantUserName = "";
     private ProgressDialog progressDialog;
     public MCuraApplication mCuraApplication;
     private Spinner doctor_schedule;
@@ -57,6 +76,8 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
     DoctorListModel[] doctorArray;
     DoctorSpinnerAdapter doctorSpinnerAdapter;
     int userRoleId, subTenantId;
+    final int REQUEST_CAMERA = 2;
+    private String mCameraFileName;
     int year, month, date;
     String completeDate, from_time, to_time;
     ImageView logout;
@@ -67,6 +88,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
     String subtanentImagePath;
     private int loginRoleId;
     private DoctorListModel doctorListModel;
+    public static final int RequestPermissionCode = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,14 +116,82 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
         getDoctorDetail();
 
 
-        doctor_name = (TextView) findViewById(R.id.doctor_name);
-        doctor_schedule = (Spinner) findViewById(R.id.doctor_sechedule);
-        go_to_chart_btn = (ImageButton) findViewById(R.id.go_to_chart_btn);
         logout = mToolbar.findViewById(R.id.logout);
         //set hospital logo
         subtanentImagePath = mSharedPreference.getString(Constant.SUB_TANENT_IMAGE_PATH, "default");
         ImageView hospital_logo = (ImageView) mToolbar.findViewById(R.id.hospital_logo);
         Picasso.with(DoctorScheduleActivity.this).load(subtanentImagePath).into(hospital_logo);
+
+
+
+        doctor_name = (TextView) findViewById(R.id.doctor_name);
+        doctor_schedule = (Spinner) findViewById(R.id.doctor_sechedule);
+        go_to_chart_btn = (ImageButton) findViewById(R.id.go_to_chart_btn);
+       // assistant_doctor_name = (TextView) findViewById(R.id.assistant_doctor_name);
+        Intent intent = getIntent();
+        AssistantUserrollid = intent.getStringExtra("AssistantUserrollid");
+          AssistantUserName = intent.getStringExtra("AssistantUserName");
+        Assistat_Roll_id = intent.getStringExtra("Assistat_Roll_id");
+        if (AssistantUserrollid != null && AssistantUserrollid.equals("930860")){
+            doctor_name.setText(AssistantUserName);
+            doctor_name.setClickable(false);
+              userRoleId=Integer.parseInt(AssistantUserrollid);
+
+            getScheduleData(userRoleId);
+        }else {
+            doctor_name.setClickable(true);
+            doctor_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Helper.isInternetConnected(DoctorScheduleActivity.this)) {
+                        builder = new AlertDialog.Builder(DoctorScheduleActivity.this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View convertView = inflater.inflate(R.layout.search_doctor_dialog, null);
+                        builder.setView(convertView);
+                        SearchView search_doctor = convertView.findViewById(R.id.search_doctor);
+                        search_doctor.setIconified(false);
+                        search_doctor.setIconifiedByDefault(false);
+                        search_doctor.setOnQueryTextListener(DoctorScheduleActivity.this);
+                        search_doctor.setQueryHint("Search Here");
+                        lv = convertView.findViewById(R.id.doctor_list);
+                        lv.setTextFilterEnabled(true);
+                        doctorSpinnerAdapter = new DoctorSpinnerAdapter(DoctorScheduleActivity.this,
+                                android.R.layout.simple_spinner_item,
+                                doctorArray);
+                        lv.setAdapter(doctorSpinnerAdapter);
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                userRoleId = doctorSpinnerAdapter.getItem(position).getUserRoleId();
+                                editor.putString(Constant.LOGIN_NAME_KEY, doctorSpinnerAdapter.getItem(position).getUserName());
+                                //Toast.makeText(LoginActivity.this,userRoleId+"===userroleid",Toast.LENGTH_LONG).show();
+                                //editor.putInt(Constant.ADDRESS_ID_KEY, doctorSpinnerAdapter.getItem(position).getAddressId());
+                                // editor.putInt(Constant.CONTACT_ID_KEY, doctorSpinnerAdapter.getItem(position).getContactId());
+                                //editor.putString(Constant.DOB_KEY, doctorSpinnerAdapter.getItem(position).getDob());
+                                //editor.putInt(Constant.GENDER_ID_KEY, doctorSpinnerAdapter.getItem(position).getGenderId());
+                                //editor.putString(Constant.UNAME_KEY, doctorSpinnerAdapter.getItem(position).getUname());
+                                Log.d("ServiceRoleId",doctorSpinnerAdapter.getItem(position).getServiceRoleId()+"");
+                                editor.putString(Constant.DEPT_NAME,doctorSpinnerAdapter.getItem(position).getDeptName());
+                                editor.putInt(Constant.SERVICE_ROLE_ID, doctorSpinnerAdapter.getItem(position).getServiceRoleId());
+                                editor.putInt(Constant.USER_ROLE_ID, doctorSpinnerAdapter.getItem(position).getUserRoleId());
+                                editor.apply();
+                                doctor_name.setText(doctorSpinnerAdapter.getItem(position).getUserName());
+                                dialog.dismiss();
+                                getScheduleData(userRoleId);
+                            }
+                        });
+
+                        dialog = builder.show();
+                    } else {
+                        Toast.makeText(DoctorScheduleActivity.this, "Check Internet Connection!", Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+            });
+        }
+
+
         /*if(!subtanentImagePath.equals("default")){
             Picasso.with(DoctorScheduleActivity.this).load(subtanentImagePath).into(hospital_logo);
         }else{
@@ -123,55 +213,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
                 startActivity(intentLogout);
             }
         });
-        doctor_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Helper.isInternetConnected(DoctorScheduleActivity.this)) {
-                    builder = new AlertDialog.Builder(DoctorScheduleActivity.this);
-                    LayoutInflater inflater = getLayoutInflater();
-                    View convertView = inflater.inflate(R.layout.search_doctor_dialog, null);
-                    builder.setView(convertView);
-                    SearchView search_doctor = convertView.findViewById(R.id.search_doctor);
-                    search_doctor.setIconified(false);
-                    search_doctor.setIconifiedByDefault(false);
-                    search_doctor.setOnQueryTextListener(DoctorScheduleActivity.this);
-                    search_doctor.setQueryHint("Search Here");
-                    lv = convertView.findViewById(R.id.doctor_list);
-                    lv.setTextFilterEnabled(true);
-                    doctorSpinnerAdapter = new DoctorSpinnerAdapter(DoctorScheduleActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            doctorArray);
-                    lv.setAdapter(doctorSpinnerAdapter);
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            userRoleId = doctorSpinnerAdapter.getItem(position).getUserRoleId();
-                            editor.putString(Constant.LOGIN_NAME_KEY, doctorSpinnerAdapter.getItem(position).getUserName());
-                            //Toast.makeText(LoginActivity.this,userRoleId+"===userroleid",Toast.LENGTH_LONG).show();
-                            //editor.putInt(Constant.ADDRESS_ID_KEY, doctorSpinnerAdapter.getItem(position).getAddressId());
-                            // editor.putInt(Constant.CONTACT_ID_KEY, doctorSpinnerAdapter.getItem(position).getContactId());
-                            //editor.putString(Constant.DOB_KEY, doctorSpinnerAdapter.getItem(position).getDob());
-                            //editor.putInt(Constant.GENDER_ID_KEY, doctorSpinnerAdapter.getItem(position).getGenderId());
-                            //editor.putString(Constant.UNAME_KEY, doctorSpinnerAdapter.getItem(position).getUname());
-                            Log.d("ServiceRoleId",doctorSpinnerAdapter.getItem(position).getServiceRoleId()+"");
-                            editor.putString(Constant.DEPT_NAME,doctorSpinnerAdapter.getItem(position).getDeptName());
-                            editor.putInt(Constant.SERVICE_ROLE_ID, doctorSpinnerAdapter.getItem(position).getServiceRoleId());
-                            editor.putInt(Constant.USER_ROLE_ID, doctorSpinnerAdapter.getItem(position).getUserRoleId());
-                            editor.apply();
-                            doctor_name.setText(doctorSpinnerAdapter.getItem(position).getUserName());
-                            dialog.dismiss();
-                            getScheduleData();
-                        }
-                    });
 
-                    dialog = builder.show();
-                } else {
-                    Toast.makeText(DoctorScheduleActivity.this, "Check Internet Connection!", Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-        });
         doctor_schedule.setOnItemSelectedListener(this);
         go_to_chart_btn.setOnClickListener(this);
         Calendar now = Calendar.getInstance();
@@ -193,6 +235,118 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
         }
         return doctorListModel;
     }
+    public void openCamera(){
+        if (checkPermission()) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        Intent intent = new Intent();
+        // intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".png");
+
+        mCameraFileName = destination.toString();
+        Log.d("mCameraFileName",mCameraFileName);
+        Uri outuri = Uri.fromFile(destination);
+
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, REQUEST_CAMERA);
+        } else {
+            requestPermission();
+        }
+
+    }
+
+    public boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                CAMERA);
+        return result == PackageManager.PERMISSION_GRANTED &&
+                result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new
+                String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, RequestPermissionCode);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA) {
+
+            if (data != null) {
+
+
+                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                File destination = new File(Environment.getExternalStorageDirectory(),
+                        System.currentTimeMillis() + ".jpg");
+                FileOutputStream fo;
+                try {
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                uploadOrderImageApi(thumbnail);
+
+
+            }
+        }
+    }
+
+    private void uploadOrderImageApi(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        String resultBitmap = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        JsonObject obj = new JsonObject();
+        obj.addProperty("fileStream", resultBitmap);
+        obj.addProperty("type", "image");
+        obj.addProperty("extension", "jpg");
+        mCuraApplication.getInstance().mCuraEndPoint.uploadOrderImage(obj, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                pccAttendanceupload(s);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getApplicationContext(), "Error" + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void pccAttendanceupload(String s) {
+
+        JsonObject obj = new JsonObject();
+        obj.addProperty("userRoleId", userRoleId);
+        obj.addProperty("subTenantId",subTanentId);
+        System.out.println("image/Drawings/"+s+"asdfghjkl");
+        obj.addProperty("profilePic", s);
+
+        mCuraApplication.getInstance().mCuraEndPoint.postPccAttendance(obj, new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject res, Response response) {
+                System.out.println(res.toString()+"postpccresponce");
+//                Intent i = new Intent(DoctorScheduleActivity.this, CalendarActivity.class);
+//                startActivity(i);
+            }
+
+
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(getApplicationContext(), "Error" + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
@@ -200,9 +354,13 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
             case R.id.go_to_chart_btn:
                 if (Helper.isInternetConnected(DoctorScheduleActivity.this)) {
                     if (userRoleId != 0 && scheduleId != 0) {
+//                       openCamera();
                         Intent i = new Intent(DoctorScheduleActivity.this, CalendarActivity.class);
+                        i.putExtra("Assistat_Roll_id",Assistat_Roll_id);
+                        i.putExtra("AssistantUserName",AssistantUserName);
+                        i.putExtra("AssistantUserrollid",AssistantUserrollid);
                         startActivity(i);
-                        //finish();
+//                        finish();
                     }
                 } else {
                     Toast.makeText(DoctorScheduleActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -231,7 +389,8 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
                     editor.apply();
                     doctor_name.setText(model.getUserName());
                     doctor_name.setClickable(false);
-                    getScheduleData();
+                    getScheduleData(userRoleId);
+
                 }
                 dismissLoadingDialog();
             }
@@ -269,19 +428,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
-            /*case R.id.doctor_name:
-                userRoleId = doctorSpinnerAdapter.getItem(position).getUserRoleId();
-                Toast.makeText(DoctorScheduleActivity.this, userRoleId + "===userroleid", Toast.LENGTH_LONG).show();
-                editor.putString(Constant.LOGIN_NAME_KEY, doctorSpinnerAdapter.getItem(position).getUserName());
-                //editor.putInt(Constant.ADDRESS_ID_KEY, doctorSpinnerAdapter.getItem(position).getAddressId());
-                // editor.putInt(Constant.CONTACT_ID_KEY, doctorSpinnerAdapter.getItem(position).getContactId());
-                //editor.putString(Constant.DOB_KEY, doctorSpinnerAdapter.getItem(position).getDob());
-                //editor.putInt(Constant.GENDER_ID_KEY, doctorSpinnerAdapter.getItem(position).getGenderId());
-                //editor.putString(Constant.UNAME_KEY, doctorSpinnerAdapter.getItem(position).getUname());
-                editor.putInt(Constant.USER_ROLE_ID, doctorSpinnerAdapter.getItem(position).getUserRoleId());
-                editor.apply();
-                getScheduleData();
-                break;*/
+
             case R.id.doctor_sechedule:
                 scheduleId = scheduleSpinnerAdapter.getItem(position).getScheduleId();
                 from_time = scheduleSpinnerAdapter.getItem(position).getFromTime();
@@ -303,8 +450,15 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
 
     }
 
-    private void getScheduleData() {
+    private void getScheduleData(int userRoleId) {
         showLoadingDialog();
+
+        Calendar now = Calendar.getInstance();
+        year = now.get(Calendar.YEAR);
+        month = now.get(Calendar.MONTH) + 1;
+        date = now.get(Calendar.DATE);
+        completeDate = year + "-" + month + "-" + date; //"2016-05-09"
+        Log.d("completeDate", completeDate);
         mCuraApplication.getInstance().mCuraEndPoint.getSchedule_Day(userRoleId, completeDate, new Callback<ScheduleModel[]>() {
             @Override
             public void success(ScheduleModel[] scheduleModels, Response response) {
@@ -318,7 +472,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
                         mScheduleArray);
                 doctor_schedule.setAdapter(scheduleSpinnerAdapter);
 
-                mCuraApplication.getInstance().mCuraEndPoint.getUserInfo(userRoleId, new Callback<UserInfoModel>() {
+                mCuraApplication.getInstance().mCuraEndPoint.getUserInfo(DoctorScheduleActivity.this.userRoleId, new Callback<UserInfoModel>() {
                     @Override
                     public void success(UserInfoModel userInfoModel, Response response) {
 
@@ -361,6 +515,7 @@ public class DoctorScheduleActivity extends AppCompatActivity implements View.On
                 //Toast.makeText(CalendarActivity.this,error.getMessage().toString(),Toast.LENGTH_LONG).show();
                 dismissLoadingDialog();
             }
+
         });
     }
 

@@ -22,14 +22,14 @@
 
             <TextView
                 android:id="@+id/tv_No"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/orange"
+                android:layout_gravity="center"
                 android:background="@drawable/token_bg_outline"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:gravity="start"

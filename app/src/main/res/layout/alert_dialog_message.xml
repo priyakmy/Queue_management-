@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Alert!"
+        android:text="@string/alert"
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="5dp"/>
@@ -23,7 +23,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Do you want to move?"
+        android:text="@string/do_you_want_to_move"
         android:id="@+id/textView3"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="5dp"/>
@@ -40,7 +40,7 @@
             android:id="@+id/alert_yes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text="@string/yes"
             android:layout_weight="1"
             android:gravity="center"/>
         <View
@@ -51,7 +51,7 @@
             android:id="@+id/alert_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="No"
+            android:text="@string/no"
             android:layout_weight="1"
             android:gravity="center"/>
     </LinearLayout>

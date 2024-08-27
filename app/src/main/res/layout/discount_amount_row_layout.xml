@@ -11,21 +11,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:text="Discount"
+        android:text="@string/discount"
         android:textSize="@dimen/text_14sp"/>
     <TextView
         android:id="@+id/tvDiscountPersentage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:text="10%"
+        android:text="@string/_10"
         android:textSize="@dimen/text_14sp"/>
     <TextView
         android:id="@+id/tvDiscountAmount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:text="₹60"
+        android:text="@string/_60"
         android:textSize="@dimen/text_14sp"
         android:visibility="gone"/>
     <TextView
@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="2"
-        android:text="₹120/-"
+        android:text="@string/_120"
         android:textSize="@dimen/text_14sp"/>
     <ImageView
         android:id="@+id/ivDelDiscount"

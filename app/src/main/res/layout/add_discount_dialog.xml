@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Add Discount"
+            android:text="@string/_add_discount"
             android:textColor="#333333"
             android:textSize="@dimen/text_16sp" />
 
@@ -24,7 +24,6 @@
             android:id="@+id/closeDialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:src="@drawable/popup_close"
             android:visibility="gone"
             android:layout_alignParentEnd="true" />
@@ -36,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_10"
         android:background="@drawable/edittext_bg"
-        android:hint="Discount Name"
+        android:hint="@string/discount_name"
         android:maxLines="1"
         android:inputType="textCapWords"
         android:singleLine="true" />
@@ -58,7 +57,6 @@
                 android:id="@+id/rbPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_05"
                 android:buttonTint="@color/radio_button_tint_color"
                 android:checked="true"
                 android:layout_marginEnd="@dimen/margin_05" />
@@ -88,7 +86,6 @@
                 android:id="@+id/rbDiscountAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/margin_05"
                 android:buttonTint="@color/gray"
                 android:layout_marginEnd="@dimen/margin_05" />
 
@@ -117,7 +114,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discount Amount"
+            android:text="@string/_discount_amount"
             android:textColor="@color/black"
             android:textSize="@dimen/text_18sp" />
 

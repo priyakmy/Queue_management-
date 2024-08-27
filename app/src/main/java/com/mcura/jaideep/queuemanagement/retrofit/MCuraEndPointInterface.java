@@ -7,13 +7,15 @@ import com.mcura.jaideep.queuemanagement.Model.AvialbaleTokenListbydate;
 import com.mcura.jaideep.queuemanagement.Model.CheckHospitalPatModel;
 import com.mcura.jaideep.queuemanagement.Model.City;
 import com.mcura.jaideep.queuemanagement.Model.Country;
+import com.mcura.jaideep.queuemanagement.Model.CreatePaymentRajorPayResponseModel.CreatePaymentOrderResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.CurrentTokenModel;
+import com.mcura.jaideep.queuemanagement.Model.Dataa;
 import com.mcura.jaideep.queuemanagement.Model.DocAccountListModel;
+import com.mcura.jaideep.queuemanagement.Model.DocAssistantMappingModel;
 import com.mcura.jaideep.queuemanagement.Model.Doctor;
 import com.mcura.jaideep.queuemanagement.Model.DoctorListModel;
 import com.mcura.jaideep.queuemanagement.Model.FeeFetch;
 import com.mcura.jaideep.queuemanagement.Model.FillCashCardResponseModel;
-import com.mcura.jaideep.queuemanagement.Model.GenerateCashCardModel;
 import com.mcura.jaideep.queuemanagement.Model.GenerateCashCardModel_v1;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
 import com.mcura.jaideep.queuemanagement.Model.GetLabIdModel;
@@ -21,7 +23,6 @@ import com.mcura.jaideep.queuemanagement.Model.GetLabTransactionsByMrnoSubtenant
 import com.mcura.jaideep.queuemanagement.Model.GetMedicalRecordNatureModel;
 import com.mcura.jaideep.queuemanagement.Model.GetNatureByUserRoleModel;
 import com.mcura.jaideep.queuemanagement.Model.GetOrderBoothListModel;
-import com.mcura.jaideep.queuemanagement.Model.GetPatDemographics;
 import com.mcura.jaideep.queuemanagement.Model.GetPatientByHospitalNoModel;
 import com.mcura.jaideep.queuemanagement.Model.GetPharmacyTransactionsByMrnoSubtenantModel;
 import com.mcura.jaideep.queuemanagement.Model.GetServiceListModel;
@@ -37,13 +38,11 @@ import com.mcura.jaideep.queuemanagement.Model.LoginModel;
 import com.mcura.jaideep.queuemanagement.Model.MainModel;
 import com.mcura.jaideep.queuemanagement.Model.OrderBoothSearchListModel;
 import com.mcura.jaideep.queuemanagement.Model.PatDemoGraphics;
-import com.mcura.jaideep.queuemanagement.Model.PatDemographics.PatDemographicsModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientNoShowModelResponse.PostPatientNoShowModelResponse;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientVerificationModel.PatVerificationResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderGetModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderTransactionDetail.PharmacyOrderTxnWithDetailByOrdIdModel;
-import com.mcura.jaideep.queuemanagement.Model.PharmacyTransactionDatum;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.PostPatMedRecord;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
@@ -63,7 +62,6 @@ import com.mcura.jaideep.queuemanagement.Model.UserInfoModel;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
@@ -80,7 +78,8 @@ public interface MCuraEndPointInterface {
 
     //TokenView_Other
     //TokenView_Other_v2
-    @GET("/TokenView_Other")
+//    TokenView_OtherWithLastPresMrno
+    @GET("/TokenView_OtherWithLastPresMrno")
     void tokenViewOther(@Query("UserRoleId") int userRoleId, @Query("SubTenantId") int subtanentId, @Query("ScheduleId") int scheduleId, @Query("Date") String date, Callback<QueueStatus[]> restCallback);
 
     //Patient_Check_In
@@ -119,11 +118,12 @@ public interface MCuraEndPointInterface {
     //SearchPatient_v1
     //searchpatient_v2
     //searchpatient_v4
+
     @GET("/searchpatient_v4")
     void searchPatient_v1(@Query("index") int index, @Query("RowSize") int RowSize, @Query("UserRoleID") int userRoleID, @Query("SearchType") String searchType, @Query("Searchkey") String searchKey, @Query("Subtenantid") int tenant_id,
                           Callback<SearchPatientModel> restCallback);
 
-    @GET("/GetPatient")
+    @GET("/GetPatientNew_v9")
     void getPatient(@Query("MRNO") int mrNo, @Query("UserRoleID") int userRoleID, @Query("sub_tenant_id") int tenant_id,
                     Callback<MainModel> restCallback);
 
@@ -139,6 +139,9 @@ public interface MCuraEndPointInterface {
     //Token_Status
     @GET("/Token_Status_v1")
     void token_Status(@Query("Mrno") int mrno, @Query("UserRoleId") int userRoleID, @Query("SubTenantId") int sub_tenant_id, @Query("ScheduleId") int scheduleId, @Query("Date") String date, Callback<TokenStatusModel[]> restCallback);
+
+    @GET("/GetDocAssistantMapping")
+    void getDocAssistantMapping(@Query("AssisUserRoleId") int assistantroll, Callback<DocAssistantMappingModel> restCallback);
 
     @GET("/GetLogin")
     void getLogin(@Query("UseraName") String username, @Query("PWD") String pwd, Callback<LoginModel> restCallback);
@@ -213,11 +216,13 @@ public interface MCuraEndPointInterface {
     //PostPatientUser_v2
     //PostPatientUser_v1
     //PostPatientUser
-    @POST("/PostPatientUser_v3")
+    ///PostPatientUser_v3
+    ///PostPatientUser_v3
+    @POST("/Post_KH_PatientUser_v6")
     void postPatientUser(@Body JsonObject mObj, Callback<String> restCallback);
 
     @GET("/getPatDemographics")
-    void getPatDemographics(@Query("Mrno") int mrno, @Query("UserRoleID") int userroleid, Callback<PatDemoGraphics> resCallback);
+    void getPatDemographics(@Query("Mrno") int mrno, @Query("''UserRoleID''") int userroleid, Callback<PatDemoGraphics> resCallback);
 
     @POST("/FileUploadImage")
     void fileUploadImage(@Body JsonObject mObj, Callback<String> restCallback);
@@ -267,7 +272,7 @@ public interface MCuraEndPointInterface {
     @POST("/PostPayment")
     void postPayment(@Body JsonObject mObj, Callback<PostPaymentModel> restCallback);
 
-    @GET("/GetNatureByUserRole")
+    @GET("/GetNatureByUserRole_v1")
     void getNatureByUserRole(@Query("UserRoleId") int userRoleId, @Query("SubtenantId") int subtenantId, Callback<GetNatureByUserRoleModel[]> resCallback);
 
     @GET("/DocAccountList")
@@ -398,9 +403,24 @@ public interface MCuraEndPointInterface {
     @POST("/UploadOrderImage_V1")
     void fileUploadPDF(@Body JsonObject mObj, Callback<String> restCallback);
     @GET("/GetMedicalRecordNature_v2")
-    void getMedicalRecordNature(@Query("subtenantId") int subTenantId,@Query("roleId") int roleId, Callback<GetMedicalRecordNatureModel[]> resCallback);
+    void getMedicalRecordNature(@Query("subtenantId") int subTenantId,@Query("roleId") int roleId,
+                                Callback<GetMedicalRecordNatureModel[]> resCallback);
 
     @Headers("Host: test.tn.mcura.com")
     @POST("/UploadOrderImage_V1")
     void uploadOrderVedio(@Body JsonObject mObj, Callback<String> restCallback);
+    @GET("/GetPatientLatestVisitSummary")
+    void getLatestPatientRecord(@Query("UserRoleID") int userRoleID, @Query("MRNO")
+    int mrNo, @Query("sub_tenant_id") int tenant_id,
+                                Callback<Dataa> patmedrecorddCallback);
+
+    @GET("/GetRecord")
+    void getRecord(@Query("UserRoleID") int userRoleID, @Query("RecordId") int recordId,
+                   Callback<String> result);
+
+    @POST("/postPccAttendance")
+    void postPccAttendance(@Body JsonObject mObj, Callback<JsonObject> restCallback);
+
+    @POST("/CreatePaymentOrder_V3")
+    void createPaymentOrder(@Body JsonObject mObj, Callback<CreatePaymentOrderResponseModel> resCallback);
 }

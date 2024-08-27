@@ -41,6 +41,17 @@
         android:paddingTop="20dp"
         android:visibility="visible">
 
+
+<!--        <TextView-->
+
+<!--            android:id="@+id/assistant_doctor_name"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:background="@drawable/select_input"-->
+<!--            android:text="Select Doctor"-->
+<!--            android:textColor="@color/black" />-->
+
         <TextView
             android:id="@+id/doctor_name"
             android:layout_width="wrap_content"

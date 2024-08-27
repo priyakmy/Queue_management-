@@ -65,6 +65,9 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
     SwipeMenuItem item1;
     QueueStatus qStatus;
     LinearLayout bQueueHold;
+    String Assistat_Roll_id = "";
+    String  AssistantUserName ="";
+    String  AssistantUserrollid ="";
     int mrno;
     AlertDialog.Builder alertDialog;
     AlertDialog ad;
@@ -189,8 +192,24 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
             ivDoctorProfile.setImageResource(R.drawable.doctor_atul_profile);
         } else if (user_role_id == 2105) {
             ivDoctorProfile.setImageResource(R.drawable.doctor_rajiv_pfofile);
-        }*/
-        doctorName.setText(docName.toString());
+
+
+        }*
+
+         */
+
+        Intent intent1 = getIntent();
+
+        AssistantUserName = intent1.getStringExtra("AssistantUserName");
+
+        if (AssistantUserName != null && !AssistantUserName.isEmpty()) {
+            doctorName.setText(AssistantUserName);
+        }else {
+            doctorName.setText(docName);
+        }
+
+
+      //  doctorName.setText(docName.toString());
         load_nfc = (ImageButton) findViewById(R.id.load_nfc);
         load_nfc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +228,23 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
         queue_queue_status.setOnClickListener(this);
         queue_checkIn.setOnClickListener(this);
         queue_visting_entry.setOnClickListener(this);*/
+        Intent intent = getIntent();
+        Assistat_Roll_id = intent.getStringExtra("Assistat_Roll_id");
+        AssistantUserrollid = intent.getStringExtra("Assistat_Roll_id");
+        if ("17".equals(Assistat_Roll_id)){
+
+            billing.setVisibility(View.GONE);
+            tv_fillcard.setVisibility(View.GONE);
+
+        }else {
+            billing.setVisibility(View.VISIBLE);
+            tv_fillcard.setVisibility(View.VISIBLE);
+
+        }
+
+
+
+
         visit_entry_btn = (ImageButton) findViewById(R.id.visit_entry_btn);
 
         logout.setOnClickListener(this);
@@ -806,7 +842,9 @@ public class QueueStatusActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(QueueStatusActivity.this, VisitingActivity.class));
                 break;
             case R.id.appointment:
-                startActivity(new Intent(QueueStatusActivity.this, CalendarActivity.class));
+                startActivity(new Intent(QueueStatusActivity.this, CalendarActivity.class)
+                        .putExtra("Assistat_Roll_id",Assistat_Roll_id).putExtra("AssistantUserName",AssistantUserName).putExtra("AssistantUserrollid",AssistantUserrollid));
+
                 break;
             case R.id.queue_mgmt:
                 /*startActivity(new Intent(QueueStatusActivity.this, QueueStatusActivity.class));*/

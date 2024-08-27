@@ -62,6 +62,7 @@ import retrofit.client.Response;
 public class BillDetailActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
     ListView lv;
     int subTanentId;
+    int AssisUserRoleId;
     AlertDialog dialog;
     AlertDialog.Builder builder;
     private AutoCompleteTextView search_by_doctor;
@@ -580,7 +581,8 @@ public class BillDetailActivity extends AppCompatActivity implements View.OnClic
     }
     public void getDoctorDetail(){
         showLoadingDialog();
-        mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {
+
+        mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(AssisUserRoleId, new Callback<DoctorListModel[]>() {
             @Override
             public void success(DoctorListModel[] doctors, Response response) {
                 doctorArray = doctors;

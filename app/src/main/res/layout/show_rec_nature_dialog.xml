@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="@dimen/padding_10"
-        android:text="Please choose nature to \n upload selected PDf."
+        android:text="@string/please_choose_nature_to_n_upload_selected_pdf"
         android:textSize="@dimen/margin_20" />
     <View
         android:layout_width="match_parent"

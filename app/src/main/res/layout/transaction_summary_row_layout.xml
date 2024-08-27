@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="Pateint Name"
+                    android:text="@string/_pateint_name_"
                     android:textSize="@dimen/text_14sp"
                     android:textColor="#333333" />
 
@@ -67,9 +67,8 @@
                 android:id="@+id/patient_bill_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
-                android:text="Rs. 1,999"
+                android:text="@string/rs_1_999"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
         <RelativeLayout

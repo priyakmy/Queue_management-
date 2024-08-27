@@ -661,7 +661,7 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
         TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
 
         final TextView tv_cal = (TextView) dialog.findViewById(R.id.tv_cal);
-        tv_cal.setText(Helper.getCompleteDate());
+        tv_cal.setText(Helper.getCompleteDateyyMMdd());
         pdfDate = tv_cal.getText().toString();
         TextView tv_show_lab_report = (TextView) dialog.findViewById(R.id.tv_show_lab_report);
         TextView tv_show_current_visit = (TextView) dialog.findViewById(R.id.tv_show_current_visit);
@@ -690,11 +690,12 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
                 int yy = calendar.get(Calendar.YEAR);
                 int mm = calendar.get(Calendar.MONTH);
                 int dd = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePicker = new DatePickerDialog(getApplicationContext(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePicker = new DatePickerDialog(SearchPatientActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int yy, int mm, int dd) {
-                        pdfDate = yy + "-" + (mm + 1) + "-" + dd;
-                        tv_cal.setText(pdfDate);
+
+                        String date = yy + "-" + (mm + 1) + "-" + dd;
+                        tv_cal.setText(date);
                     }
                 }, yy, mm, dd);
                 datePicker.show();
@@ -781,11 +782,17 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
 
 
     private void showMedicalRecordNatureDialog(int show) {
-        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
+                recordNatureModelArrayList = new ArrayList();
+        for(int i=0;i<medicalRecordNatureModelArray.length;i++){
+            if(medicalRecordNatureModelArray[i].getRecNatureId()!=6) {
+                recordNatureModelArrayList.add(medicalRecordNatureModelArray[i]);
+            }
+        }
+//        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
         GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
-        recNature.setRecNatureId(0);
-        recNature.setRecNatureProperty("Select Nature");
-        recordNatureModelArrayList.set(0,recNature);
+//        recNature.setRecNatureId(0);
+//        recNature.setRecNatureProperty("Select Nature");
+//        recordNatureModelArrayList.set(0,recNature);
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SearchPatientActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -928,6 +935,7 @@ public class SearchPatientActivity extends AppCompatActivity implements AdapterV
                     showErrorDialog(postPatMedRecord.getMsg());
                 }*/
                 dismissLoadingDialog();
+                finish();
             }
 
             @Override

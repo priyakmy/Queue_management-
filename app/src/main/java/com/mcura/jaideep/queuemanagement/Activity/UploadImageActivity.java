@@ -97,7 +97,7 @@ public class UploadImageActivity extends AppCompatActivity implements SearchView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
         imageType = getIntent().getStringExtra("resultCode");
-       // patMrno = getIntent().getStringExtra("mr_no");
+
         patMrno  = getIntent().getIntExtra("mr_no",0);
         actTransactId = EnumType.ActTransactMasterEnum.Patient_Record_Upload.getActTransactMasterTypeId();
         imagePathUri = getIntent().getStringExtra("imagePathUri");
@@ -297,7 +297,13 @@ public class UploadImageActivity extends AppCompatActivity implements SearchView
             public void success(GetMedicalRecordNatureModel[] getMedicalRecordNatureModels, Response response) {
                 if(getMedicalRecordNatureModels!=null){
                     if(getMedicalRecordNatureModels.length>0){
-                        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(getMedicalRecordNatureModels));
+                                recordNatureModelArrayList = new ArrayList();
+        for(int i=0;i<getMedicalRecordNatureModels.length;i++){
+            if(getMedicalRecordNatureModels[i].getRecNatureId()!=6) {
+                recordNatureModelArrayList.add(getMedicalRecordNatureModels[i]);
+            }
+        }
+//                        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(getMedicalRecordNatureModels));
                         showMedicalRecordNatureDialog();
                     }
                 }
@@ -375,7 +381,7 @@ public class UploadImageActivity extends AppCompatActivity implements SearchView
                 Toast.makeText(getApplicationContext(),"Image upload success", Toast.LENGTH_SHORT).show();
 
                 dismissLoadingDialog();
-
+                finish();
             }
 
             @Override
@@ -484,9 +490,9 @@ public class UploadImageActivity extends AppCompatActivity implements SearchView
     }
     private void showMedicalRecordNatureDialog() {
         GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
-        recNature.setRecNatureId(0);
-        recNature.setRecNatureProperty("Select Nature");
-        recordNatureModelArrayList.set(0,recNature);
+//        recNature.setRecNatureId(0);
+//        recNature.setRecNatureProperty("Select Nature");
+//        recordNatureModelArrayList.set(0,recNature);
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();

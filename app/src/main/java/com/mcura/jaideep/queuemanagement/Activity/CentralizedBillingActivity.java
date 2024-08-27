@@ -25,7 +25,6 @@ import android.os.Build;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -47,27 +46,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mcura.jaideep.queuemanagement.Adapter.CheckInAdapter_v1;
 import com.mcura.jaideep.queuemanagement.Adapter.DiscountAmountAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.DoctorScheduleAdapter;
-import com.mcura.jaideep.queuemanagement.Adapter.DoctorSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.GetNatureByUserRoleIdAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.LabOrderDetailExpandableAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.LabOrderTxnDetailExpAdapter;
@@ -81,9 +78,9 @@ import com.mcura.jaideep.queuemanagement.BuildConfig;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
 import com.mcura.jaideep.queuemanagement.Model.AppointmentModel;
 import com.mcura.jaideep.queuemanagement.Model.AvialbaleTokenListbydate;
+import com.mcura.jaideep.queuemanagement.Model.CreatePaymentRajorPayResponseModel.CreatePaymentOrderResponseModel;
 import com.mcura.jaideep.queuemanagement.Model.Datum;
 import com.mcura.jaideep.queuemanagement.Model.DiscountModel;
-import com.mcura.jaideep.queuemanagement.Model.DoctorListModel;
 import com.mcura.jaideep.queuemanagement.Model.FeeFetch;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
 import com.mcura.jaideep.queuemanagement.Model.GetLabIdModel;
@@ -100,18 +97,21 @@ import com.mcura.jaideep.queuemanagement.Model.LabTransactionDatum;
 import com.mcura.jaideep.queuemanagement.Model.LastBillDetailModel;
 import com.mcura.jaideep.queuemanagement.Model.LocalBillModel;
 import com.mcura.jaideep.queuemanagement.Model.MainModel;
-import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyOrderTransactionDetail.PharmacyOrderTxnWithDetailByOrdIdModel;
 import com.mcura.jaideep.queuemanagement.Model.PharmacyTransactionDatum;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
 import com.mcura.jaideep.queuemanagement.Model.SearchPatientModel;
+
 import com.mcura.jaideep.queuemanagement.R;
 import com.mcura.jaideep.queuemanagement.SqliteHelper.SqlLiteDbHelper;
 import com.mcura.jaideep.queuemanagement.Utils.Constant;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.mcura.jaideep.queuemanagement.helper.Helper;
 import com.mcura.jaideep.queuemanagement.helper.Utility;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentData;
+import com.razorpay.PaymentResultWithDataListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -126,21 +126,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 
-public class CentralizedBillingActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, TextWatcher, RadioGroup.OnCheckedChangeListener, SearchView.OnQueryTextListener {
+public class CentralizedBillingActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, TextWatcher, RadioGroup.OnCheckedChangeListener, SearchView.OnQueryTextListener , PaymentResultWithDataListener {
 
     private static int LAB_STATUS;
     private static final int SELF_LAB = 1;
@@ -269,6 +268,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
     public static final String TAG = "NfcDemo";
     private NfcAdapter mNfcAdapter;
     private int nfcMrno;
+    private String razorPayPaymentId;
+    private PaymentData paymentData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,6 +318,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         serviceRoleId = mSharedPreference.getInt(Constant.SERVICE_ROLE_ID, 0);
         dbHelper = new SqlLiteDbHelper(this);
         dbHelper.openDataBase();
+
+
+
         initView();
     }
     @Override
@@ -561,6 +566,7 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
 
         adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
     }
+
     private void initView() {
         //set Hospital detail for bill
         //setSubTanentDetail();
@@ -664,6 +670,8 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
                     }
                     /*doctorFee.setText(orderedAmount + "");*/
                     pharmacySavedDataAdapter.notifyDataSetChanged();
+
+
                 }
                 fetchPharmacyTxnDetailApi(pharmacyTransactionDatum.getPrescriptionId());
             }
@@ -1517,6 +1525,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         if (paymentMode.equals("3")) {
             postPaymentForLab(obj);
         }
+        if (paymentMode.equals("4")) {
+            postPaymentForOnline(obj);
+        }
     }
 
     private void showSuccessDialog(String msg) {
@@ -1880,6 +1891,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         if (paymentMode.equals("3")) {
             postPaymentForLab(obj);
         }
+         if (paymentMode.equals("4")) {
+            postPaymentForOnline(obj);
+        }
     }
 
     private void postPaymentForLab(JsonObject obj) {
@@ -1931,7 +1945,6 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
 
         android.app.AlertDialog dialog = builder.show();
     }
-
     public static void restartActivity(Activity activity) {
         if (Build.VERSION.SDK_INT >= 11) {
             activity.recreate();
@@ -1994,6 +2007,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         }
         if (paymentMode.equals("3")) {
             postPaymentForPharmacy(obj);
+        }
+        if (paymentMode.equals("4")) {
+            postPaymentForOnline(obj);
         }
     }
 
@@ -2132,6 +2148,35 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
                 Toast.makeText(CentralizedBillingActivity.this, "Please Select Patient", Toast.LENGTH_LONG).show();
             }
         }
+        else if (paymentMode.equals("4")) {
+
+            if (!tvMrno.getText().toString().equals("0000")) {
+                if (appNatureId != 0) {
+                    if (appNatureId == 25) {
+                        if (et_refund_amount.getText().length() != 0) {
+                            feeAmount = et_refund_amount.getText().toString();
+                            feeGenerateStatus = "Refund Amount";
+                        }
+                    } else if (appNatureId == 33 || appNatureId == 32) {
+                        if (et_refund_amount.getText().length() != 0) {
+                            feeAmount = et_refund_amount.getText().toString();
+                            feeGenerateStatus = "OPD Consultation Fee";
+                        } else {
+                            feeAmount = "0";
+                            feeGenerateStatus = "OPD Consultation Fee";
+                        }
+                    } else if (appNatureId != 25) {
+                        feeAmount = doctorFee.getText().toString();
+                        feeGenerateStatus = "OPD Consultation Fee";
+                    }
+                    postPaymentAPI_V1();
+                } else {
+                    Toast.makeText(CentralizedBillingActivity.this, "Please Select Nature", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(CentralizedBillingActivity.this, "Please Select Patient", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void postPaymentAPI_V1() {
@@ -2178,7 +2223,344 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
         if (paymentMode.equals("3")) {
             postPaymentForCash(obj);
         }
+        if (paymentMode.equals("4")) {
+            postPaymentForOnline(obj);
+        }
 
+    }
+    public void postPaymentForOnline(JsonObject obj) {
+        showLoadingDialog();
+        if (!Helper.isInternetConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No internet connection.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+//        JsonObject obj = new JsonObject();
+        obj.remove("BillAmount");
+//         feeAmount * 100
+        obj.addProperty("amount", Double.parseDouble(feeAmount) * 100);
+        obj.addProperty("appId", appId);
+        obj.addProperty("mrNo", tvMrno.getText().toString());
+        obj.addProperty("deviceName", "Android_FrontOffice");
+        obj.addProperty("isTest", false);
+
+        mCuraApplication.getInstance().mCuraEndPointConsumer.createPaymentOrder(obj, new Callback<CreatePaymentOrderResponseModel>() {
+            @Override
+            public void success(CreatePaymentOrderResponseModel createPaymentOrderResponseModel, Response response) {
+
+                CreatePaymentOrderResponseModel createPaymentOrderResponse = null;
+                try {
+                    JSONObject obj = new JSONObject(new String(((TypedByteArray) response.getBody()).getBytes()));
+                    Log.d("obj", obj.toString());
+                    Gson gson = new Gson();
+                    createPaymentOrderResponse = gson.fromJson(obj.toString(), CreatePaymentOrderResponseModel.class);
+                    if(createPaymentOrderResponse.getStatus()==1){
+                        startPayment(createPaymentOrderResponse);
+                    }else{
+                        showErrorDialog("Something went wrong while initializing payment,please try again");
+                        dismissLoadingDialog();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dismissLoadingDialog();
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+
+
+    public void startPayment(CreatePaymentOrderResponseModel createPaymentOrderResponseModel) {
+        final Activity activity = CentralizedBillingActivity.this;
+
+        Checkout checkout = new Checkout();
+        //checkout.setKeyID();
+        checkout.setImage(R.drawable.logo);
+
+        try {
+            JSONObject options = new JSONObject();
+            //  implementation 'com.razorpay:checkout:1.5.12'
+            options.put("name", "mCURA Mobile Health");
+            options.put("description", appNatureId);
+//            options.put("key","rzp_live_5FCVrPxqD2LSvf");
+//            options.put("key","rzp_test_pyMfp9TOUzuH2y");
+            options.put("image", "https://www.mcura.com/images/logo.png");
+            options.put("order_id", createPaymentOrderResponseModel.getData().getAttributes().getId());//from response of step 3.
+            options.put("theme.color", "#f37254");
+            options.put("currency", "INR");
+            options.put("payment_capture", "1");
+            options.put("amount", createPaymentOrderResponseModel.getData()
+                    .getAttributes().getAmount());//pass amount in currency subunits
+//            options.put("prefill.email", selectedPatientData.getEmailId());
+//            options.put("prefill.contact",selectedPatientData.getMobileNo());
+            JSONObject retryObj = new JSONObject();
+            retryObj.put("enabled", true);
+            retryObj.put("max_count", 4);
+            options.put("retry", retryObj);
+            checkout.open(activity, options);
+
+        } catch(Exception e) {
+            Log.e(TAG, "Error in starting Razorpay Checkout", e);
+            dismissLoadingDialog();
+        }
+    }
+
+
+    @Override
+    public void onPaymentSuccess(String s, PaymentData paymentData) {
+        razorPayPaymentId = s;
+        this.paymentData = paymentData;
+        postPaymentAPIRazorPay(serviceType);
+        dismissLoadingDialog();
+    }
+
+    @Override
+    public void onPaymentError(int i, String s, PaymentData paymentData) {
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+  dismissLoadingDialog();
+    }
+
+    private void postPaymentAPIRazorPay(int serviceType) {
+        if(serviceType==5){
+
+            JsonObject obj = new JsonObject();
+            obj.addProperty("SubtenantId", subTanentId);
+            obj.addProperty("HospitalNo", hId);
+            obj.addProperty("AppnatureId", appNatureId);
+            obj.addProperty("UserRoleId", user_role_id);
+            obj.addProperty("Description", "Pharmacy Fee");
+            obj.addProperty("PaymentMode", 1);
+            obj.addProperty("BillAmount", feeAmount);
+            obj.addProperty("CollectedBy", frontOfficeUserRoleId);
+            obj.addProperty("ServiceType", 5);
+            obj.addProperty("Mrno", tvMrno.getText().toString());
+            obj.addProperty("HIS_BillNo", paymentData.getPaymentId());
+            obj.addProperty("MobileNo", tvPatientPhone.getText().toString().trim());
+            obj.addProperty("orderId", pharmacyTransactionDatum.getOrderId());
+            obj.addProperty("ScheduleId", 0);
+
+            JsonArray objectKeyArray = new JsonArray();
+            for (int i = 0; i < pharmacyOrderTxnWithDetailModel.getData().size(); i++) {
+                if (pharmacyOrderTxnWithDetailModel.getData().get(i).isStatus()) {
+                    objectKeyArray.add(new JsonPrimitive(pharmacyOrderTxnWithDetailModel.getData().get(i).getOrdTxnId()));
+                }
+
+            }
+            obj.addProperty("finalBillAmount", tvPayableAmount.getText().toString());
+            JsonArray discountArray = new JsonArray();
+            if (discountModelArrayList.size() > 0) {
+                for (int i = 0; i < discountModelArrayList.size(); i++) {
+                    JsonObject discountObj = new JsonObject();
+                    discountObj.addProperty("discountName", discountModelArrayList.get(i).getDiscountName());
+                    discountObj.addProperty("discountPercentage", discountModelArrayList.get(i).getDiscountPercantage());
+                    discountObj.addProperty("discountAmount", discountModelArrayList.get(i).getDiscountAmount());
+                    discountArray.add(discountObj);
+                }
+            }
+            obj.add("billDiscount", discountArray);
+            obj.add("OrdTxnIds", objectKeyArray);
+            obj.addProperty("PymtOrderId", paymentData.getOrderId());
+            obj.addProperty("PymtSignature", paymentData.getSignature());
+            obj.addProperty("Status", 1);
+            Log.d("payment_json", obj.toString());
+            postPaymentAPIForPharmacyRazorPay(obj);
+        }
+        else if(serviceType==4){
+            JsonObject obj = new JsonObject();
+            obj.addProperty("SubtenantId", subTanentId);
+            obj.addProperty("HospitalNo", hId);
+            obj.addProperty("AppnatureId", appNatureId);
+            obj.addProperty("UserRoleId", user_role_id);
+            obj.addProperty("Description", "Lab Fee");
+            obj.addProperty("PaymentMode", 1);
+            obj.addProperty("BillAmount", feeAmount);
+            obj.addProperty("CollectedBy", frontOfficeUserRoleId);
+            obj.addProperty("ServiceType", 4);
+            obj.addProperty("Mrno", tvMrno.getText().toString());
+            obj.addProperty("HIS_BillNo", paymentData.getPaymentId());
+            obj.addProperty("MobileNo", tvPatientPhone.getText().toString().trim());
+            obj.addProperty("orderId", labTransactionDatum.getOrderId());
+            obj.addProperty("ScheduleId", 0);
+            obj.addProperty("finalBillAmount", tvPayableAmount.getText().toString());
+            JsonArray discountArray = new JsonArray();
+            if (discountModelArrayList.size() > 0) {
+                for (int i = 0; i < discountModelArrayList.size(); i++) {
+                    JsonObject discountObj = new JsonObject();
+                    discountObj.addProperty("discountName", discountModelArrayList.get(i).getDiscountName());
+                    discountObj.addProperty("discountPercentage", discountModelArrayList.get(i).getDiscountPercantage());
+                    discountObj.addProperty("discountAmount", discountModelArrayList.get(i).getDiscountAmount());
+                    discountArray.add(discountObj);
+                }
+            }
+            obj.add("billDiscount", discountArray);
+
+            JsonArray objectKeyArray = new JsonArray();
+            for (int i = 0; i < labOrderTransactionModelArrayList.size(); i++) {
+                if (labOrderTransactionModelArrayList.get(i).isStatus()) {
+                    objectKeyArray.add(new JsonPrimitive(labOrderTransactionModelArrayList.get(i).getOrdTxnId()));
+                }
+            }
+            obj.add("OrdTxnIds", objectKeyArray);
+            obj.addProperty("PymtOrderId", paymentData.getOrderId());
+            obj.addProperty("PymtSignature", paymentData.getSignature());
+            obj.addProperty("Status", 1);
+            Log.d("lab_json", obj.toString());
+            postPaymentAPIForLabRazorPay(obj);
+        }
+        else if(serviceType==1){
+            JsonObject obj = new JsonObject();
+            obj.addProperty("SubtenantId", subTanentId);
+            obj.addProperty("HospitalNo",hId);
+            obj.addProperty("AppnatureId", appNatureId);
+            obj.addProperty("UserRoleId", selectedUserRoleId);
+            obj.addProperty("typeOfReferalDoctorId", 0);
+            obj.addProperty("Description", "Consultation Fee");
+            obj.addProperty("PaymentMode", 1);
+            obj.addProperty("BillAmount", feeAmount);
+            obj.addProperty("AppId", appId);
+            obj.addProperty("CollectedBy", frontOfficeUserRoleId);
+            obj.addProperty("ServiceType", 1);
+            obj.addProperty("Mrno", tvMrno.getText().toString());
+            obj.addProperty("HIS_BillNo", paymentData.getPaymentId());
+            obj.addProperty("MobileNo", tvPatientPhone.getText().toString().trim());
+            obj.addProperty("ScheduleId", scheduleId);
+            obj.addProperty("finalBillAmount", feeAmount);
+            JsonArray discountArray = new JsonArray();
+            obj.add("billDiscount", discountArray);
+            obj.addProperty("PymtOrderId", paymentData.getOrderId());
+            obj.addProperty("PymtSignature", paymentData.getSignature());
+            obj.addProperty("Status", 1);
+
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("DocFee",feeAmount);
+            jsonObject.addProperty("PartnerFee",0);
+            jsonObject.addProperty("TxnFee",0);
+            obj.add("paymentDetails",jsonObject);
+            Log.d("paymentobj", obj.toString());
+            postPaymentAPIForDocRazorPay(obj);
+        }
+    }
+
+    private void postPaymentAPIForLabRazorPay(JsonObject obj) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.PostPaymentLabFee(obj, new Callback<PostPaymentModel>() {
+            @Override
+            public void success(PostPaymentModel postPaymentModel, Response response) {
+                if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentSuccessfull.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentDone.getStatusId()) {
+                    Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+                    String id = postPaymentModel.getID();
+                    String data[] = id.split("-");
+                    time = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+                    showSuccessDialog(postPaymentModel.getMsg(), data);
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentALreadyDone.getStatusId()) {
+                    Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+                    String id = postPaymentModel.getID();
+                    String data[] = id.split("-");
+                    showSuccessDialog(postPaymentModel.getMsg(), data);
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentNotDone.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mErrorInPayment.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentModeNotCorrect.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mBlankHospitalNo.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mOrderTransactionIdNull.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mFillCashCard.getStatusId()) {
+                    showErrorDialog(postPaymentModel.getMsg());
+                }
+
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+    private void postPaymentAPIForPharmacyRazorPay(JsonObject obj) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.PostPaymentPharmacyFee(obj, new Callback<PostPaymentModel>() {
+
+
+            @Override
+            public void success(PostPaymentModel postPaymentModel, Response response) {
+                if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentSuccessfull.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentDone.getStatusId()) {
+                    Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+                    String id = postPaymentModel.getID();
+                    String data[] = id.split("-");
+                    time = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+                    showSuccessDialog(postPaymentModel.getMsg(), data);
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentALreadyDone.getStatusId()) {
+                    Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+                    String id = postPaymentModel.getID();
+                    String data[] = id.split("-");
+                    showSuccessDialog(postPaymentModel.getMsg(), data);
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentNotDone.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mErrorInPayment.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentModeNotCorrect.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mBlankHospitalNo.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mOrderTransactionIdNull.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mFillCashCard.getStatusId()) {
+                    showErrorDialog(postPaymentModel.getMsg());
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void postPaymentAPIForDocRazorPay(JsonObject obj) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.PostPaymentDocFee(obj, new Callback<PostPaymentModel>() {
+            @Override
+            public void success(PostPaymentModel postPaymentModel, Response response) {
+                if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentSuccessfull.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentDone.getStatusId()) {
+                    //Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+
+                    String id = postPaymentModel.getID();
+                    data = id.split("-");
+
+                    int serial_no = dbHelper.getMaxSerial_no() + 1;
+                    String timestamp = selectedUserRoleId + "" + serial_no;
+                    time = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+                    boolean insertStatus = dbHelper.insertBillDetail(consultantDoctorName, selectedUserRoleId + "", completeDate, tvMrno.getText().toString(), tvPatientName.getText().toString(), feeAmount, appNatureName, "1", data[1], data[0], departmentName, tvHospitalId.getText().toString(), frontOfficeUserRoleId + "", timestamp, subTanentId + "", appNatureId + "", paymentMode + "", serviceType + "", serial_no, time, "ON");
+                    if (insertStatus) {
+                        successFullDialog(postPaymentModel.getMsg(), data);
+                        //printBill(data);
+                    }
+
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentALreadyDone.getStatusId()) {
+                    Toast.makeText(CentralizedBillingActivity.this, postPaymentModel.getMsg(), Toast.LENGTH_LONG).show();
+                    String id = postPaymentModel.getID();
+                    String data[] = id.split("-");
+                    printBill(data);
+                } else if (postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mFillCashCard.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentNotDone.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mErrorInPayment.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentModeNotCorrect.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mBlankHospitalNo.getStatusId() ||
+                        postPaymentModel.getStatusId() == EnumType.PaymentStatusId.mPaymentBlankScheduleId.getStatusId()) {
+                    showErrorDialog(postPaymentModel.getMsg());
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
     }
 
     private void postPaymentForCash(JsonObject obj) {
@@ -3967,6 +4349,9 @@ public class CentralizedBillingActivity extends AppCompatActivity implements Vie
                 break;
             case R.id.cheque:
                 paymentMode = "3";
+                break;
+            case R.id.online:
+                paymentMode = "4";
                 break;
         }
     }

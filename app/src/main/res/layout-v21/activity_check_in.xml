@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Dr. Atul Prasad"
+            android:text="@string/dr_atul_prasad_"
             android:textSize="15sp"
             android:gravity="center_vertical"
             android:drawablePadding="5dp"
@@ -109,7 +109,7 @@
             android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Check-In"
+            android:text="@string/check_in"
             android:textSize="20sp"
             android:textColor="@color/orange"
             android:layout_alignParentTop="true"
@@ -170,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tag="1"
-            android:text="Mrno"
+            android:text="@string/_mrno_"
             android:textColor="@color/black"
             android:textSize="@dimen/text_12sp" />
 
@@ -179,7 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tag="2"
-            android:text="Mobile"
+            android:text="@string/_mobile_"
             android:textColor="@color/black"
             android:textSize="@dimen/text_12sp" />
 
@@ -189,7 +189,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
             android:tag="3"
-            android:text="Name"
+            android:text="@string/_name_"
             android:textColor="@color/black"
             android:textSize="@dimen/text_12sp" />
 
@@ -199,10 +199,65 @@
             android:layout_height="wrap_content"
             android:tag="4"
             android:checked="true"
-            android:text="H Id"
+            android:text="@string/h_id"
             android:textColor="@color/black"
             android:textSize="@dimen/text_12sp" />
     </LinearLayout>
+
+    <TableLayout
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:id="@+id/recordRow"
+        android:background="@drawable/table_layout_border">
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/exist_from"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/tbl_data_bg"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:padding="@dimen/_5sdp"
+                >
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_doctor_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/tbl_data_bg"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:padding="@dimen/_5sdp">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tbl_data_bg"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                />
+        </TableRow>
+    </TableLayout>
+
     <LinearLayout
         android:gravity="center"
         android:layout_width="match_parent"
@@ -224,7 +279,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Patient Name"
+            android:text="@string/_patient_name_"
             android:textSize="20sp"
             android:textColor="@color/block_gray"/>
         <LinearLayout
@@ -236,7 +291,7 @@
                 android:id="@+id/checkin_pat_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxY"
+                android:text="@string/_xxy_"
                 android:textSize="17sp"
                 android:textColor="@color/block_gray"/>
 
@@ -251,7 +306,7 @@
                 android:id="@+id/checkin_pat_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="M"
+                android:text="@string/m"
                 android:textSize="17sp"
                 android:textColor="@color/block_gray"/>
         </LinearLayout>
@@ -263,7 +318,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mo."
+                android:text="@string/mo"
                 android:textSize="17sp"
                 android:textColor="@color/block_gray"
                 />
@@ -271,7 +326,7 @@
                 android:id="@+id/checkin_pat_mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+xx-xxxxxxxxxx"
+                android:text="@string/xx_xxxxxxxxxx"
                 android:textSize="17sp"
                 android:textColor="@color/block_gray"                />
         </LinearLayout>
@@ -296,11 +351,11 @@
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Token No."
+                    android:text="@string/token_no"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="#ffffff"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginStart="3dp"
                     />
                 <TextView
                     android:id="@+id/checkin_token_number"
@@ -311,7 +366,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/orange"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     />
             </LinearLayout>
         </LinearLayout>
@@ -338,7 +393,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" UPLOAD PRESCRIPTION"
+                android:text="@string/upload_prescription"
                 android:textSize="@dimen/text_18sp"
                 android:textColor="#FFF" />
         </LinearLayout>
@@ -372,7 +427,7 @@
                 android:id="@+id/appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="APPOINTMENT"
+                android:text="@string/_appointment_"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp" />
@@ -391,7 +446,7 @@
                 android:id="@+id/queue_mgmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="QUEUE"
+                android:text="@string/_queue_"
                 android:textStyle="bold"
                 android:textColor="@color/orange"
                 android:textSize="12sp" />
@@ -409,7 +464,7 @@
                 android:id="@+id/billing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BILLING"
+                android:text="@string/_billing__"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp" />
@@ -427,7 +482,7 @@
                 android:id="@+id/tv_fillcard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FILL CASHCARD"
+                android:text="@string/fill_cashcard_"
                 android:textStyle="bold"
                 android:textColor="@color/txt_dark"
                 android:textSize="12sp" />
@@ -443,7 +498,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/mcura_logo" />
 

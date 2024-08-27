@@ -22,7 +22,7 @@
         android:gravity="top"
         android:layout_margin="@dimen/margin_05"
         android:background="@drawable/et_setting_bg"
-        android:hint="Enter yout reason here..."
+        android:hint="@string/enter_yout_reason_here"
         android:inputType="textMultiLine" />
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:padding="@dimen/padding_05"
-            android:text="Cancel"
+            android:text="@string/_cancel_"
             android:textSize="20sp" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:background="@color/orange"
             android:gravity="center"
             android:padding="@dimen/padding_05"
-            android:text="Submit"
+            android:text="@string/_submit_"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>

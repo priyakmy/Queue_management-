@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:text="Confirmation"
+            android:text="@string/confirmation"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -41,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/margin_05"
             android:orientation="vertical"
             android:layout_marginStart="@dimen/margin_05">
 
@@ -52,7 +51,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="@dimen/margin_02"
                 android:gravity="center_vertical"
-                android:text="Doctor name"
+                android:text="@string/doctor_name_"
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
@@ -63,7 +62,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/margin_03"
                 android:gravity="center_vertical"
-                android:text="Doctor Department"
+                android:text="@string/doctor_department_"
                 android:textColor="#585858"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -89,7 +88,7 @@
             android:layout_gravity="center"
             android:layout_weight="3"
             android:gravity="center"
-            android:text="Last Visit"
+            android:text="@string/last_visit"
             android:textColor="#585858" />
 
         <View
@@ -102,7 +101,7 @@
             android:layout_width="0dp"
             android:layout_weight="7"
             android:layout_height="wrap_content"
-            android:text="No Record Found"
+            android:text="@string/no_record_found"
             android:gravity="center"
             android:textColor="#f9573d"
             android:textSize="@dimen/text_18sp"
@@ -113,7 +112,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/margin_05"
             android:layout_weight="7"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -125,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_02"
-                android:text="Doctor name"
+                android:text="@string/_doctor_name"
                 android:textColor="#585858"
                 android:textSize="15sp" />
 
@@ -134,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_03"
-                android:text="Doctor Department"
+                android:text="@string/_doctor_department_"
                 android:textColor="#585858"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -164,9 +162,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_05"
-        android:text="Before Checkin, Please complete"
+        android:text="@string/before_checkin_please_complete"
         android:textColor="@color/black"
         android:layout_marginStart="@dimen/margin_10" />
 
@@ -174,9 +171,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_05"
-        android:text="your payment."
+        android:text="@string/your_payment"
         android:textColor="@color/black"
         android:layout_marginStart="@dimen/margin_10" />
 
@@ -185,9 +181,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginTop="@dimen/margin_10"
-        android:text="Rs. 000/-"
+        android:text="@string/rs_000"
         android:textColor="@color/orange"
         android:textSize="@dimen/text_20sp"
         android:layout_marginStart="@dimen/margin_10" />
@@ -207,7 +202,7 @@
             android:background="#f9573d"
             android:gravity="center"
             android:padding="@dimen/padding_10"
-            android:text="Pay Now"
+            android:text="@string/pay_now_"
             android:textColor="@color/white"
             android:textSize="@dimen/text_18sp" />
 
@@ -220,7 +215,7 @@
             android:background="#e1e1e1"
             android:gravity="center"
             android:padding="@dimen/padding_10"
-            android:text="Cancel"
+            android:text="@string/cancel_"
             android:textColor="#585858"
             android:textSize="@dimen/text_18sp" />
     </LinearLayout>

@@ -9,7 +9,6 @@
         android:id="@+id/bill_sr_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
         android:background="@drawable/token_outline"
         android:gravity="center"
         android:textColor="@color/black"
@@ -37,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="Pateint Name"
+                    android:text="@string/pateint_name"
                     android:textSize="@dimen/text_12sp" />
 
                 <TextView
@@ -51,15 +50,14 @@
                     android:id="@+id/patient_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="XX"
+                    android:text="@string/xx"
                     android:textSize="@dimen/text_12sp" />
 
                 <TextView
                     android:id="@+id/patient_sex"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:text="M"
+                    android:text="@string/_m"
                     android:textSize="@dimen/text_12sp"
                     android:layout_marginStart="3dp" />
             </LinearLayout>
@@ -68,7 +66,6 @@
                 android:id="@+id/patient_bill_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginBottom="5dp"
                 android:text="Rs. 1,999"
                 android:layout_alignParentEnd="true" />
@@ -84,13 +81,13 @@
                     android:id="@+id/tv_hospital_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/nature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nature 1"
+                    android:text="@string/nature_1"
                     />
             </LinearLayout>
             <TextView
@@ -98,14 +95,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="dd/mm/yyyy"
+                android:text="@string/dd_mm_yyyy"
                 android:textSize="@dimen/text_12sp"/>
 
             <TextView
                 android:id="@+id/is_bill_paid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:textColor="@color/white"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>

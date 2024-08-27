@@ -6,7 +6,9 @@ package com.mcura.jaideep.queuemanagement.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Patmedrecord {
+import java.io.Serializable;
+
+public class Patmedrecord implements Serializable {
 
     @SerializedName("Date")
     @Expose

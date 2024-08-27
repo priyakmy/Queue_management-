@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:src="@drawable/popup_close" />
+
     <!--new_appointment_bg_shape-->
     <TextView
         android:id="@+id/hospital_name"
@@ -26,7 +27,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:singleLine="true"
-        android:text="Max Hospital"
+        android:text="@string/max_hospital"
         android:textColor="#000000" />
 
 <RelativeLayout
@@ -57,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_printer"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>
     <View
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            android:text="OPD\n6:00 pm To 9:00 pm"
+            android:text="@string/opd_n6_00_pm_to_9_00_pm"
             android:textColor="@color/black" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="26th Aug 2015\nWednesday"
+            android:text="@string/_26th_aug_2015_nwednesday"
             android:textColor="@color/black" />
     </LinearLayout>
 

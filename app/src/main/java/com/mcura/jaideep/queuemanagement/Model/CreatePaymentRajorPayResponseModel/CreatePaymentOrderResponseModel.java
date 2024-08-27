@@ -1,5 +1,5 @@
 
-package com.mcura.partners.model.CreatePaymentRajorPayResponseModel;
+package com.mcura.jaideep.queuemanagement.Model.CreatePaymentRajorPayResponseModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +8,7 @@ public class CreatePaymentOrderResponseModel {
 
     @SerializedName("data")
     @Expose
-    private Data data;
+    private Dataum data;
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -16,11 +16,11 @@ public class CreatePaymentOrderResponseModel {
     @Expose
     private String msg;
 
-    public Data getData() {
+    public Dataum getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Dataum data) {
         this.data = data;
     }
 

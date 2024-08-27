@@ -9,6 +9,7 @@
     <color name="main_layout_background">#eeeeee</color>
     <color name="view_border">#cccccc</color>
     <color name="colorPrimary">#AFAFAF</color>
+    <color name="main_layout_backgroung">#eeeeee</color>
     <color name="bg_queue">#ededed</color>
     <color name="colorPrimaryButton">#eee9e9</color>
     <color name="colorPrimaryDark">#AFAFAF</color>
@@ -25,8 +26,8 @@
     <color name="token_patient_bg">#f6f6f6</color>
     <color name="date_color">#666666</color>
     <color name="blue">#004895</color>
-    <color name="brown">#208918</color>
-    <color name="green">#ee8823</color>
+    <color name="green">#208918</color>
+    <color name="brown">#ee8823</color>
     <color name="tv_colorTextBrightGrey1">#999999</color>
     <color name="txt_dark">#454545</color>
     <color name="sky_blue">#337ab7</color>

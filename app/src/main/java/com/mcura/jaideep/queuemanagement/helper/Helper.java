@@ -103,7 +103,16 @@ public  class Helper {
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH) + 1;
         int date = now.get(Calendar.DATE);
-        String completeDate = year + "-" + month + "-" + date; //"2016-05-09"
+        String completeDate = date + "-" + month + "-" + year; //"09-05-2016"
+        return completeDate;
+    }
+
+    public static String getCompleteDateyyMMdd(){
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH) + 1;
+        int date = now.get(Calendar.DATE);
+        String completeDate = year + "-" + month + "-" + date; //"09-05-2016"
         return completeDate;
     }
 

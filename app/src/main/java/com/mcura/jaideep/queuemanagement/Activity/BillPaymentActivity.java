@@ -87,6 +87,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -95,6 +96,7 @@ import retrofit.client.Response;
 public class BillPaymentActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
     private ArrayList<Datum> dataList;
     private String query;
+    int AssisUserRoleId;
     private int firstIndex;
     private boolean flag_loading;
     private ServiceListAdapter serviceListAdapter;
@@ -286,10 +288,10 @@ public class BillPaymentActivity extends AppCompatActivity implements View.OnCli
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        et_refund_amount = (EditText) findViewById(R.id.et_refund_amount);
+        et_refund_amount = this.<EditText>findViewById(R.id.et_refund_amount);
         et_refund_amount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1796,7 +1798,7 @@ public class BillPaymentActivity extends AppCompatActivity implements View.OnCli
 
     public void getDoctorDetail() {
         showLoadingDialog();
-        mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {
+        mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId( AssisUserRoleId, new Callback<DoctorListModel[]>() {
             @Override
             public void success(DoctorListModel[] doctors, Response response) {
                 doctorArray = doctors;

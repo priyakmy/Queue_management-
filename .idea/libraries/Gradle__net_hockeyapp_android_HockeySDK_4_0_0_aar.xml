@@ -1,9 +1,9 @@
 <component name="libraryTable">
-  <library name="Gradle: net.hockeyapp.android:HockeySDK:4.0.0@aar">
+  <library name="Gradle: net.hockeyapp.android:HockeySDK:4.0.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/53042f5e5dab7afcfdcfb399525c8bf9/transformed/HockeySDK-4.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/53042f5e5dab7afcfdcfb399525c8bf9/transformed/HockeySDK-4.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/53042f5e5dab7afcfdcfb399525c8bf9/transformed/HockeySDK-4.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/28cfc369c22ab3c67ad2477c56f8d84d/transformed/HockeySDK-4.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/28cfc369c22ab3c67ad2477c56f8d84d/transformed/HockeySDK-4.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/28cfc369c22ab3c67ad2477c56f8d84d/transformed/HockeySDK-4.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.hockeyapp.android/HockeySDK/4.0.0/d0df59eb1d6a50cf2125a051991b48711436a263/HockeySDK-4.0.0-javadoc.jar!/" />

@@ -32,8 +32,8 @@ public class ScheduleSpinnerAdapter extends ArrayAdapter<ScheduleModel> {
 
         ScheduleModel mDoctorRecord = new ScheduleModel();
         mDoctorRecord.setScheduleId(0);
-        mDoctorRecord.setFromTime("0:00");
-        mDoctorRecord.setToTime("0:00");
+        mDoctorRecord.setFromTime("Select");
+        mDoctorRecord.setToTime("Schedule");
 
         this.values.add(0,mDoctorRecord);
 
@@ -73,7 +73,13 @@ public class ScheduleSpinnerAdapter extends ArrayAdapter<ScheduleModel> {
         //String item = values.get(position).getUname();
         //if (item != null) {
             TextView text1 = (TextView) row.findViewById(R.id.txt_third_page_spinner_item);
-            text1.setText(values.get(position).getFromTime()+" to "+values.get(position).getToTime());
+
+        if(getItemId(position)>0) {
+            text1.setText(values.get(position).getFromTime() + " - " + values.get(position).getToTime());
+        }
+        else {
+            text1.setText(values.get(position).getFromTime() + " " + values.get(position).getToTime());
+        }
         //}
 
         return row;
@@ -93,8 +99,15 @@ public class ScheduleSpinnerAdapter extends ArrayAdapter<ScheduleModel> {
         //put the data in it
         //String item = values.get(position).getUname();
         //if (item != null) {
+
+
             TextView text1 = (TextView) row.findViewById(R.id.txt_third_page_spinner_item);
-            text1.setText(values.get(position).getFromTime()+" to "+values.get(position).getToTime());
+            if(getItemId(position)>0) {
+                text1.setText(values.get(position).getFromTime() + " - " + values.get(position).getToTime());
+            }
+            else {
+                text1.setText(values.get(position).getFromTime() + " " + values.get(position).getToTime());
+            }
         //}
 
         return row;

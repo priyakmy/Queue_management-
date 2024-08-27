@@ -3,7 +3,6 @@ package com.mcura.jaideep.queuemanagement.Activity
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -17,13 +16,14 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.github.barteksc.pdfviewer.PDFView
 import com.github.barteksc.pdfviewer.listener.*
+import com.mcura.jaideep.queuemanagement.R
+import com.mcura.jaideep.queuemanagement.Utils.Constant
+import com.squareup.picasso.Picasso
 import com.krishna.fileloader.FileLoader
 import com.krishna.fileloader.listener.FileRequestListener
 import com.krishna.fileloader.pojo.FileResponse
 import com.krishna.fileloader.request.FileLoadRequest
-import com.mcura.jaideep.queuemanagement.R
-import com.mcura.jaideep.queuemanagement.Utils.Constant
-import com.squareup.picasso.Picasso
+import com.mcura.jaideep.queuemanagement.BuildConfig
 import java.io.File
 
 class ViewPDFActivity : AppCompatActivity() {
@@ -45,6 +45,7 @@ class ViewPDFActivity : AppCompatActivity() {
             Context.MODE_PRIVATE
         )
         pdf = bundle!!.getString("pdf").toString()
+
         val path = BuildConfig.BASE_URL + pdf
         mToolbar = findViewById(R.id.toolbar) as Toolbar
         progress_bar = findViewById(R.id.progress_bar)

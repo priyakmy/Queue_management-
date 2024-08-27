@@ -1,8 +1,8 @@
 <component name="libraryTable">
-  <library name="Gradle: com.baoyz.swipemenulistview:library:1.3.0@aar">
+  <library name="Gradle: com.baoyz.swipemenulistview:library:1.3.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7ee3641675573a48426ec05d8b26b85d/transformed/library-1.3.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7ee3641675573a48426ec05d8b26b85d/transformed/library-1.3.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d04e35ad24f89227786a8f4905cd841a/transformed/library-1.3.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d04e35ad24f89227786a8f4905cd841a/transformed/library-1.3.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.baoyz.swipemenulistview/library/1.3.0/7a1e635b160e85140862082d7a1ef20ed656a65/library-1.3.0-javadoc.jar!/" />

@@ -3,6 +3,8 @@ package com.mcura.jaideep.queuemanagement.Activity;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import static com.mcura.jaideep.queuemanagement.Activity.Helper.convertDate;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -46,6 +48,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -60,6 +63,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -70,8 +74,11 @@ import com.mcura.jaideep.queuemanagement.Adapter.CheckInAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.CheckInAdapter_v1;
 import com.mcura.jaideep.queuemanagement.Adapter.GetNatureByUserRoleIdAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.SearchPatientAdapter_v1;
+import com.mcura.jaideep.queuemanagement.BuildConfig;
+import com.mcura.jaideep.queuemanagement.ImageDisplayActivity;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
 import com.mcura.jaideep.queuemanagement.Model.CurrentTokenModel;
+import com.mcura.jaideep.queuemanagement.Model.Dataa;
 import com.mcura.jaideep.queuemanagement.Model.Datum;
 import com.mcura.jaideep.queuemanagement.Model.FeeFetch;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
@@ -81,6 +88,7 @@ import com.mcura.jaideep.queuemanagement.Model.LastBillDetailModel;
 import com.mcura.jaideep.queuemanagement.Model.MainModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
 import com.mcura.jaideep.queuemanagement.Model.PatientVerificationModel.PatVerificationResponseModel;
+import com.mcura.jaideep.queuemanagement.Model.Patmedrecordd;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.PostPatMedRecord;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
@@ -157,6 +165,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     public static int natureId = 0;
     private Uri imageUri;
     private String pdfName;
+    private TextView tv_doctor_name,exist_from;
+    private  ImageView iv_type;
     private String videoPath;
     private String encodedVideoString;
     private ArrayList<GetMedicalRecordNatureModel> recordNatureModelArrayList;
@@ -258,6 +268,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tv_nature_name;
     private TextView tv_last_record_date;
     SqlLiteDbHelper dbHelper;
+    private TableLayout recordRow;
 
 
 
@@ -347,6 +358,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         cb_patname = (CheckBox) findViewById(R.id.cb_patname);
         cb_hospitalid = (CheckBox) findViewById(R.id.cb_hospitalid);
 
+
         checkin_pat_gender = (TextView) findViewById(R.id.checkin_pat_gender);
         checkin_pat_age = (TextView) findViewById(R.id.checkin_pat_age);
         checkin_pat_name = (TextView) findViewById(R.id.checkin_pat_name);
@@ -368,8 +380,12 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         doctorName = (TextView) findViewById(R.id.docname);
 
 
-        iv_upload = findViewById(R.id.iv_upload);
 
+        iv_upload = findViewById(R.id.iv_upload);
+        recordRow = findViewById(R.id.recordRow);
+        iv_type = findViewById(R.id.iv_type);
+        exist_from = findViewById(R.id.exist_from);
+        tv_doctor_name = findViewById(R.id.tv_doctor_name);
         //set hospital logo
         ImageView hospital_logo = (ImageView) mToolbar.findViewById(R.id.hospital_logo);
         Picasso.with(CheckInActivity.this).load(subtanentImagePath).into(hospital_logo);
@@ -1346,7 +1362,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
 
         final TextView tv_cal = (TextView) dialog.findViewById(R.id.tv_cal);
-        tv_cal.setText(Helper.getCompleteDate());
+        tv_cal.setText(Helper.getCompleteDateyyMMdd());
         pdfDate = tv_cal.getText().toString();
         TextView tv_show_lab_report = (TextView) dialog.findViewById(R.id.tv_show_lab_report);
         TextView tv_show_current_visit = (TextView) dialog.findViewById(R.id.tv_show_current_visit);
@@ -1480,6 +1496,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             public void success(PostPatMedRecord postPatMedRecord, Response response) {
                 natureId = postPatMedRecord.getIds().get(0);
                 Toast.makeText(getApplicationContext(),"Pdf upload success", Toast.LENGTH_SHORT).show();
+                getlatestData();
 
 
              //   postEndUserTrackingAPI(postPatMedRecord.getIds().get(0));
@@ -1538,6 +1555,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
             public void success(GetMedicalRecordNatureModel[] getMedicalRecordNatureModels, Response response) {
                 if(getMedicalRecordNatureModels!=null){
                     if(getMedicalRecordNatureModels.length>0){
+
+
                         medicalRecordNatureModelArray = getMedicalRecordNatureModels;
                         if(show==1){
                             showMedicalRecordNatureDialog(medicalRecordNatureModelArray);
@@ -1565,11 +1584,17 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showMedicalRecordNatureDialog(int show) {
-        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
+                recordNatureModelArrayList = new ArrayList();
+        for(int i=0;i<medicalRecordNatureModelArray.length;i++){
+            if(medicalRecordNatureModelArray[i].getRecNatureId()!=6) {
+                recordNatureModelArrayList.add(medicalRecordNatureModelArray[i]);
+            }
+        }
+       // recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
         GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
-        recNature.setRecNatureId(0);
-        recNature.setRecNatureProperty("Select Nature");
-        recordNatureModelArrayList.set(0,recNature);
+//        recNature.setRecNatureId(0);
+//        recNature.setRecNatureProperty("Select Nature");
+//        recordNatureModelArrayList.set(0,recNature);
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CheckInActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -1611,6 +1636,12 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showMedicalRecordNatureDialog(GetMedicalRecordNatureModel[] getMedicalRecordNatureModels) {
+//        recordNatureModelArrayList = new ArrayList();
+//        for(int i=0;i<getMedicalRecordNatureModels.length;i++){
+//            if(getMedicalRecordNatureModels[i].getRecNatureId()!=6) {
+//                recordNatureModelArrayList.add(getMedicalRecordNatureModels[i]);
+//            }
+//        }
         recordNatureModelArrayList = new ArrayList<>(Arrays.asList(getMedicalRecordNatureModels));
         GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
         recNature.setRecNatureId(0);
@@ -1860,6 +1891,8 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
 
         iv_upload.setVisibility(View.VISIBLE);
 
+       getlatestData();
+
 
 //        String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
 //        Date createdOn = new Date();
@@ -1898,6 +1931,97 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
         ad.dismiss();
     }
 
+    public void getlatestData() {
+//        tv_doctor_name.setText("doctorName");
+//        tv_doctor_name.setTextColor(Color.BLACK);
+        showLoadingDialog();
+        recordRow.setVisibility(View.VISIBLE);
+
+        mCuraApplication.getInstance().mCuraEndPoint.getLatestPatientRecord( user_role_id, mr_no,subTanentId, new Callback<Dataa>() {
+
+
+
+
+            @Override
+            public void success(Dataa patLatestRecord, Response response) {
+
+
+                if (patLatestRecord != null) {
+                    Log.d("asdfghjk", "PatDemoid: " + patLatestRecord.getPatDemoid());
+                    Log.d("asdfghjk", "OpipNo: " + patLatestRecord.getOpipNo());
+                    // Log other properties similarly
+
+                    // Get the first patmedrecords item (assuming you want the first item)
+                    if (patLatestRecord.getPatmedrecords() != null &&
+                            patLatestRecord.getPatmedrecords().size() > 0) {
+                        Patmedrecordd patmedrecordd = patLatestRecord.getPatmedrecords().get(0);
+                        Log.d("asdfghjk", "DoctorName: " + patmedrecordd.getDoctorName());
+                        Log.d("asdfghjk", "Date: " + patmedrecordd.getDate());
+                        Log.d("asdfghjk", "RecPath: " + patmedrecordd.getRecPath());
+                        String recPath =  patmedrecordd.getRecPath();
+
+
+                        iv_type.setImageResource(R.drawable.file);
+                        exist_from.setTextColor(Color.BLACK);
+                        exist_from.setText(convertDate(patmedrecordd.getDate()));
+                        tv_doctor_name.setTextColor(Color.BLACK);
+                        tv_doctor_name.setText( patmedrecordd.getDoctorName());
+                        iv_type.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getDataFromAPI(patmedrecordd.getUserRoleId(), patmedrecordd.getRecordId());
+                            }
+                        });
+                    }
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+//                refresh_explv.setRefreshing(false);
+            }
+        });
+
+
+        dismissLoadingDialog();
+    }
+
+    private void getDataFromAPI(int docUserRoleId, int recordId) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getRecord(docUserRoleId, recordId, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                String ext = MimeTypeMap.getFileExtensionFromUrl(s);
+
+                if (ext.equalsIgnoreCase("pdf")) {
+                    startActivity(new Intent(CheckInActivity.this, ViewPDFActivity.class).putExtra("pdf", s));
+                    //showHandwritingDialog(s);
+                }
+                else if (ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("png")
+                        || ext.equalsIgnoreCase("jpg")) {
+                    showImageDataDialog(s);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Not data found", Toast.LENGTH_SHORT).show();
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+    private void showImageDataDialog(final String response) {
+        final String path = BuildConfig.BASE_URL + response;
+
+        Intent intent = new Intent(CheckInActivity.this, ImageDisplayActivity.class);
+        intent.putExtra("imagePath", path);
+        startActivity(intent);
+    }
     private String getAge(int year, int month, int day) {
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -2535,7 +2659,7 @@ public class CheckInActivity extends AppCompatActivity implements View.OnClickLi
                         checkin_token_number.setText(currentTokenModels[0].getTokenNo().toString());
                         //Toast.makeText(CheckInActivity.this,currentTokenModels[0].getTokenNo().toString(), Toast.LENGTH_LONG).show();
                     } else if (currentTokenModels[0].getStatus() == NextAvailTokenStatus.kNextAvailTokenStatusNotAvailable.getID()) {
-                        Toast.makeText(CheckInActivity.this, "Please try again", Toast.LENGTH_LONG).show();
+                        /*Toast.makeText(CheckInActivity.this, "Please try again", Toast.LENGTH_LONG).show();*/
                     }
                 } else {
                     Toast.makeText(CheckInActivity.this, "OPD NOT STARTED", Toast.LENGTH_LONG).show();

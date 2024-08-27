@@ -60,6 +60,9 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     //private Spinner doctor_name,doctor_schedule;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor,edit;
+    String  Assistat_Roll_id ="";
+    String  AssistantUserName ="";
+    String  AssistantUserrollid ="";
     ImageView chat;
     ImageButton ibSearchPatient,load_nfc;
     private static String CALENDAR_TAG = CalendarActivity.class.getName();
@@ -101,6 +104,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     String toTime,fromTime,from_time,to_time;
     String scheduleName,hospitalNameStr;
     int subTanentId,scheduleId,sub_tanent_id;
+
     String year,month,day;
     //String day = "";
     String reqDate;
@@ -195,9 +199,11 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onStart() {
         super.onStart();
+
         if(StringUtil.isBlank(currDate) && userRoleId != 0) {
             getScheduleData(userRoleId, currDate);
         }
+
     }
 
     private void initView() {
@@ -207,6 +213,21 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         String subtanentImagePath = mSharedPreference.getString(Constant.SUB_TANENT_IMAGE_PATH, "default");
         sub_tanent_id = mSharedPreference.getInt(Constant.SUB_TANENT_ID_KEY, 0);
         userRoleId = mSharedPreference.getInt(Constant.USER_ROLE_ID, 0);
+
+
+        Intent intent = getIntent();
+
+           AssistantUserrollid = intent.getStringExtra("AssistantUserrollid");
+
+        if (AssistantUserrollid != null && !AssistantUserrollid.isEmpty()) {
+            try {
+                userRoleId = Integer.parseInt(AssistantUserrollid);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                // Handle the exception, maybe log an error or show a message to the user
+            }
+        }
+
         docName=mSharedPreference.getString(Constant.LOGIN_NAME_KEY, "Undefine");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -244,7 +265,17 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
         Picasso.with(CalendarActivity.this).load(subtanentImagePath).into(hospital_logo);
 
         getUserPhotoFromAPi();
-        doctorName.setText(docName);
+
+           AssistantUserName = intent.getStringExtra("AssistantUserName");
+
+        if (AssistantUserName != null && !AssistantUserName.isEmpty()) {
+            doctorName.setText(AssistantUserName);
+        }else {
+            doctorName.setText(docName);
+        }
+
+
+
         tvSunday = (TextView) findViewById(R.id.activity_calendar_tv_sun);
         tvMonday = (TextView) findViewById(R.id.activity_calendar_tv_mon);
         tvTuesday = (TextView) findViewById(R.id.activity_calendar_tv_tue);
@@ -313,6 +344,10 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(CalendarActivity.this, QueueStatusActivity.class);
+                in.putExtra("Assistat_Roll_id",Assistat_Roll_id);
+                in.putExtra("AssistantUserName",AssistantUserName);
+                in.putExtra("AssistantUserrollid",AssistantUserrollid);
+
                 startActivity(in);
             }
         });
@@ -323,6 +358,21 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(in);
             }
         });
+
+
+
+
+        Assistat_Roll_id = intent.getStringExtra("Assistat_Roll_id");
+        if ("17".equals(Assistat_Roll_id)){
+
+            billing.setVisibility(View.GONE);
+            tv_fillcard.setVisibility(View.GONE);
+
+        }else {
+            billing.setVisibility(View.VISIBLE);
+            tv_fillcard.setVisibility(View.VISIBLE);
+
+        }
         billing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -330,6 +380,7 @@ public class CalendarActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(in);
             }
         });
+
         //tv_monthyear = (TextView) findViewById(R.id.tv_monthyear);
 
         //logout= (ImageView) findViewById(R.id.calendar_logout);

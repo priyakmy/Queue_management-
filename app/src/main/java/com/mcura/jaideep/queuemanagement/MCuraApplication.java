@@ -36,9 +36,9 @@ import retrofit.converter.GsonConverter;
 public class MCuraApplication extends Application {
     private static Context mContext;
     private static MCuraApplication instance;
-    public RestAdapter.Builder mRestBuilder, mRestBuilderPostPayment, mRestBuilderTest,mRestBuilderConsumer;
-    public RestAdapter mRestAdapter, mRestAdapterPostPayment, mRestAdapterTest,mRestAdapterConsumer;
-    public MCuraEndPointInterface mCuraEndPoint, mCuraEndPointPostPayment, mCuraEndPointTest,mCuraEndPointConsumer;
+    public RestAdapter.Builder mRestBuilder, mRestBuilderPostPayment,mRestBuilderPostConsumer, mRestBuilderTest,mRestBuilderConsumer;
+    public RestAdapter mRestAdapter, mRestAdapterPostPayment,mRestAdapterPostConsumer, mRestAdapterTest,mRestAdapterConsumer;
+    public MCuraEndPointInterface mCuraEndPoint,mCuraEndPointPostConsumer, mCuraEndPointPostPayment, mCuraEndPointTest,mCuraEndPointConsumer;
     private BroadcastReceiver receiver;
     SqlLiteDbHelper dbHelper;
     Runnable m_Runnable;
@@ -126,11 +126,20 @@ public class MCuraApplication extends Application {
                 .setRequestInterceptor(requestInterceptor)
                 .setConverter(new GsonConverter(gson));
 
+        mRestBuilderPostConsumer = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BuildConfig.CONSUMER_URL)
+                .setRequestInterceptor(requestInterceptor)
+                .setConverter(new GsonConverter(gson))
+                .setClient(new OkClient(getRequestHeader()));
+
         // Create an instance of API interface.
 
         mRestAdapterConsumer = mRestBuilderConsumer.build();
+        mRestAdapterPostConsumer = mRestBuilderPostConsumer.build();
 
         mCuraEndPointConsumer = mRestAdapterConsumer.create(MCuraEndPointInterface.class);
+        mCuraEndPointPostConsumer = mRestAdapterPostConsumer.create(MCuraEndPointInterface.class);
 
 
         SharedPreferenceHelper.initialize(this);

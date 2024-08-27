@@ -4,15 +4,17 @@
     android:layout_height="wrap_content"
     android:background="@drawable/searchview_row_layout_bg">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/linearLayout"
-            android:layout_alignParentStart="true">
+            android:id="@+id/linearLayout">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_gravity="center_vertical"
@@ -24,13 +26,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp">
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Amit Dubey"
+                    android:text="@string/amit_dubey"
                     android:textColor="@color/black"
                     android:layout_marginBottom="10dp"
                     android:singleLine="true"/>
@@ -44,7 +45,6 @@
                         android:layout_height="wrap_content"
                         android:text="39/M"
                         android:textColor="@color/black"
-                        android:layout_marginRight="10dp"
                         android:layout_marginEnd="10dp" />
 
                     <TextView
@@ -52,7 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="9999999999"
+                        android:text="@string/_9999999999__"
                         android:visibility="visible"
                         android:layout_marginLeft="10dp"
                         android:layout_marginStart="10dp" />
@@ -65,11 +65,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:id="@+id/linearLayout2"
-            android:layout_alignParentEnd="true">
+            android:layout_marginStart="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/linearLayout2">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,38 +84,104 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/prescription_upload"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20"
+                android:layout_height="wrap_content"
+                android:src="@drawable/prescription_upload_grey"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/load_card"
+                android:layout_toStartOf="@+id/load_card"
+                />
         <ImageView
             android:id="@+id/edit_pat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_20"
             android:src="@drawable/edit"
             android:layout_centerVertical="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/linearLayout2"
             android:layout_toStartOf="@+id/linearLayout2"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp" />
+           />
         <ImageView
             android:id="@+id/load_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_20"
             android:src="@drawable/card"
             android:layout_centerVertical="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/edit_pat"
-            android:layout_toStartOf="@+id/edit_pat"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp" />
-        <ImageView
-            android:id="@+id/prescription_upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/prescription_upload_grey"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/load_card"
-            android:layout_toStartOf="@+id/load_card"
+            android:layout_toStartOf="@+id/edit_pat" />
+        </LinearLayout>
 
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp" />
-    </RelativeLayout>
+        </LinearLayout>
+        <TableLayout
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/recordRow"
+            android:visibility="gone"
+            android:background="@drawable/table_layout_border">
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/exist_from"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/tbl_data_bg"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:padding="@dimen/_5sdp"
+                    >
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_doctor_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:background="@drawable/tbl_data_bg"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:padding="@dimen/_5sdp">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/iv_type"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/tbl_data_bg"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:padding="@dimen/_10sdp"
+                    />
+            </TableRow>
+        </TableLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

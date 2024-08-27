@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/userid_input"
+                android:text="Assistant@1"
                 android:hint="UserId"
                 android:singleLine="true"
                 android:textColorHint="@color/colorPrimary"
@@ -72,6 +73,7 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/userid_input"
                 android:hint="Password"
+                android:text="b7n912qj"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColorHint="@color/colorPrimary"
@@ -83,11 +85,11 @@
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/login_btn"
-            android:layout_marginTop="20dp"
             android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
             android:layout_marginRight="50dp"
-            android:layout_marginEnd="50dp" />
+            android:background="@drawable/login_btn" />
     </LinearLayout>
 
     <LinearLayout

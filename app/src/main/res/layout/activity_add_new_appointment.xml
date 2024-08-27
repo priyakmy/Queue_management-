@@ -15,7 +15,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_20"
             android:background="@drawable/logo"
             android:layout_marginStart="@dimen/margin_20" />
 
@@ -31,9 +30,8 @@
             android:id="@+id/add_patient_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:background="@drawable/new_appointment_btn_bg_layer"
-            android:text="Cancel"
+            android:text="@string/_cancel"
             android:textColor="@color/black"
             android:layout_alignParentStart="true" />
 
@@ -41,9 +39,8 @@
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:background="@drawable/new_appointment_btn_bg_layer"
-            android:text="Submit"
+            android:text="@string/_submit"
             android:textColor="@color/black"
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
@@ -81,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Hospital ID:"
+                    android:text="@string/hospital_id"
                     android:textColor="#a2a2a2"
                     android:textSize="@dimen/text_14sp" />
 
@@ -90,9 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@+id/h_id"
-                    android:layout_toRightOf="@+id/tv_hospital_id"
                     android:background="@null"
                     android:enabled="true"
                     android:singleLine="true"
@@ -106,7 +100,6 @@
                     android:id="@+id/h_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:src="@drawable/h"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
@@ -119,7 +112,7 @@
                 android:layout_marginRight="@dimen/text_14sp"
                 android:layout_marginTop="@dimen/text_14sp"
                 android:background="@drawable/new_pat_appointment_textbg"
-                android:hint="Patient Name"
+                android:hint="@string/patient_name"
                 android:inputType="textPersonName"
                 android:singleLine="true"
                 android:textColor="@color/text_hint"
@@ -151,7 +144,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="DOB" />
+                        android:text="@string/dob" />
 
                     <RadioButton
                         android:id="@+id/rb_age"
@@ -159,17 +152,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Age" />
+                        android:text="@string/age" />
                 </com.mcura.jaideep.queuemanagement.view.SegmentedGroup>
 
                 <TextView
                     android:id="@+id/et_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
                     android:background="@drawable/new_pat_appointment_textbg"
-                    android:gravity="left"
-                    android:hint="Date Of Birth"
+                    android:gravity="start"
+                    android:hint="@string/date_of_birth"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
@@ -182,11 +174,10 @@
                     android:id="@+id/et_age"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/new_pat_appointment_textbg"
-                    android:gravity="left"
-                    android:hint="Age"
+                    android:gravity="start"
+                    android:hint="@string/_age"
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -211,11 +202,10 @@
                     android:id="@+id/dob_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="2dp"
                     android:layout_weight="1"
                     android:background="@drawable/new_pat_appointment_textbg"
                     android:gravity="center"
-                    android:hint="DD"
+                    android:hint="@string/dd"
                     android:inputType="number"
                     android:maxLength="2"
                     android:singleLine="true"
@@ -233,7 +223,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/new_pat_appointment_textbg"
                     android:gravity="center"
-                    android:hint="MM"
+                    android:hint="@string/mm"
                     android:inputType="number"
                     android:maxLength="2"
                     android:singleLine="true"
@@ -247,11 +237,10 @@
                     android:id="@+id/dob_year"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_weight="1"
                     android:background="@drawable/new_pat_appointment_textbg"
                     android:gravity="center"
-                    android:hint="YYYY"
+                    android:hint="@string/yyyy"
                     android:inputType="number"
                     android:maxLength="4"
                     android:singleLine="true"
@@ -269,13 +258,6 @@
                 android:layout_marginTop="@dimen/text_14sp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="Gender"
-                    android:textColor="@color/black" />
 
                 <RadioGroup
                     android:id="@+id/gender"
@@ -290,14 +272,13 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="1dp"
                         android:layout_marginTop="1dp"
                         android:layout_weight="1"
                         android:background="@drawable/toggle_widget_background"
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="Male"
+                        android:text="@string/male"
                         android:textColor="@color/black"
                         android:layout_marginStart="1dp" />
 
@@ -306,13 +287,12 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="1dp"
-                        android:layout_marginRight="1dp"
                         android:layout_marginTop="1dp"
                         android:layout_weight="1"
                         android:background="@drawable/toggle_widget_background"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="Female"
+                        android:text="@string/female"
                         android:textColor="@color/black"
                         android:layout_marginEnd="1dp" />
                 </RadioGroup>
@@ -326,7 +306,7 @@
                 android:layout_marginRight="@dimen/text_14sp"
                 android:layout_marginTop="@dimen/text_14sp"
                 android:background="@drawable/new_pat_appointment_textbg"
-                android:hint="Mobile"
+                android:hint="@string/mobile"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textColor="@color/text_hint"
@@ -341,7 +321,7 @@
                 android:layout_marginRight="@dimen/text_14sp"
                 android:layout_marginTop="@dimen/text_14sp"
                 android:background="@drawable/new_pat_appointment_textbg"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
                 android:textColor="@color/text_hint"
@@ -357,7 +337,7 @@
                 android:layout_marginLeft="@dimen/text_14sp"
                 android:layout_marginRight="@dimen/text_14sp"
                 android:layout_marginTop="@dimen/text_14sp"
-                android:text="Add Address"
+                android:text="@string/add_address"
                 android:textColor="#ff7f21" />
 
 
@@ -376,7 +356,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/new_pat_appointment_textbg"
-                    android:hint="Address 1"
+                    android:hint="@string/address_1"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
@@ -388,7 +368,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_14sp"
                     android:background="@drawable/new_pat_appointment_textbg"
-                    android:hint="Address 2"
+                    android:hint="@string/address_2"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"
@@ -400,7 +380,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/text_14sp"
                     android:background="@drawable/new_pat_appointment_textbg"
-                    android:hint="Zip Code"
+                    android:hint="@string/zip_code"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textColorHint="@color/text_hint"

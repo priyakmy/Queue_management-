@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Are you sure"
+        android:text="@string/are_you_sure"
         android:textColor="@color/black"
         android:textSize="14sp" />
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="you want to cancel?"
+        android:text="@string/you_want_to_cancel"
         android:textColor="@color/black"
         android:textSize="14sp" />
 

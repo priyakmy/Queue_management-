@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.mcura.jaideep.queuemanagement.Adapter.AddNewAppointmentSearchPatient;
 import com.mcura.jaideep.queuemanagement.Adapter.CheckInAdapter_v1;
@@ -708,7 +709,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 AddNewAppointment.this.finish();
                 break;*/
             case R.id.profile_pic:
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
@@ -733,6 +734,13 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                     if (updateStatus.equals("add_new_patient")) {
                         //isPatAlreadyExist();
                         registerNewPatient();
+                            Intent intent  = new Intent(AddNewAppointment.this, NewAppointmentActivity.class);
+                            intent.putExtra("appointmentstatus", 1);
+                            intent.putExtra("patName", patName);
+                            intent.putExtra("mobile", mobileNumber);
+                            intent.putExtra("mrno", mrno);
+                            startActivity(intent);
+
                     }
                 }
                 break;
@@ -964,6 +972,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             @Override
             public void success(SearchPatientModel patientSearchModels, Response response) {
                 if (patientSearchModels.getData().size() > 0) {
+
                     showMessageDialog(patientSearchModels);
                 } else {
                     registerNewPatient();
@@ -1414,6 +1423,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
             GraphicsUtil graphicUtil = new GraphicsUtil();
             profilePic.setImageBitmap(graphicUtil.getRoundedShape(imageBitmap));
         } else if (requestCode == REQUEST_APPOINTMENT_REGISTRATION) {
+            Log.d("asdfghjkl", ""+patName+""+mobileNumber+patientRegistrationId);
             startActivity(new Intent(AddNewAppointment.this, NewAppointmentActivity.class).putExtra("appointmentstatus", 1).putExtra("patName", patName).putExtra("mobile", mobileNumber).putExtra("patientRegistrationId", patientRegistrationId));
             finish();
         } else if (requestCode == REQUEST_DIRECT_REGISTRATION) {
@@ -1485,24 +1495,74 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
     }
 
     private void postPatientUserDetail() {
-        JsonObject patientDetail = new JsonObject();
-        patientDetail.addProperty("Patname", patName);
-        patientDetail.addProperty("Dob", dob);
-        patientDetail.addProperty("GenderId", genderId);
-        patientDetail.addProperty("AddressId", addressId);
-        patientDetail.addProperty("ContactId", contactId);
-
+        String hosId = "";
+        if(TextUtils.isEmpty(hospital_id.getText().toString())){
+            hosId += "AND";
+            if(patName.length()>=4){
+                String patChar = patName.substring(0,4);
+                hosId+=patChar;
+            }else{
+                hosId += patName;
+            }
+            hosId += mobileNumber.substring(0,4);
+        }else{
+            hosId = hospital_id.getText().toString();
+        }
 
         final JsonObject patientDetailObject = new JsonObject();
-        patientDetailObject.add("Pt", patientDetail);
-        patientDetailObject.addProperty("UserRoleID", userRoleId);
-        patientDetailObject.addProperty("sub_tenant_id", subTanentId);
-        patientDetailObject.addProperty("EntryTypeId", 1);
-        patientDetailObject.addProperty("regDate", registrationDate);
-        patientDetailObject.addProperty("RecNatureId", 1);//patientDetailObject.addProperty("RecNatureId", appNatureId);
-        patientDetailObject.addProperty("ImagePathId", ImagePathId);
-        patientDetailObject.addProperty("HospitalNo", hospital_id.getText().toString());
+        JsonObject patientDetail = new JsonObject();
 
+        // Adding patient personal details to the nested JSON object
+        patientDetail.addProperty("GenderId", genderId);
+        patientDetail.addProperty("Patname", patName);
+        patientDetail.addProperty("Dob", dob);
+        patientDetail.addProperty("AddressId", addressId);
+        patientDetail.addProperty("ContactId", contactId);
+        patientDetail.addProperty("MaritalId", "0");
+        patientDetail.addProperty("OccupationId", "0");
+        patientDetail.addProperty("RegNatureId", "0");
+        patientDetail.addProperty("ClassificationId", "0");
+        patientDetail.addProperty("ProviderId", "0");
+        patientDetail.addProperty("SalutationId", "1");
+        patientDetail.addProperty("PatStatusId", "0");
+        patientDetail.addProperty("IsVerified", "0");
+        patientDetail.addProperty("VerifiedBy", "0");
+
+        // Create JSON arrays for VerifiedDocLink and PatStatusDetails
+        JsonArray verifiedDocLink = new JsonArray();
+        JsonArray patStatusDetails = new JsonArray();
+
+        // Add the arrays to the patient detail JSON object
+        patientDetail.add("VerifiedDocLink", verifiedDocLink);
+        patientDetail.add("PatStatusDetails", patStatusDetails);
+
+        // Add the nested JSON object to the main JSON object
+        patientDetailObject.add("Pt", patientDetail);
+
+        // Adding additional properties to the main JSON object
+        patientDetailObject.addProperty("regDate", registrationDate);
+        patientDetailObject.addProperty("HospitalNo", hosId);
+        patientDetailObject.addProperty("UserRoleID", userRoleId);
+        patientDetailObject.addProperty("EntryTypeId", "1");
+        patientDetailObject.addProperty("RecNatureId", "1");
+        patientDetailObject.addProperty("sub_tenant_id", subTanentId);
+        patientDetailObject.addProperty("ImagePathId", 0);
+
+        // Create empty JSON objects for vipDetails, expatDetails, and freeReg
+        JsonObject vipDetails = new JsonObject();
+        JsonObject expatDetails = new JsonObject();
+        JsonObject freeReg = new JsonObject();
+
+        // Add the empty JSON objects to the main JSON object
+        patientDetailObject.add("vipDetails", vipDetails);
+        patientDetailObject.add("expatDetails", expatDetails);
+        patientDetailObject.add("freeReg", freeReg);
+
+        // Log the final JSON object to the debug log
+        Log.d("patientDetailObject", patientDetailObject.toString());
+
+        // Print the JSON object to the console (for testing purposes)
+        System.out.println(patientDetailObject.toString());
         showLoadingDialog();
         mCuraApplication.getInstance().mCuraEndPoint.postPatientUser(patientDetailObject, new Callback<String>() {
             @Override
@@ -1514,7 +1574,7 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                     patientRegistrationId = Integer.parseInt(s);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    //Toast.makeText(AddNewAppointment.this, "response=" + s + "  " + response, Toast.LENGTH_LONG).show();
+
                     if (imageBitmap != null) {
                         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                     } else {
@@ -1528,8 +1588,10 @@ public class AddNewAppointment extends AppCompatActivity implements View.OnClick
                 } else {
                     Log.d("response", s);
                     if (registerStatus.equals("appointment")) {
-                        Intent intent = new Intent(AddNewAppointment.this, NewAppointmentActivity.class);
-                        startActivity(intent);
+                     //   Intent intent = new Intent(AddNewAppointment.this, NewAppointmentActivity.class);
+                        startActivity(new Intent(AddNewAppointment.this, NewAppointmentActivity.class).putExtra("appointmentstatus", 1).putExtra("patName", patName).putExtra("mobile", mobileNumber).putExtra("mrno", mrno));
+                        finish();
+                      //  startActivity(intent);
                     } else if (registerStatus.equals("search")) {
                         finish();
                     }else if (registerStatus.equals("queue")) {

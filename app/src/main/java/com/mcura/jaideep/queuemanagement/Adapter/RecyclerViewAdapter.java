@@ -499,7 +499,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if(model.getAvlStatusId()==1){
                 if(CheckDates(time)){
                     holder.unBlock.setVisibility(View.GONE);
-                    holder.llFixBlock.setVisibility(View.GONE);
+                    holder.llFixBlock.setVisibility(View.VISIBLE);
                 }
                 else{
                     holder.unBlock.setVisibility(View.GONE);
@@ -563,9 +563,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 System.out.println(valueAppBooking[i]);
             }*/
                 //System.out.println("patName-->" + patDemo);
-                String patName = patDemoGraphicsString.getPatname();
+                String patName = model.getPatdemographics().getPatname();
+                Log.d("patname", patName);
+                holder.name.setText(patName);
                 //System.out.println("patName-->" + patName);
-                String dobEncode = patDemoGraphicsString.getDob();
+                String dobEncode = model.getPatdemographics().getDob();
                 //System.out.println("patName-->" + dobEncode);
                 //String dob= getDob(dobEncode);
 //                String timestamp = dobEncode.split("\\(")[1].split("\\+")[0];
@@ -586,15 +588,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 int year = Integer.parseInt(out[2]);
                 int month = Integer.parseInt(out[0]);
                 int day = Integer.parseInt(out[1]);
-
+                String patAge = getAge(year, month, day);
+                int gender = patDemoGraphicsString.getGenderId();
+                if (gender==1) {
+                    holder.age.setText(patAge + "Years/Male");
+                } else {
+                    holder.age.setText(patAge + "Years/Female");
+                }
+                patientEmail=model.getPatdemographics().getEmail();
+                callPatient=model.getPatdemographics().getMobile();
+                holder.emailTo.setText(patientEmail);
+                holder.callPat.setText("Mobile : "+callPatient);
                 //String splitmrno[]=formatAppBooking[4].split("=");
                 holder.mrno.setText(appBooking.getMrno()+"");
                 int mr=(int)Double.parseDouble(appBooking.getMrno()+"");
                 String imagePath= BuildConfig.BASE_URL+patDemoGraphicsString.getPatPic();
-                patientEmail=patDemoGraphicsString.getEmail().trim();
-                callPatient=patDemoGraphicsString.getMobile().trim();
-                holder.emailTo.setText(patientEmail);
-                holder.callPat.setText("Mobile : "+callPatient);
+
+
                 Picasso.with(context).load(imagePath).placeholder(R.drawable.booked_patient_img).into(holder.profileImage);
                 //Double d=new Double(mr);
                 //int m=d.intValue();
@@ -645,14 +655,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         //dismissLoadingDialog();
                     }
                 });*/
-                String patAge = getAge(year, month, day);
-                int gender = patDemoGraphicsString.getGenderId();
-                holder.name.setText(patName);
-                if (gender==1) {
-                    holder.age.setText(patAge + "Years/Male");
-                } else {
-                    holder.age.setText(patAge + "Years/Female");
-                }
+
             }catch (NullPointerException e){
 
             }

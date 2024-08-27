@@ -1,5 +1,5 @@
 
-package com.mcura.partners.model.CreatePaymentRajorPayResponseModel;
+package com.mcura.jaideep.queuemanagement.Model.CreatePaymentRajorPayResponseModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

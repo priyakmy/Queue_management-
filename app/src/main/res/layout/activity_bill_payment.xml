@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginRight="@dimen/margin_10"
             android:src="@drawable/bill_summary"
             android:layout_marginEnd="@dimen/margin_10" />
 
@@ -31,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginRight="@dimen/margin_20"
             android:src="@drawable/add_patient"
             android:layout_marginEnd="@dimen/margin_20" />
 
@@ -113,9 +111,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="10dp"
                             android:background="@drawable/search_icon"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="10dp" />
@@ -133,7 +129,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:src="@drawable/upload_gray"
                         android:layout_marginEnd="@dimen/margin_05" />
                 </RelativeLayout>
@@ -148,7 +143,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginLeft="@dimen/margin_10"
                 android:layout_marginTop="@dimen/margin_10"
                 android:orientation="vertical"
                 android:layout_marginStart="@dimen/margin_10">
@@ -163,36 +157,33 @@
                         android:id="@+id/bill_payment_activity_patient_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
-                        android:text="Patient Name"
+                        android:text="@string/_patient_name"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:clickable="true"
-                        android:text="|"
+                        android:text="@string/_line"
                         android:textColor="@color/tv_colorTextBrightGrey1"
                         android:textSize="15sp"
-                        android:layout_marginEnd="@dimen/margin_05" />
+                        android:layout_marginEnd="@dimen/margin_05"
+                        android:focusable="true" />
 
                     <TextView
                         android:id="@+id/bill_payment_activity_patient_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
-                        android:text="xxY"
+                        android:text="@string/xxy"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:clickable="true"
-                        android:text="|"
+                        android:text="@string/_line_"
                         android:textColor="@color/tv_colorTextBrightGrey1"
                         android:textSize="15sp"
                         android:layout_marginEnd="@dimen/margin_05"
@@ -202,8 +193,7 @@
                         android:id="@+id/bill_payment_activity_patient_gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
-                        android:text="Gender"
+                        android:text="@string/gender"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
                 </LinearLayout>
@@ -216,24 +206,22 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hospital ID: "
+                        android:text="@string/hospital_id_"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/hospital_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
-                        android:text="0000"
+                        android:text="@string/_0000"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:clickable="true"
-                        android:text="|"
+                        android:text="@string/__line"
                         android:textColor="@color/tv_colorTextBrightGrey1"
                         android:textSize="15sp"
                         android:layout_marginEnd="@dimen/margin_05"
@@ -242,24 +230,22 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MRNO: "
+                        android:text="@string/mrno"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/bill_payment_activity_mrno"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
-                        android:text="0000"
+                        android:text="@string/_0000_"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:clickable="true"
-                        android:text="|"
+                        android:text="@string/__Line"
                         android:textColor="@color/tv_colorTextBrightGrey1"
                         android:textSize="15sp"
                         android:layout_marginEnd="@dimen/margin_05"
@@ -268,16 +254,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ph: "
+                        android:text="@string/ph"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/bill_payment_activity_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/margin_05"
                         android:singleLine="true"
-                        android:text="9999999999"
+                        android:text="@string/_9999999999"
                         android:textColor="@color/black"
                         android:layout_marginEnd="@dimen/margin_05" />
                 </LinearLayout>
@@ -320,7 +305,6 @@
                     android:id="@+id/iv_newcard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_05"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
                     android:src="@drawable/newcard"
@@ -340,7 +324,6 @@
                     android:id="@+id/iv_nocard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_05"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
                     android:src="@drawable/none_s"
@@ -362,11 +345,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
                     android:background="@null"
                     android:ems="@integer/large_size"
                     android:enabled="true"
-                    android:hint="Mobile"
+                    android:hint="@string/_mobile"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textSize="@dimen/text_14sp"
@@ -388,11 +370,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
                     android:background="@null"
                     android:ems="@integer/large_size"
                     android:enabled="true"
-                    android:hint="Email Id"
+                    android:hint="@string/_email_id"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textSize="@dimen/text_14sp"
@@ -415,11 +396,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
                     android:background="@null"
                     android:ems="@integer/large_size"
                     android:enabled="true"
-                    android:hint="HIS No"
+                    android:hint="@string/_his_no"
                     android:singleLine="true"
                     android:textColor="@color/text_hint"
                     android:textSize="@dimen/text_14sp"
@@ -439,14 +419,12 @@
                     android:id="@+id/doctor_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_05"
                     android:layout_weight="1"
                     android:background="@drawable/doc_spinner"
                     android:gravity="center_vertical"
                     android:paddingBottom="@dimen/padding_10"
-                    android:paddingLeft="5dp"
                     android:paddingTop="@dimen/padding_10"
-                    android:text="Select Doctor"
+                    android:text="@string/_select_doctor"
                     android:textColor="@color/black"
                     android:layout_marginEnd="@dimen/margin_05"
                     android:paddingStart="5dp">
@@ -457,7 +435,6 @@
                     android:id="@+id/nature"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_05"
                     android:layout_weight="1"
                     android:background="@drawable/doc_spinner"
                     android:prompt="@array/select_hospital"
@@ -493,7 +470,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Est Id"
+                            android:text="@string/est_id"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -506,7 +483,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Order Id"
+                            android:text="@string/order_id"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -519,7 +496,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Days"
+                            android:text="@string/days"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -532,7 +509,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Amount"
+                            android:text="@string/amount"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -554,7 +531,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Est Id"
+                            android:text="@string/est_id_"
                             android:textColor="#454545" />
                     </RelativeLayout>
 
@@ -568,7 +545,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Order Id"
+                            android:text="@string/_order_id"
                             android:textColor="#454545" />
                     </RelativeLayout>
 
@@ -582,7 +559,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Days"
+                            android:text="@string/_days"
                             android:textColor="#454545" />
                     </RelativeLayout>
 
@@ -596,7 +573,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Amount"
+                            android:text="@string/_amount"
                             android:textColor="#454545" />
                     </RelativeLayout>
                 </TableRow>
@@ -621,7 +598,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Est Id"
+                            android:text="@string/_est_id"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -634,7 +611,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Order Id"
+                            android:text="@string/_order_id_"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -647,7 +624,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Amount"
+                            android:text="@string/amount_"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -669,7 +646,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Est Id"
+                            android:text="@string/_est_id_"
                             android:textColor="#454545" />
                     </RelativeLayout>
 
@@ -683,7 +660,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Order Id"
+                            android:text="@string/_order__id_"
                             android:textColor="#454545" />
                     </RelativeLayout>
 
@@ -697,7 +674,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="Amount"
+                            android:text="@string/_amount_"
                             android:textColor="#454545" />
                     </RelativeLayout>
                 </TableRow>
@@ -723,7 +700,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bill No."
+                            android:text="@string/bill_no"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -736,21 +713,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Doctor"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_16sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:text="Date Time"
+                            android:text="@string/doctor"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -764,7 +727,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:text="Amount"
+                            android:text="@string/date_time"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_16sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/__amount"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_16sp" />
                     </RelativeLayout>
@@ -786,7 +763,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="bill id"
+                            android:text="@string/bill_id"
                             android:textColor="#454545"
                             android:textSize="@dimen/text_12sp" />
                     </RelativeLayout>
@@ -802,7 +779,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:singleLine="false"
-                            android:text="doctor name"
+                            android:text="@string/doctor_name"
                             android:textColor="#454545"
                             android:textSize="@dimen/text_12sp" />
                     </RelativeLayout>
@@ -822,7 +799,7 @@
                                 android:id="@+id/tvdate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="date"
+                                android:text="@string/date"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
 
@@ -830,7 +807,7 @@
                                 android:id="@+id/tvtime"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="time"
+                                android:text="@string/time"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
                         </LinearLayout>
@@ -853,7 +830,7 @@
                                 android:id="@+id/tvnature"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="nature"
+                                android:text="@string/_nature"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
 
@@ -861,7 +838,7 @@
                                 android:id="@+id/tvamount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0000"
+                                android:text="@string/__0000_"
                                 android:textColor="#454545"
                                 android:textSize="@dimen/text_12sp" />
                         </LinearLayout>
@@ -882,9 +859,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/edittex_doctors"
-                android:hint="Enter Amount"
+                android:hint="@string/enter_amount"
                 android:inputType="number"
-                android:paddingLeft="@dimen/padding_05"
                 android:singleLine="true"
                 android:visibility="gone"
                 android:paddingStart="@dimen/padding_05" />
@@ -901,7 +877,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rs "
+                    android:text="@string/rs"
                     android:textColor="@color/orange"
                     android:textSize="20sp" />
 
@@ -909,7 +885,7 @@
                     android:id="@+id/doctor_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0000"
+                    android:text="@string/__0000__"
                     android:textColor="@color/orange"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -965,10 +941,9 @@
                     android:id="@+id/activity_bill_payment_paynow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:background="@drawable/paynow_bg"
-                    android:text="Pay Now"
+                    android:text="@string/pay_now"
                     android:textColor="@color/white"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
@@ -1001,7 +976,7 @@
                 android:id="@+id/appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Appointment "
+                android:text="@string/appointment"
                 android:textColor="@drawable/textbackground"
                 android:textSize="15sp" />
 
@@ -1009,17 +984,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="|"
+                android:text="@string/line"
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
 
             <TextView
                 android:id="@+id/queue_mgmt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Queue Management "
+                android:text="@string/queue_management"
                 android:textSize="15sp"
                 android:layout_marginStart="5dp" />
 
@@ -1027,17 +1002,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="|"
+                android:text="@string/_line__"
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/billing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="@dimen/margin_05"
-                android:text="Billing"
+                android:text="@string/billing"
                 android:textColor="@color/orange"
                 android:textSize="15sp"
                 android:layout_marginStart="5dp"
@@ -1047,16 +1021,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:text="|"
+                android:text="@string/__line__"
                 android:textColor="@color/tv_colorTextBrightGrey1"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:focusable="true" />
 
             <TextView
                 android:id="@+id/order_booth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Order Booth"
+                android:text="@string/_order_booth_"
                 android:textSize="15sp"
                 android:layout_marginStart="5dp" />
         </LinearLayout>
@@ -1071,7 +1045,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/mcura_logo"
             android:layout_marginEnd="5dp" />

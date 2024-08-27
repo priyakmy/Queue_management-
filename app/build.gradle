@@ -8,17 +8,25 @@
 //    }
 //}
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+/*apply plugin: 'io.fabric'*/
+
 
 repositories {
-    //maven { url 'https://maven.fabric.io/public' }
+    /*maven { url 'https://maven.fabric.io/public' }*/
+    maven { url 'https://jitpack.io' }
     mavenCentral()
+
 }
+
+
 android {
     signingConfigs {
         config {
         }
     }
+
     compileSdkVersion 30
     lintOptions {
         checkReleaseBuilds false
@@ -28,10 +36,10 @@ android {
     }
     defaultConfig {
         applicationId "com.mcura.jaideep.queuemanagement"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 2
-        versionName "2.2"
+        versionName "3.0.1"
         multiDexEnabled true
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "2c7fc1e68aa842489cade334ee335300"]
     }
@@ -40,21 +48,21 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             buildConfigField "String", "API_URL", "\"http://test.tn.mcura.com/health_dev.svc/Json\""
-            buildConfigField "String", "BASE_URL", "\"http://test.tn.mcura.com/\""
+            buildConfigField "String", "BASE_URL", "\"https://test-tn.mcura.com/\""
             buildConfigField "String", "CONSUMER_URL", "\"http://test.tn.mcura.com/ConsumerService.svc/Json\""
-            buildConfigField "String", "MCURA_API_URL", "\"http://mcuradev.dlinkddns.com/testtnmcura/health_dev.svc/Json\""
+            buildConfigField "String", "MCURA_API_URL", "\"https://mcuradev.dlinkddns.com/testtnmcura/health_dev.svc/Json\""
         }
         debug {
             minifyEnabled false
             buildConfigField "String", "API_URL", "\"http://test.tn.mcura.com/health_dev.svc/Json\""
-            buildConfigField "String", "BASE_URL", "\"http://test.tn.mcura.com/\""
+            buildConfigField "String", "BASE_URL", "\"https://test-tn.mcura.com/\""
             buildConfigField "String", "CONSUMER_URL", "\"http://test.tn.mcura.com/ConsumerService.svc/Json\""
             buildConfigField "String", "MCURA_API_URL", "\"http://mcuradev.dlinkddns.com/testtnmcura/health_dev.svc/Json\""
         }
         intranet {
             minifyEnabled false
             buildConfigField "String", "API_URL", "\"http://test.tn.mcura.com/health_dev.svc/Json\""
-            buildConfigField "String", "BASE_URL", "\"http://test.tn.mcura.com/\""
+            buildConfigField "String", "BASE_URL", "\"https://test-tn.mcura.com/\""
             buildConfigField "String", "CONSUMER_URL", "\"http://test.tn.mcura.com/ConsumerService.svc/Json\""
             buildConfigField "String", "MCURA_API_URL", "\"http://mcuradev.dlinkddns.com/testtnmcura/health_dev.svc/Json\""
         }
@@ -81,6 +89,12 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.2.4'
     implementation files('libs/jsoup-1.7.3.jar')
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.github.kk121:File-Loader:1.2'
+    implementation 'com.razorpay:checkout:1.5.12'
+
+
+
 
     implementation("com.github.bumptech.glide:glide:4.9.0") {
         exclude group: "com.android.support"

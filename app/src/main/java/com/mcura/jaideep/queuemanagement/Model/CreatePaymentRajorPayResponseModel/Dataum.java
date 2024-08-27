@@ -4,7 +4,7 @@ package com.mcura.jaideep.queuemanagement.Model.CreatePaymentRajorPayResponseMod
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data {
+public class Dataum {
 
     @SerializedName("Attributes")
     @Expose

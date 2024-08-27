@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Adapter.DoctorSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.Adapter.ScheduleSpinnerAdapter;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
+import com.mcura.jaideep.queuemanagement.Model.DocAssistantMappingModel;
 import com.mcura.jaideep.queuemanagement.Model.DoctorListModel;
 import com.mcura.jaideep.queuemanagement.Model.GetSubTenantLogoModel;
 import com.mcura.jaideep.queuemanagement.Model.GetSubtenantDetailsModel;
@@ -42,11 +45,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+
     private Spinner doctor_name, doctor_schedule;
     public MCuraApplication mCuraApplication;
     private EditText loginUsername, loginPassword;
     private ImageButton loginButton, go_to_chart;
     String username, password;
+
     private ImageView logout;
     private SharedPreferences mSharedPreference;
     DoctorSpinnerAdapter doctorSpinnerAdapter;
@@ -63,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static String APP_URL;
     public Helper helper;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,16 +78,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor = mSharedPreference.edit();
         helper = new Helper();
 
-            if (mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0) != 0) {
-                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
-                startActivity(i);
-                finish();
-            } else {
-                initView();
-            }
-            
+        if (mSharedPreference.getInt(Constant.USER_ROLE_ID_KEY, 0) != 0) {
+            Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
+            startActivity(i);
+            finish();
+        } else {
+            initView();
         }
 
+    }
 
 
     public void initView() {
@@ -112,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         go_to_chart.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -139,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.go_to_chart_btn:
                 if (userRoleId != 0 && scheduleId != 0) {
+
                     Intent i = new Intent(LoginActivity.this, CalendarActivity.class);
                     startActivity(i);
                     finish();
@@ -158,24 +165,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
     public void getLoginDetail() {
-       helper.showLoadingDialog(LoginActivity.this);
+        helper.showLoadingDialog(LoginActivity.this);
+
+        //Assistant@1
+        //b7n912qj
         mCuraApplication.getInstance().mCuraEndPoint.getLogin(username, password, new Callback<LoginModel>() {
             @Override
             public void success(LoginModel loginModel, Response response) {
-                //Toast.makeText(LoginActivity.this, loginModel.getUserRoleId().toString(), Toast.LENGTH_LONG).show();
-
                 if (loginModel.getLoginId() != 0) {
                     userRoleId = loginModel.getUserRoleId();
                     editor.putInt(Constant.STATUS_ID_KEY, loginModel.getCurrentStatusId());
                     editor.putString(Constant.DOMAIN_KEY, loginModel.getDomain());
                     editor.putInt(Constant.LOGIN_ID_KEY, loginModel.getLoginId());
-                    editor.putInt(Constant.LOGIN_ROLE_ID,loginModel.getRoleId());
+                    editor.putInt(Constant.LOGIN_ROLE_ID, loginModel.getRoleId());
                     editor.putInt(Constant.PIN_KEY, loginModel.getPin());
                     editor.putString(Constant.PASSWORD_KEY, loginModel.getPwd());
                     editor.putInt(Constant.USER_ROLE_ID_KEY, loginModel.getUserRoleId());
                     editor.apply();
-                    getSubtenantId();
+                    getSubtenantId(loginModel.getRoleId());
                     //dismissLoadingDialog();
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid Username and Password", Toast.LENGTH_LONG).show();
@@ -192,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    public void getSubtenantId() {
+    public void getSubtenantId(int roleId) {
         helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getHospital(userRoleId, new Callback<SearchHospital[]>() {
             @Override
@@ -203,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putInt(Constant.SUB_TANENT_ID_KEY, searchHospitals[0].getSubTenantId());
                     editor.apply();
                     //getSubtanentLogoFromApi();
-                    getSubtanentDatail();
+                    getSubtanentDatail(roleId);
                 } else {
                     Toast.makeText(LoginActivity.this, "Login Again", Toast.LENGTH_LONG).show();
                     helper.dismissLoadingDialog();
@@ -222,7 +231,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    private void getSubtanentDatail() {
+    private void getSubtanentDatail(int roleId) {
         helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.getSubtenantDetailsBySubTenantId(subTanentId, userRoleId, new Callback<GetSubtenantDetailsModel>() {
             @Override
@@ -231,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 editor.putString(Constant.SUBTANENT_ADD, getSubtenantDetailsModel.getAddress().trim());
                 editor.putString(Constant.SUBTANENT_CONTACT, getSubtenantDetailsModel.getMobile().trim());
                 editor.commit();
-                getSubtanentLogoFromApi();
+                getSubtanentLogoFromApi(roleId);
                 helper.dismissLoadingDialog();
             }
 
@@ -242,7 +251,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    public void getSubtanentLogoFromApi() {
+    public void getSubtanentLogoFromApi(int roleId) {
         //showLoadingDialog();
         mCuraApplication.getInstance().mCuraEndPoint.getSubTenant_Logo(userRoleId, subTanentId, new Callback<GetSubTenantLogoModel>() {
             @Override
@@ -253,7 +262,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.putString(Constant.SUB_TANENT_IMAGE_PATH, subtanentImagePath);
                     editor.commit();
                 }
-                postEndUserTrackingAPI();
+                postEndUserTrackingAPI(roleId);
                 helper.dismissLoadingDialog();
             }
 
@@ -263,7 +272,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-    private void postEndUserTrackingAPI() {
+
+    private void postEndUserTrackingAPI(int roleId) {
         PackageInfo pInfo = null;
         try {
             pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -284,19 +294,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mCuraApplication.getInstance().mCuraEndPoint.postEndUserTracking(obj, new Callback<PatVerificationResponseModel>() {
             @Override
             public void success(PatVerificationResponseModel patVerificationResponseModel, Response response) {
+                helper.dismissLoadingDialog();
                 Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
                 startActivity(i);
-               helper.dismissLoadingDialog();
+                 helper.dismissLoadingDialog();
             }
 
             @Override
             public void failure(RetrofitError error) {
                 helper.dismissLoadingDialog();
-                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(LoginActivity.this, DoctorScheduleActivity.class);
+//                startActivity(i);
             }
         });
     }
+
+
     public void getDoctorDetail() {
         helper.showLoadingDialog(LoginActivity.this);
         mCuraApplication.getInstance().mCuraEndPoint.list_DoctorsBySubTenantId(subTanentId, new Callback<DoctorListModel[]>() {
@@ -315,7 +328,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void failure(RetrofitError error) {
-                  helper.dismissLoadingDialog();
+                helper.dismissLoadingDialog();
             }
         });
     }

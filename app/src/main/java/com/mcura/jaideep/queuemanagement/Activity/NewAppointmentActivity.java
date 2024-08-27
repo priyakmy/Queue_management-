@@ -3,6 +3,8 @@ package com.mcura.jaideep.queuemanagement.Activity;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+import static com.mcura.jaideep.queuemanagement.Activity.Helper.convertDate;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -35,9 +37,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -47,23 +49,29 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonPrimitive;
 import com.mcura.jaideep.queuemanagement.Adapter.CheckInAdapter_v1;
 import com.mcura.jaideep.queuemanagement.Adapter.GetNatureByUserRoleIdAdapter;
+import com.mcura.jaideep.queuemanagement.BuildConfig;
+import com.mcura.jaideep.queuemanagement.GlideImageLoader;
+import com.mcura.jaideep.queuemanagement.ImageDisplayActivity;
 import com.mcura.jaideep.queuemanagement.MCuraApplication;
-import com.mcura.jaideep.queuemanagement.Model.AppointmentNature;
 import com.mcura.jaideep.queuemanagement.Model.CurrentTokenModel;
+import com.mcura.jaideep.queuemanagement.Model.Dataa;
 import com.mcura.jaideep.queuemanagement.Model.Datum;
 import com.mcura.jaideep.queuemanagement.Model.FeeFetch;
 import com.mcura.jaideep.queuemanagement.Model.GenerateTokenResultModel;
 import com.mcura.jaideep.queuemanagement.Model.GetMedicalRecordNatureModel;
 import com.mcura.jaideep.queuemanagement.Model.GetNatureByUserRoleModel;
 import com.mcura.jaideep.queuemanagement.Model.LastBillDetailModel;
+import com.mcura.jaideep.queuemanagement.Model.PatLatestRecord;
 import com.mcura.jaideep.queuemanagement.Model.PatientSearchModel;
+import com.mcura.jaideep.queuemanagement.Model.Patmedrecord;
+import com.mcura.jaideep.queuemanagement.Model.Patmedrecordd;
 import com.mcura.jaideep.queuemanagement.Model.PostActivityTrackerModel.PostActivityTrackerModel;
 import com.mcura.jaideep.queuemanagement.Model.PostPatMedRecord;
 import com.mcura.jaideep.queuemanagement.Model.PostPaymentModel;
@@ -77,6 +85,7 @@ import com.google.gson.JsonObject;
 import com.mcura.jaideep.queuemanagement.Utils.NatureEnum;
 import com.mcura.jaideep.queuemanagement.helper.EnumType;
 import com.mcura.jaideep.queuemanagement.helper.Helper;
+import com.mcura.jaideep.queuemanagement.retrofit.MCuraEndPointInterface;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
@@ -96,8 +105,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import retrofit.Callback;
+import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -138,15 +149,21 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
     final int REQUEST_GALLARY = 1;
     public static final int RequestPermissionCode = 4;
     private ArrayList<GetMedicalRecordNatureModel> recordNatureModelArrayList;
-
+    Patmedrecordd[] patLatestRecordd;
     private String pdfPick;
     private String pdfName;
     private String pdfDate;
     private ListView recNatureListView;
-    private TextView tvListNatureId;
+    private TextView tvListNatureId,tv_doctor_name,exist_from;
+    private  ImageView iv_type;
     private GetMedicalRecordNatureModel[] medicalRecordNatureModelArray;
     private RecNatureListAdapter recNatureListAdapter;
     public PatientSearchModel[] patientSearchModelsArray;
+    private TableLayout recordRow;
+
+    private PatLatestRecord mainResponseModel;
+    private ArrayList<Patmedrecord> medRecord_models;
+  private PatLatestRecord patLatestRecord;
 
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -293,6 +310,13 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         cb_patname = (CheckBox) findViewById(R.id.cb_patname);
         cb_hospitalid = (CheckBox) findViewById(R.id.cb_hospitalid);
         iv_upload = findViewById(R.id.iv_upload);
+        recordRow = findViewById(R.id.recordRow);
+        iv_type = findViewById(R.id.iv_type);
+        exist_from = findViewById(R.id.exist_from);
+        tv_doctor_name = findViewById(R.id.tv_doctor_name);
+
+
+
 
     /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
             R.array.planets_array, android.R.layout.simple_spinner_item);
@@ -345,6 +369,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                 strSearchBy = strSearchBy.replace("[", "");
                 strSearchBy = strSearchBy.replace("]", "");
 
+
                 /*JsonArray objectKeyArray = new JsonArray();
                 for (int i = 0; i < searchByList.size(); i++) {
                     objectKeyArray.add(new JsonPrimitive(searchByList.get(i)));
@@ -358,7 +383,9 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                         firstIndex = 2;
                         patientSearchModel = new SearchPatientModel();
                         dataList = new ArrayList<>();
+
                         getPatientSearchDetail(this.searchKey);
+
                     } else {
                         Toast.makeText(NewAppointmentActivity.this, "Please choose search by option", Toast.LENGTH_LONG).show();
                     }
@@ -369,7 +396,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
             case R.id.submit:
                 if (Helper.isInternetConnected(NewAppointmentActivity.this)) {
                     if(!TextUtils.isEmpty(searchBy.getText().toString())){
-                        if(mrno>0){
+                        if(mrno>=0){
                             if(appNatureId>0){
                                 appointmentBookedOrNot();
                             }else{
@@ -400,6 +427,106 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                 }
         }
     }
+
+    public void getlatestData() {
+//        tv_doctor_name.setText("doctorName");
+//        tv_doctor_name.setTextColor(Color.BLACK);
+        showLoadingDialog();
+        recordRow.setVisibility(View.VISIBLE);
+
+        mCuraApplication.getInstance().mCuraEndPoint.getLatestPatientRecord( userRoleId, this.mrno,subTanentId, new Callback<Dataa>() {
+
+            @Override
+            public void success(Dataa patLatestRecord, Response response) {
+
+
+                if (patLatestRecord != null) {
+                    Log.d("asdfghjk", "PatDemoid: " + patLatestRecord.getPatDemoid());
+                    Log.d("asdfghjk", "OpipNo: " + patLatestRecord.getOpipNo());
+                    // Log other properties similarly
+
+                    // Get the first patmedrecords item (assuming you want the first item)
+                    if (patLatestRecord.getPatmedrecords() != null &&
+                            patLatestRecord.getPatmedrecords().size() > 0) {
+                        Patmedrecordd patmedrecordd = patLatestRecord.getPatmedrecords().get(0);
+                        Log.d("asdfghjk", "DoctorName: " + patmedrecordd.getDoctorName());
+                        Log.d("asdfghjk", "Date: " + patmedrecordd.getDate());
+                        Log.d("asdfghjk", "RecPath: " + patmedrecordd.getRecPath());
+                        String recPathext = MimeTypeMap.getFileExtensionFromUrl(patmedrecordd.getRecPath());
+
+                        if (recPathext.equalsIgnoreCase("pdf")) {
+                            iv_type.setImageResource(R.drawable.pdf);
+                            //showHandwritingDialog(s);
+                        }
+                        else if (recPathext.equalsIgnoreCase("jpeg") || recPathext.equalsIgnoreCase("png")
+                                || recPathext.equalsIgnoreCase("jpg")) {
+                            iv_type.setImageResource(R.drawable.image);
+                        }
+                        else {
+                            iv_type.setImageResource(R.drawable.video);
+                        }
+                        exist_from.setTextColor(Color.BLACK);
+                        exist_from.setText(convertDate(patmedrecordd.getDate()));
+                        tv_doctor_name.setTextColor(Color.BLACK);
+                        tv_doctor_name.setText( patmedrecordd.getDoctorName());
+                        iv_type.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getDataFromAPI(patmedrecordd.getUserRoleId(), patmedrecordd.getRecordId());
+                            }
+                        });
+                    }
+                }
+
+            }
+
+
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+//                refresh_explv.setRefreshing(false);
+            }
+        });
+
+
+        dismissLoadingDialog();
+    }
+    private void getDataFromAPI(int docUserRoleId, int recordId) {
+        showLoadingDialog();
+        mCuraApplication.getInstance().mCuraEndPoint.getRecord(docUserRoleId, recordId, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                String ext = MimeTypeMap.getFileExtensionFromUrl(s);
+
+               if (ext.equalsIgnoreCase("pdf")) {
+                    startActivity(new Intent(NewAppointmentActivity.this, ViewPDFActivity.class).putExtra("pdf", s));
+                    //showHandwritingDialog(s);
+                }  else if (ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("png")
+                        || ext.equalsIgnoreCase("jpg")) {
+                    showImageDataDialog(s);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not data found", Toast.LENGTH_SHORT).show();
+                }
+                dismissLoadingDialog();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                dismissLoadingDialog();
+            }
+        });
+    }
+
+    private void showImageDataDialog(final String response) {
+        final String path = BuildConfig.BASE_URL + response;
+
+        Intent intent = new Intent(NewAppointmentActivity.this, ImageDisplayActivity.class);
+        intent.putExtra("imagePath", path);
+        startActivity(intent);
+    }
+
+
 
     public void selectImageDialog() {
         final Dialog dialog = new Dialog(this, R.style.AppTheme);
@@ -684,7 +811,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         TextView tv_submit = (TextView) dialog.findViewById(R.id.tv_submit);
 
         final TextView tv_cal = (TextView) dialog.findViewById(R.id.tv_cal);
-        tv_cal.setText(Helper.getCompleteDate());
+        tv_cal.setText(Helper.getCompleteDateyyMMdd());
         pdfDate = tv_cal.getText().toString();
         TextView tv_show_lab_report = (TextView) dialog.findViewById(R.id.tv_show_lab_report);
         TextView tv_show_current_visit = (TextView) dialog.findViewById(R.id.tv_show_current_visit);
@@ -812,13 +939,15 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         jsonArrayFilename.add(jsonfile);
         obj.add("fileName", jsonArrayFilename);
 
+
+
         showLoadingDialog();
         mCuraApplication.getInstance().mCuraEndPoint.postPat_Med_Record(obj, new Callback<PostPatMedRecord>() {
             @Override
             public void success(PostPatMedRecord postPatMedRecord, Response response) {
                 natureId = postPatMedRecord.getIds().get(0);
                 Toast.makeText(getApplicationContext(),"Pdf upload success", Toast.LENGTH_SHORT).show();
-
+                getlatestData();
 
                 //   postEndUserTrackingAPI(postPatMedRecord.getIds().get(0));
                 /*if (postPatMedRecord.getStatus()) {
@@ -827,6 +956,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                     showErrorDialog(postPatMedRecord.getMsg());
                 }*/
                 dismissLoadingDialog();
+                finish();
             }
 
             @Override
@@ -871,11 +1001,17 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
 
 
     private void showMedicalRecordNatureDialog(int show) {
-        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
+                recordNatureModelArrayList = new ArrayList();
+        for(int i=0;i<medicalRecordNatureModelArray.length;i++){
+            if(medicalRecordNatureModelArray[i].getRecNatureId()!=6) {
+                recordNatureModelArrayList.add(medicalRecordNatureModelArray[i]);
+            }
+        }
+//        recordNatureModelArrayList = new ArrayList<>(Arrays.asList(medicalRecordNatureModelArray));
         GetMedicalRecordNatureModel recNature = new GetMedicalRecordNatureModel();
-        recNature.setRecNatureId(0);
-        recNature.setRecNatureProperty("Select Nature");
-        recordNatureModelArrayList.set(0,recNature);
+//        recNature.setRecNatureId(0);
+//        recNature.setRecNatureProperty("Select Nature");
+//        recordNatureModelArrayList.set(0,recNature);
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(NewAppointmentActivity.this);
         LayoutInflater inflater = getLayoutInflater();
@@ -1106,7 +1242,11 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                     patientSearchModel.setData(dataList);
                     patientSearchModel.setStatus(patientSearchModels.getStatus());
                     patientSearchModel.setTotalResultCount(patientSearchModels.getTotalResultCount());
+
                     showSearchPatientPopup();
+
+
+
                     /*mAdapter = new SearchPatientAdapter_v1(SearchPatientActivity.this, patientSearchModel, userRoleId, hospitalSubtanentId);
                     mRecyclerView.setAdapter(mAdapter);*/
                 } else {
@@ -1141,6 +1281,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                     Toast.makeText(NewAppointmentActivity.this, "No Record Found", Toast.LENGTH_SHORT).show();
                 }
 
+
                 dismissLoadingDialog();
             }
 
@@ -1171,6 +1312,9 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         lv.setAdapter(searchPatientAdapter);
         ad = alertDialog.show();
         lv.setOnItemClickListener(this);
+
+
+
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -1185,6 +1329,7 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
                         flag_loading = true;
                         getPatientSearchDetail_v2(firstIndex, searchKey);
                         firstIndex = firstIndex + 1;
+
                     }
                 }
             }
@@ -1244,6 +1389,8 @@ public class NewAppointmentActivity extends AppCompatActivity implements View.On
         searchBy.setText(selected);
         mrno = datumModel.getMrNo();
         ad.dismiss();
+
+        getlatestData();
     }
 
     /*public void setAppointmentNature() {

@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mcura.jaideep.queuemanagement">
 
-
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.NFC" />
@@ -16,6 +14,13 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!--<uses-permission android:name="android.permission.WRITE_SETTINGS"
@@ -40,7 +45,8 @@
             android:name=".Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -119,6 +125,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="36093d0fae601051758eab85da170f570a88943b" />
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_live_5FCVrPxqD2LSvf" /> <!-- rzp_live_5FCVrPxqD2LSvf -->
+        <!-- rzp_test_pyMfp9TOUzuH2y -->
 
         <activity android:name=".Activity.LocalBillStatusActivity"
             android:windowSoftInputMode="stateHidden"/>
@@ -140,6 +150,11 @@
         <activity android:name=".Activity.UploadImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".Activity.ViewPDFActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ImageDisplayActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

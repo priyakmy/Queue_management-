@@ -7,13 +7,16 @@ public class Constant {
     public static final String BUILD_VERSION_NAME = "buildVersionName";
     public static int userRoleId=508;
     public static int subTanentId=219;
+
     public static String STATUS_ID_KEY = "CurrentStatusId";
     public static String DOMAIN_KEY = "Domain";
     public static String LOGIN_ID_KEY = "LoginId";
     public static String LOGIN_NAME_KEY = "LoginName";
+    public static String Assistat_Roll_id = "assistat_Roll_id";
     public static String PIN_KEY = "Pin";
     public static String PASSWORD_KEY = "Pwd";
     public static String USER_ROLE_ID_KEY = "UserRoleIdKey";
+
     public static String USER_ROLE_ID = "UserRoleId";
     public static String SCHEDULE_ID = "ScheduleId";
     public static String SUB_TANENT_ID_KEY = "SubTanentId";

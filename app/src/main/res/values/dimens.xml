@@ -62,5 +62,8 @@
     <dimen name="text_18sp">18sp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_5sdp">5dp</dimen>
+    <dimen name="_1sdp">1dp</dimen>
 
 </resources>

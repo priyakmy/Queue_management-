@@ -10,7 +10,7 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="6:00 pm"
+        android:text="@string/_6_00_pm"
         android:textColor="@color/black"/>
     <RelativeLayout
         android:layout_below="@+id/time"
@@ -20,8 +20,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/llRightBtn"
-            android:layout_alignParentLeft="true"
             android:layout_toStartOf="@+id/llRightBtn"
             android:layout_alignParentStart="true">
             <de.hdodenhof.circleimageview.CircleImageView
@@ -33,20 +31,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="@dimen/margin_05"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/margin_05">
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Patient Name"
+                    android:text="@string/__patient_name__"
                     android:textColor="@color/black"/>
                 <TextView
                     android:id="@+id/age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="XX/M"
+                    android:text="@string/_xx_m"
                     android:textColor="@color/black"/>
                 <TextView
                     android:id="@+id/mrno"
@@ -73,7 +70,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true">
             <ImageButton
                 android:id="@+id/mail"

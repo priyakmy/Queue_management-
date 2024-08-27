@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.github.kk121:File-Loader:1.2@aar">
+  <library name="Gradle: com.github.kk121:File-Loader:1.2@aar" external-system-id="GRADLE">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a00fe8baf1c5660513a610b2cc2f67e5/transformed/File-Loader-1.2/annotations.zip!/" />
     </ANNOTATIONS>
